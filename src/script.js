@@ -88,6 +88,10 @@ function checkWin() {
     const tower3 = document.getElementById('tower3');
 
     if (tower2.childElementCount == numDisks || tower3.childElementCount == numDisks) {
+        document.querySelectorAll('.disk').forEach(disk => {
+            disk.draggable = false;
+        });
+
         const message = document.getElementById('message');
 
         if (moveCount === Math.pow(2, numDisks) - 1) {
