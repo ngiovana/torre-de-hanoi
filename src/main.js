@@ -10,6 +10,7 @@ let finished = false;
 document.getElementById('start').addEventListener('click', startGame);
 
 function startGame() {
+    finished = false;
     numDisks = document.getElementById('disk-count').value;
     moveCount = 0;
     updateMoveCount();
