@@ -1,49 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&display=swap');
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+    vertical-align: baseline;
+
+    font-family: "Open Sans", sans-serif;
+    font-style: normal;
+    color: #6d4422;
+    font-optical-sizing: auto;
+}
+
+html {
+    font-size: 62.5%;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+
+    background-color: #ffed84;
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+
+    font-size: 3rem;
+}
+
+.header {
+    position: relative;
+
+    width: 100%;
+    max-height: 15rem;
+    height: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-    flex-direction: column;
 }
 
-p, h1 {
-    text-align: center;
+.header .title {
+    font-family: "Akaya Kanadaka", system-ui;
+    font-size: 10rem;
+    font-weight: bold;
 }
 
-p {
-    line-height: 25%;
+.main {
+    position: relative;
+    width: 100%;
+    height: 70%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .hanoi-game {
-    display: flex;
-    justify-content: space-around;
-    width: 60%;
-    height: 400px;
-}
+    position: relative;
 
-.config {
-    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    height: 40rem;
 }
 
 .tower {
-    background-color: #ddd;
-    width: 15%;
-    height: 100%;
     position: relative;
-    border: 2px solid #000;
+
+    z-index: 2;
+
+    max-width: 35rem;
+    width: 100%;
+    height: 100%;
+
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
 }
 
+.tower .disk:first-child {
+    margin-bottom: 2.4rem;
+}
+
+.tower::before {
+    position: absolute;
+
+    content: " ";
+
+    width: 100%;
+    height: 100%;
+
+    clip-path: polygon(0% 100%,
+            100% 100%,
+            100% 94%,
+            54% 94%,
+            54% 0%,
+            46% 0%,
+            46% 94%,
+            0% 94%);
+
+    background-color: #da8743;
+}
+
 .disk {
     position: relative;
-    height: 30px;
-    margin: 5px 0;
-    border-radius: 5px;
+    height: 4rem;
+    border-radius: 1rem;
+    border: .5rem solid;
     cursor: pointer;
 }
 
@@ -52,15 +129,102 @@ p {
     z-index: 10;
 }
 
-#disk1 { width: 25%; background-color: #FF4500; }
-#disk2 { width: 35%; background-color: #FF8C00; }
-#disk3 { width: 45%; background-color: #FFD700; }
-#disk4 { width: 55%; background-color: #32CD32; }
-#disk5 { width: 65%; background-color: #1E90FF; }
-#disk6 { width: 75%; background-color: #9400D3; }
-#disk7 { width: 85%; background-color: #8B008B; }
-#disk8 { width: 95%; background-color: #FF1493; }
+#disk1 {
+    width: 8rem;
+    background-color: #FF4500;
+    border-color: #dd3b00;
+}
+
+#disk2 {
+    width: 11rem;
+    background-color: #FF8C00;
+    border-color: #db7900;
+}
+
+#disk3 {
+    width: 14rem;
+    background-color: #FFD700;
+    border-color: #dab900;
+}
+
+#disk4 {
+    width: 17rem;
+    background-color: #32CD32;
+    border-color: #2db62d;
+}
+
+#disk5 {
+    width: 20rem;
+    background-color: #1E90FF;
+    border-color: #1977d4;
+}
+
+#disk6 {
+    width: 23rem;
+    background-color: #9400D3;
+    border-color: #7800ac;
+}
+
+#disk7 {
+    width: 26rem;
+    background-color: #8B008B;
+    border-color: #750075;
+}
+
+#disk8 {
+    width: 29rem;
+    background-color: #FF1493;
+    border-color: #e0278a;
+}
 
 .dragging {
     opacity: 0.5;
+}
+
+.footer {
+    position: relative;
+
+    width: 100%;
+    max-height: 15rem;
+    height: 100%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    padding-bottom: 10rem;
+}
+
+.config-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+select,
+button {
+    min-width: 30rem;
+    width: 100%;
+    height: 5rem;
+    background-color: #da8743;
+    border-radius: 1rem;
+    font-size: 2rem;
+    padding: .5rem;
+    outline: none;
+    border: .5rem solid #a36532;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color .2s ease-in-out;
+}
+
+select:hover,
+button:hover {
+    background-color: #c97939;
+}
+
+.red {
+    color: tomato;
 }

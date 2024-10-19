@@ -1,6 +1,8 @@
-import { hanoiSolver, addMoveToQueue, solutionMoves } from './solver.js';
+import { addMoveToQueue, hanoiSolver, solutionMoves } from './solver.js';
 
-const towers = document.querySelectorAll('.tower');
+const maxDisks = 8
+const towerList = document.querySelectorAll('.tower');
+
 let draggedDisk = null;
 let minMoves = 0;
 let moveCount = 0;
@@ -11,7 +13,7 @@ document.getElementById('start').addEventListener('click', startGame);
 
 function startGame() {
     finished = false;
-    numDisks = document.getElementById('disk-count').value;
+    numDisks = Math.min(document.getElementById('disk-count').value, maxDisks);
     moveCount = 0;
     updateMoveCount();
     updateMinMoves();
@@ -22,7 +24,7 @@ function startGame() {
 }
 
 function createDisks(number) {
-    towers.forEach(tower => tower.innerHTML = '');
+    towerList.forEach(tower => tower.innerHTML = '');
 
     for (let i = number; i > 0; i--) {
         const disk = document.createElement('div');
@@ -41,7 +43,7 @@ document.querySelectorAll('.disk').forEach(disk => {
     disk.addEventListener('dragend', dragEnd);
 });
 
-towers.forEach(tower => {
+towerList.forEach(tower => {
     tower.addEventListener('dragover', dragOver);
     tower.addEventListener('drop', drop);
 });
@@ -96,12 +98,14 @@ function drop(event) {
 }
 
 function updateMoveCount() {
-    document.getElementById('moves').textContent = `${moveCount} movimentos`;
+    const moveLabel = moveCount == 1 ? "movimento" : "movimentos";
+    const actionLabel = moveCount == 1 ? "feito" : "feitos";
+    document.getElementById('moves').innerHTML = `<strong class='red'>${moveCount}</strong> ${moveLabel} ${actionLabel}`;
 }
 
 function updateMinMoves() {
     minMoves = Math.pow(2, numDisks) - 1;
-    document.getElementById('message').textContent = `Mínimo de movimentos necessários: ${minMoves}`;
+    document.getElementById('message').innerHTML = `Mínimo de movimentos necessários: <strong class='red'>${minMoves}</strong>`;
 }
 
 function checkWin() {

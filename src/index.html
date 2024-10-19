@@ -1,33 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Torre de Hanói</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="hanoi-game">
-        <div class="tower" id="tower1">
-            <div class="disk" id="disk4" draggable="true" data-size="4"></div>
-            <div class="disk" id="disk3" draggable="true" data-size="3"></div>
-            <div class="disk" id="disk2" draggable="true" data-size="2"></div>
-            <div class="disk" id="disk1" draggable="true" data-size="1"></div>
+    <header class="header">
+        <h1 class="title">Torre de Hanói</h1>
+    </header>
+
+    <main class="main">
+        <div class="hanoi-game">
+            <div class="tower" id="tower1">
+                <div class="disk" id="disk4" draggable="true" data-size="4"></div>
+                <div class="disk" id="disk3" draggable="true" data-size="3"></div>
+                <div class="disk" id="disk2" draggable="true" data-size="2"></div>
+                <div class="disk" id="disk1" draggable="true" data-size="1"></div>
+            </div>
+            <div class="tower" id="tower2"></div>
+            <div class="tower" id="tower3"></div>
         </div>
-        <div class="tower" id="tower2"></div>
-        <div class="tower" id="tower3"></div>
-    </div>
+    </main>
 
-    <div class="config">
-        <h1>Torre de Hanói</h1>
-        <label for="disk-count">Número de discos:</label>
-        <input type="number" id="disk-count" value="4" min="3" max="8">
-        <button id="start">Reiniciar</button>
-        <button id="hint">Dica</button>
+    <footer class="footer">
+        <div class="config-container">
+            <label for="disk-count">Quantidade de discos:</label>
+            <select name="diskCount" id="disk-count">
+                <option value="1">1 disco</option>
+                <option value="2">2 discos</option>
+                <option value="3">3 discos</option>
+                <option value="4">4 discos</option>
+                <option value="5">5 discos</option>
+                <option value="6">6 discos</option>
+                <option value="7">7 discos</option>
+                <option value="8" selected>8 discos</option>
+            </select>
+        </div>
 
-        <p id="message">Mínimo de movimentos necessários: </p>
-        <p id="moves">0 movimentos</p>
-    </div>
+        <div class="config-container">
+            <p id="moves">0 movimentos</p>
+            <p id="message">Mínimo de movimentos necessários: </p>
+        </div>
+
+        <div class="config-container">
+            <button id="start">Reiniciar</button>
+            <button id="hint">Dica</button>
+        </div>
+
+
+    </footer>
+
     <script type="module" src="main.js"></script>
 </body>
+
 </html>
