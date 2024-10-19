@@ -1,7 +1,11 @@
+import { hanoiSolver, addMoveToQueue, solutionMoves } from './solver.js';
+
 const towers = document.querySelectorAll('.tower');
 let draggedDisk = null;
+let minMoves = 0;
 let moveCount = 0;
 let numDisks = 4;
+let finished = false;
 
 document.getElementById('start').addEventListener('click', startGame);
 
@@ -11,6 +15,9 @@ function startGame() {
     updateMoveCount();
     updateMinMoves();
     createDisks(numDisks);
+
+    solutionMoves.length = 0;
+    hanoiSolver(numDisks, 1, 3, 2);
 }
 
 function createDisks(number) {
@@ -37,6 +44,19 @@ towers.forEach(tower => {
     tower.addEventListener('dragover', dragOver);
     tower.addEventListener('drop', drop);
 });
+
+document.getElementById('hint').addEventListener('click', () => {
+    if (finished) {
+        return;
+    }
+
+    addMoveToQueue();
+
+    moveCount++;
+    updateMoveCount();
+    setTimeout(() => checkWin(), 100);
+});
+
 
 function dragStart(event) {
     const disk = event.target;
@@ -79,7 +99,7 @@ function updateMoveCount() {
 }
 
 function updateMinMoves() {
-    const minMoves = Math.pow(2, numDisks) - 1;
+    minMoves = Math.pow(2, numDisks) - 1;
     document.getElementById('message').textContent = `Mínimo de movimentos necessários: ${minMoves}`;
 }
 
@@ -92,9 +112,10 @@ function checkWin() {
             disk.draggable = false;
         });
 
+        finished = true;
         const message = document.getElementById('message');
 
-        if (moveCount === Math.pow(2, numDisks) - 1) {
+        if (moveCount === minMoves) {
             message.textContent = "😲";
             setTimeout(() => {
                 alert("Parabéns! Você completou o jogo com o mínimo de movimentos possíveis!\nImpressionante!");
