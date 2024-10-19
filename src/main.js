@@ -32,6 +32,7 @@ function createDisks(number) {
         disk.id = `disk${i}`;
         disk.setAttribute('data-size', i);
         disk.draggable = true;
+        disk.textContent = i;
         disk.addEventListener('dragstart', dragStart);
         disk.addEventListener('dragend', dragEnd);
         document.getElementById('tower1').appendChild(disk);

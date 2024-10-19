@@ -124,6 +124,11 @@ body {
     border-radius: 1rem;
     border: .5rem solid;
     cursor: pointer;
+
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    text-align: center;
 }
 
 .animated-disk {
