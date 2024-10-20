@@ -1,56 +1,54 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Torre de Hanói</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Torre de Hanói</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-<body>
-    <header class="header">
-        <h1 class="title">Torre de Hanói</h1>
-    </header>
+    <body class="game-page-container">
+        <header class="header">
+            <h1 class="title">Torre de Hanói</h1>
+        </header>
 
-    <main class="main">
-        <div class="hanoi-game">
-            <div class="tower" id="tower1"></div>
-            <div class="tower" id="tower2"></div>
-            <div class="tower" id="tower3"></div>
-        </div>
-    </main>
+        <main class="main">
+            <div class="hanoi-game">
+                <div class="tower first-tower" id="tower1"></div>
+                <div class="tower middle-tower" id="tower2"></div>
+                <div class="tower last-tower" id="tower3"></div>
+            </div>
+        </main>
 
-    <footer class="footer">
-        <div class="config-container">
-            <label for="disk-count">Quantidade de discos:</label>
-            <select name="diskCount" id="disk-count">
-                <option value="1">1 disco</option>
-                <option value="2">2 discos</option>
-                <option value="3">3 discos</option>
-                <option value="4">4 discos</option>
-                <option value="5">5 discos</option>
-                <option value="6">6 discos</option>
-                <option value="7">7 discos</option>
-                <option value="8" selected>8 discos</option>
-            </select>
-        </div>
+        <footer class="footer">
+            <div class="config-container">
+                <label for="disk-count">Quantidade de discos:</label>
+                <select id="disk-count" class="disk-difficult-select">
+                    <option value="1">1 disco</option>
+                    <option value="2">2 discos</option>
+                    <option value="3">3 discos</option>
+                    <option value="4">4 discos</option>
+                    <option value="5">5 discos</option>
+                    <option value="6">6 discos</option>
+                    <option value="7">7 discos</option>
+                    <option value="8" selected>8 discos</option>
+                </select>
+            </div>
 
-        <div class="config-container">
-            <p id="moves">0 movimentos</p>
-            <p id="message">Mínimo de movimentos necessários: </p>
-        </div>
+            <div class="config-container">
+                <p class="current-moves-count">0 movimentos</p>
+                <p class="minimum-moves-to-finish">Mínimo de movimentos necessários: </p>
+            </div>
 
-        <div class="config-container">
-            <button id="start">Reiniciar</button>
-            <button id="hint">Dica</button>
-        </div>
+            <div class="config-container">
+                <button class="restart-button">Reiniciar</button>
+                <button class="hint-button">Dica</button>
+            </div>
+        </footer>
 
-
-    </footer>
-
-    <script type="module" src="main.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-</body>
+        <script type="module" src="hanoi-tower-game-controller.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    </body>
 
 </html>
