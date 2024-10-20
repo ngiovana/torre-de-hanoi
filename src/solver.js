@@ -1,6 +1,8 @@
 let solutionMoves = [];
 let isProcessing = false;
 const moveQueue = [];
+const movementAnimationGap = 15;
+const ghostPlaceholderDiskId = 'ghost-placeholder';
 
 function addMoveToQueue() {
     moveQueue.push(processNextMove);
@@ -39,8 +41,50 @@ function processNextMove() {
             toTower.appendChild(diskToMove);
 
             diskToMove.classList.remove('animated-disk');
+
+            //moveDisk(diskToMove, toTower); ainda não está funcionando a animação
         }, 10);
     }
+}
+
+function moveDisk(disk, toTower) {
+    toTower.appendChild(createGhostPlaceholderDisk(disk.offsetWidth));
+    animateDiskUp(disk, toTower);
+}
+
+function animateDiskUp(disk, toTower) {
+    $(disk).animate( {
+        top: - movementAnimationGap - disk.offsetTop - disk.offsetHeight
+    }, 1000, () => animateDiskLeftOrRight(disk, toTower));
+}
+
+function animateDiskLeftOrRight(disk, toTower) {
+    const ghostPlaceholderDisk = document.getElementById(ghostPlaceholderDiskId);
+
+    $(disk).animate( {
+        left: ghostPlaceholderDisk.getBoundingClientRect().left - disk.getBoundingClientRect().left
+    }, 1000, () => animateDiskDown(disk, toTower));
+}
+
+function animateDiskDown(disk, toTower) {
+    const ghostPlaceholderDisk = document.getElementById(ghostPlaceholderDiskId);
+
+    $(disk).animate( {
+        top: ghostPlaceholderDisk.getBoundingClientRect().top - disk.getBoundingClientRect().top - 110
+    }, 1000, function() {
+        toTower.removeChild(document.getElementById(ghostPlaceholderDiskId));
+        toTower.appendChild(disk);
+        disk.classList.remove('animated-disk');
+    });
+}
+
+function createGhostPlaceholderDisk(width) {
+    const disk = document.createElement('div');
+    disk.classList.add('disk');
+    disk.id = ghostPlaceholderDiskId;
+    disk.style.width = width + 'px';
+
+    return disk;
 }
 
 function hanoiSolver(numDisks, from, to, aux) {

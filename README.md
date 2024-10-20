@@ -1,2 +1,1 @@
-# torre-de-hanoi
-Hello World by Gustavo!
+# Projeto: Torre de Hanói Educativa!
