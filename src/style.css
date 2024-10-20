@@ -129,6 +129,8 @@ body {
     color: white;
     font-weight: bold;
     text-align: center;
+
+    transition: .2s ease-in-out;
 }
 
 .animated-disk {
@@ -181,7 +183,13 @@ body {
 #disk8 {
     width: 29rem;
     background-color: #FF1493;
-    border-color: #e0278a;
+    border-color: #cb257f;
+}
+
+.disk.invalid:hover {
+    background-color: #888 !important;
+    border-color: #555 !important;
+    cursor: not-allowed;
 }
 
 .dragging {

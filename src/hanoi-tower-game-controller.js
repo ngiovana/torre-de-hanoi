@@ -54,6 +54,8 @@ function HanoiTowerGameController() {
 
         solutionMoves.length = 0;
         hanoiSolver(numDisks, 1, 3, 2);
+
+        validateTowerDisks();
     }
 
     function createDisks(number) {
@@ -123,6 +125,20 @@ function HanoiTowerGameController() {
         currentMovesCounterReference.textContent = '';
     }
 
+    function validateTowerDisks() {
+        towerList.forEach(tower => {
+            const diskList = tower.querySelectorAll(".disk");
+
+            diskList.forEach((disk, index) => {
+                disk.classList.add("invalid");
+
+                if (index === (diskList.length - 1)) {
+                    disk.classList.remove("invalid");
+                }
+            })
+        })
+    }
+
     // Regras de movimentação das peças
 
     function dragStart(event) {
@@ -159,6 +175,7 @@ function HanoiTowerGameController() {
             moveCount++;
             updateMoveCount();
             checkWin();
+            validateTowerDisks();
         }
     }
 
