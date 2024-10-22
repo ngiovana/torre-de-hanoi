@@ -3,14 +3,16 @@ import {Disk} from "./Disk.js";
 class Tower {
 
     name
+    id
 
     /**
      * @type {Array<Disk>}
      */
     diskStack;
 
-    constructor(name, diskStack) {
+    constructor(name, id, diskStack) {
         this.name = name
+        this.id = id
         this.diskStack = diskStack;
     }
 

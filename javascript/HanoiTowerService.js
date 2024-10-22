@@ -45,9 +45,9 @@ class HanoiTowerService {
             diskStack.push(disk)
         }
 
-        this.firstTower = new Tower(TowerName.FIRST_TOWER, diskStack);
-        this.middleTower = new Tower(TowerName.MIDDLE_TOWER, []);
-        this.lastTower = new Tower(TowerName.LAST_TOWER, []);
+        this.firstTower = new Tower(TowerName.FIRST_TOWER, 0, diskStack);
+        this.middleTower = new Tower(TowerName.MIDDLE_TOWER, 1, []);
+        this.lastTower = new Tower(TowerName.LAST_TOWER, 2, []);
 
         this.#solver = new HanoiTowerSolver(diskDifficult, ...Object.values(TowerName))
     };
@@ -63,6 +63,10 @@ class HanoiTowerService {
 
     executeHint = () => {
         if (this.isFinished) return;
+
+        const towers = this.#buildTowersDiskObject();
+        this.#solver.buildNextSolutionMove(towers, this.diskDifficult, 0, 2, 1);
+
         if (!this.#solver.hasMoveCommands()) return;
 
         const moveCommand = this.#solver.getNextMoveCommand();
@@ -135,6 +139,7 @@ class HanoiTowerService {
 
         Object.values(TowerName).forEach((towerName) => {
             const tower = this.#findTowerByName(towerName);
+            towersDiskObject[tower.id] = tower.getDiskStack();
             towersDiskObject[towerName] = tower.getDiskStack();
         });
 

@@ -6,4 +6,9 @@ const TowerName = {
 
 Object.freeze(TowerName)
 
+const towerIndexToName = (index) => {
+    const towerNames = Object.values(TowerName);
+    return towerNames[index] || null;
+}
+
 export {TowerName}
