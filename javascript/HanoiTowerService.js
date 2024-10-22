@@ -1,7 +1,7 @@
-import {addMoveToQueue, hanoiSolver, solutionMoves} from './solver.js';
 import {Tower} from "./Tower.js";
 import {Disk} from "./Disk.js";
 import {HanoiTowerController} from "./HanoiTowerController.js";
+import {HanoiTowerSolver} from "./HanoiTowerSolver.js";
 
 class HanoiTowerService {
 
@@ -11,6 +11,11 @@ class HanoiTowerService {
      * @type {HanoiTowerController}
      */
     #screenController;
+
+    /**
+     * @type {HanoiTowerSolver}
+     */
+    #solver
 
     minMovesToFinish;
     movesCount;
@@ -43,8 +48,12 @@ class HanoiTowerService {
         this.middleTower = new Tower("middleTower", []);
         this.lastTower = new Tower( "lastTower", []);
 
-        solutionMoves.length = 0;
-        hanoiSolver(diskDifficult, 1, 3, 2);
+        this.#solver = new HanoiTowerSolver(
+            diskDifficult,
+            "firstTower",
+            "middleTower",
+            "lastTower"
+        )
     };
 
     checkMoveCommand = (moveCommand) => {
@@ -58,11 +67,10 @@ class HanoiTowerService {
 
     executeHint = () => {
         if (this.isFinished) return;
+        if (!this.#solver.hasMoveCommands()) return;
 
-        addMoveToQueue();
-
-        this.#incrementMovesCount();
-        setTimeout(() => this.#checkWin(), 100);
+        const moveCommand = this.#solver.getNextMoveCommand();
+        this.checkMoveCommand(moveCommand)
     };
 
     isWinWithBestSolution = () => this.movesCount === this.minMovesToFinish;
@@ -81,13 +89,13 @@ class HanoiTowerService {
     };
 
     #validateMoveCommand = (moveCommand) => {
-        const fromTower = this.#findTowerById(moveCommand.fromTowerId);
+        const fromTower = this.#findTowerById(moveCommand.fromTowerName);
         if (!fromTower) return false;
 
         const disk = fromTower.getTopDisk()
         if (disk.getValue() !== moveCommand.diskValue) return false;
 
-        const toTower = this.#findTowerById(moveCommand.toTowerId);
+        const toTower = this.#findTowerById(moveCommand.toTowerName);
         if (!toTower) return false;
 
         if (fromTower === toTower) return false;
@@ -99,28 +107,19 @@ class HanoiTowerService {
     };
 
     #executeMoveCommand = (moveCommand) => {
-        const fromTower = this.#findTowerById(moveCommand.fromTowerId);
+        const fromTower = this.#findTowerById(moveCommand.fromTowerName);
         const disk = fromTower.getTopDisk()
-        const toTower = this.#findTowerById(moveCommand.toTowerId);
+        const toTower = this.#findTowerById(moveCommand.toTowerName);
 
         fromTower.removeTopDisk();
         toTower.addDisk(disk);
 
+        this.#screenController.executeMoveCommand(moveCommand);
         this.#incrementMovesCount();
         this.#checkWin()
     };
 
     #checkWin = () => {
-        console.log({
-            minMovesToFinish: this.minMovesToFinish,
-            movesCount: this.movesCount,
-            diskDifficult: this.diskDifficult,
-            isFinished: this.isFinished,
-            firstTower: this.firstTower,
-            middleTower: this.middleTower,
-            lastTower: this.lastTower
-        })
-
         if (this.#validateWin()) this.#executeWin();
     };
 
