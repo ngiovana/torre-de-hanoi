@@ -1,10 +1,14 @@
 class MoveCommand {
 
     diskValue = 0
+    fromTowerName = ""
+    toTowerName = ""
 
-    fromTowerId = ""
-
-    toTowerId = ""
+    constructor(diskValue, fromTowerName, toTowerName) {
+        this.diskValue = diskValue;
+        this.fromTowerName = fromTowerName;
+        this.toTowerName = toTowerName;
+    }
 
 }
 
