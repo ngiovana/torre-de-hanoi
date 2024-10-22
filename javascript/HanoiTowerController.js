@@ -49,6 +49,17 @@ class HanoiTowerController {
         this.#gameService.executeHint();
     }
 
+    executeMoveCommand = (moveCommand) => {
+        const toTowerElement = this.#reference.querySelector(`[data-name=${ moveCommand.toTowerName }]`)
+        if (!toTowerElement) return;
+
+        const diskElement = this.#reference.querySelector(`[data-value='${ moveCommand.diskValue }']`)
+        if (!diskElement) return;
+
+        toTowerElement.appendChild(diskElement);
+        this.#updateTowerDisks();
+    }
+
     updateMovesCount = () => {
         const moveLabel = this.#gameService.movesCount === 1 ? 'movimento' : 'movimentos';
         const actionLabel = this.#gameService.movesCount === 1 ? 'feito' : 'feitos';
@@ -132,15 +143,11 @@ class HanoiTowerController {
 
         const toTowerElement = event.target;
 
-        const moveCommand = new MoveCommand()
-        moveCommand.diskValue = parseInt(this.#draggedDisk.dataset.value);
-        moveCommand.fromTowerId = this.#draggedDisk.parentElement.dataset.name;
-        moveCommand.toTowerId = toTowerElement.dataset.name;
-
-        if (this.#gameService.checkMoveCommand(moveCommand)) {
-            toTowerElement.appendChild(this.#draggedDisk);
-            this.#updateTowerDisks();
-        }
+        this.#gameService.checkMoveCommand(new MoveCommand(
+            parseInt(this.#draggedDisk.dataset.value),
+            this.#draggedDisk.parentElement.dataset.name,
+            toTowerElement.dataset.name
+        ));
 
         this.#draggedDisk = null;
     };
