@@ -15,7 +15,7 @@ class Tower {
     }
 
     getDiskStack = () => {
-        return [...this.diskStack]
+        return JSON.parse(JSON.stringify(this.diskStack));
     };
 
     getTopDisk = () => {

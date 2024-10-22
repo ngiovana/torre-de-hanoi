@@ -2,6 +2,7 @@ import {Tower} from "./Tower.js";
 import {Disk} from "./Disk.js";
 import {HanoiTowerController} from "./HanoiTowerController.js";
 import {HanoiTowerSolver} from "./HanoiTowerSolver.js";
+import {TowerName} from "./TowerName.js";
 
 class HanoiTowerService {
 
@@ -44,16 +45,11 @@ class HanoiTowerService {
             diskStack.push(disk)
         }
 
-        this.firstTower = new Tower("firstTower", diskStack);
-        this.middleTower = new Tower("middleTower", []);
-        this.lastTower = new Tower( "lastTower", []);
+        this.firstTower = new Tower(TowerName.FIRST_TOWER, diskStack);
+        this.middleTower = new Tower(TowerName.MIDDLE_TOWER, []);
+        this.lastTower = new Tower(TowerName.LAST_TOWER, []);
 
-        this.#solver = new HanoiTowerSolver(
-            diskDifficult,
-            "firstTower",
-            "middleTower",
-            "lastTower"
-        )
+        this.#solver = new HanoiTowerSolver(diskDifficult, ...Object.values(TowerName))
     };
 
     checkMoveCommand = (moveCommand) => {
@@ -84,18 +80,18 @@ class HanoiTowerService {
         return Math.pow(2, diskDifficult) - 1
     };
 
-    #findTowerById = (towerName) => {
+    #findTowerByName = (towerName) => {
         return this[towerName];
     };
 
     #validateMoveCommand = (moveCommand) => {
-        const fromTower = this.#findTowerById(moveCommand.fromTowerName);
+        const fromTower = this.#findTowerByName(moveCommand.fromTowerName);
         if (!fromTower) return false;
 
         const disk = fromTower.getTopDisk()
         if (disk.getValue() !== moveCommand.diskValue) return false;
 
-        const toTower = this.#findTowerById(moveCommand.toTowerName);
+        const toTower = this.#findTowerByName(moveCommand.toTowerName);
         if (!toTower) return false;
 
         if (fromTower === toTower) return false;
@@ -107,9 +103,9 @@ class HanoiTowerService {
     };
 
     #executeMoveCommand = (moveCommand) => {
-        const fromTower = this.#findTowerById(moveCommand.fromTowerName);
+        const fromTower = this.#findTowerByName(moveCommand.fromTowerName);
         const disk = fromTower.getTopDisk()
-        const toTower = this.#findTowerById(moveCommand.toTowerName);
+        const toTower = this.#findTowerByName(moveCommand.toTowerName);
 
         fromTower.removeTopDisk();
         toTower.addDisk(disk);
@@ -133,6 +129,17 @@ class HanoiTowerService {
         this.isFinished = true;
         this.#screenController.executeWin();
     };
+
+    #buildTowersDiskObject = () => {
+        const towersDiskObject = {};
+
+        Object.values(TowerName).forEach((towerName) => {
+            const tower = this.#findTowerByName(towerName);
+            towersDiskObject[towerName] = tower.getDiskStack();
+        });
+
+        return towersDiskObject;
+    }
 }
 
 export {HanoiTowerService}
