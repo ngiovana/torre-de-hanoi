@@ -21,7 +21,7 @@ class HanoiTowerController {
 
     constructor() {
         this.#restartButton.addEventListener('click', this.startGame);
-        this.#hintButton.addEventListener('click', this.executeHint);
+        this.#hintButton.addEventListener('click', this.#gameService.executeHint);
 
         this.#towerList.forEach(tower => {
             tower.addEventListener('dragover', this.#dragOver);
@@ -42,11 +42,6 @@ class HanoiTowerController {
         this.updateMovesCount();
         this.#createDisks(diskDifficult);
         this.#updateTowerDisks();
-    }
-
-    executeHint = () => {
-        if (this.#gameService.isFinished) return;
-        this.#gameService.executeHint();
     }
 
     executeMoveCommand = (moveCommand) => {
