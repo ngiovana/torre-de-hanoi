@@ -108,15 +108,15 @@ class HanoiTowerController {
         this.#towerList.forEach(tower => tower.innerHTML = '');
 
         for (let counter = diskDifficult; counter > 0; counter--) {
-            const disk = document.createElement('div');
-            disk.classList.add('disk');
-            disk.id = `disk${counter}`;
-            disk.setAttribute('data-value', counter);
-            disk.draggable = true;
-            disk.textContent = counter;
-            disk.addEventListener('dragstart', this.#dragStart);
+            const diskElement = document.createElement('div');
+            diskElement.classList.add('disk');
+            diskElement.id = `disk${counter}`;
+            diskElement.setAttribute('data-value', counter);
+            diskElement.draggable = true;
+            diskElement.textContent = counter;
+            diskElement.addEventListener('dragstart', this.#dragStart);
 
-            this.#firstTower.appendChild(disk);
+            this.#firstTower.appendChild(diskElement);
         }
     }
 
