@@ -9,7 +9,7 @@ class HanoiTowerSolver {
     #solutionMoves = [];
 
     constructor(diskDifficult, firstTowerName, middleTowerName, lastTowerName) {
-        this.#buildSolutionMoves(diskDifficult, firstTowerName, middleTowerName, lastTowerName);
+        this.#buildSolutionMoves(diskDifficult, firstTowerName, lastTowerName, middleTowerName);
     }
 
     hasMoveCommands = () => {
@@ -21,7 +21,7 @@ class HanoiTowerSolver {
     }
 
     #buildSolutionMoves = (diskValue, fromTower, toTower, swapTower) => {
-        if (diskValue === 0) return;
+        if (diskValue === 0 || true) return;
 
         this.#buildSolutionMoves(diskValue - 1, fromTower, swapTower, toTower);
 
@@ -34,43 +34,38 @@ class HanoiTowerSolver {
         this.#buildSolutionMoves(diskValue - 1, swapTower, toTower, fromTower);
     }
 
-    buildNextSolutionMove = (towers, numDisks, towerFrom, towerTo, towerAux) => {
-        if (numDisks < 1) {
+    buildNextSolutionMove = (towers, n, fromTower, toTower, auxTower) => {
+        if (n === 0) return;
+
+        if (towers[toTower][n - 1] && towers[toTower][n - 1].value === n) {
+            this.buildNextSolutionMove(towers, n - 1, fromTower, toTower, auxTower);
             return;
         }
 
-        let currentFrom = null;
-        for (let i = 0; i < 3; i++) {
-            const tower = towers[i];
-            if (tower.length > 0 && tower[numDisks - tower.length]?.value === numDisks) {
-                currentFrom = i;
-                break;
-            }
-        }
+        this.buildNextSolutionMove(towers, n - 1, fromTower, auxTower, toTower);
 
-        if (currentFrom == null) {
-            return;
-        }
+        const diskToMove = towers[fromTower].pop();
 
-        let currentAux = (currentFrom === towerFrom) ? towerAux : towerFrom;
-        let currentTo = (currentFrom === towerAux) ? towerTo : towerAux;
+        if (!diskToMove) return;
 
-        if (numDisks > 1) {
-            this.buildNextSolutionMove(towers, numDisks - 1, currentFrom, currentAux, currentTo);
-        }
-
-        const nextDisk = towers[currentFrom].pop(); // Remover disco da torre de origem
-        towers[towerTo].push(nextDisk); // Adicionar disco à torre de destino
+        towers[toTower].push(diskToMove);
 
         this.#solutionMoves.push({
-            diskValue: numDisks,
-            fromTowerName: Object.values(TowerName)[currentFrom],
-            toTowerName: Object.values(TowerName)[towerTo]
+            diskValue: diskToMove.value,
+            fromTowerName: Object.values(TowerName)[fromTower],
+            toTowerName: Object.values(TowerName)[toTower]
         });
 
-        if (numDisks > 1) {
-            this.buildNextSolutionMove(towers, numDisks - 1, currentAux, towerTo, towerFrom);
-        }
+        // if (this.#solutionMoves.length === 1) {
+        //     const moveCommand = this.#solutionMoves.shift();
+        //     if (new HanoiTowerService().validateMoveCommand(moveCommand)) {
+        //         this.#solutionMoves.push(moveCommand);
+        //     } else {
+        //         this.buildNextSolutionMove(towers, n, auxTower, toTower, fromTower);
+        //     }
+        // }
+
+        this.buildNextSolutionMove(towers, n - 1, auxTower, toTower, fromTower);
     }
 }
 
