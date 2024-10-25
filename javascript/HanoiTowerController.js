@@ -106,6 +106,8 @@ class HanoiTowerController {
             diskElement.id = `disk${counter}`;
             diskElement.setAttribute('data-value', counter);
             diskElement.textContent = counter;
+            diskElement.style.transition = ".2s ease-in-out";
+
             diskElement.addEventListener('mousedown', this.#startDiskMove)
 
             this.#firstTower.appendChild(diskElement);
@@ -128,6 +130,7 @@ class HanoiTowerController {
         diskElement.style.position = 'absolute';
         diskElement.style.top  = `${ top }px`;
         diskElement.style.left = `${ left }px`;
+        diskElement.style.transition = '';
 
         document.addEventListener('mousemove', this.#moveDisk);
         document.addEventListener('mouseup', this.#releaseDisk);
@@ -145,6 +148,7 @@ class HanoiTowerController {
         document.removeEventListener('mousemove', this.#moveDisk)
         document.removeEventListener('mouseup', this.#releaseDisk)
 
+        this.#draggedDisk.style.transition = ".2s ease-in-out";
         this.#draggedDisk.style.cursor = 'grab';
         this.#draggedDisk.style.position = 'relative';
         this.#draggedDisk.style.top = '';
