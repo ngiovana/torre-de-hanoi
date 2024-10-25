@@ -26,9 +26,11 @@ class HanoiTowerService {
     firstTower;
     middleTower;
     lastTower;
+    static instance;
 
     constructor(screenController) {
         this.#screenController = screenController;
+        this.instance = this;
     }
 
     startGame = (diskDifficult) => {
@@ -53,7 +55,7 @@ class HanoiTowerService {
     };
 
     checkMoveCommand = (moveCommand) => {
-        if (this.#validateMoveCommand(moveCommand)) {
+        if (this.validateMoveCommand(moveCommand)) {
             this.#executeMoveCommand(moveCommand);
             return true;
         }
@@ -61,11 +63,45 @@ class HanoiTowerService {
         return false
     };
 
+    findBiggerTower = (towers) => {
+        let biggerTower = towers[0];
+        let index = 0;
+        for (let towerIndex = 0; towerIndex < 3; towerIndex++) {
+            if (towers[towerIndex].length > biggerTower.length) {
+                biggerTower = towers[towerIndex];
+                index = towerIndex;
+            }
+        }
+
+        return index;
+    };
+
+    findSmallerTower = (towers) => {
+        let smallerTower = towers[0];
+        let index = 1;
+        for (let towerIndex = 0; towerIndex < 3; towerIndex++) {
+            if (towers[towerIndex].length < smallerTower.length) {
+                smallerTower = towers[towerIndex];
+                index = towerIndex;
+            }
+        }
+
+        return index;
+    };
+
     executeHint = () => {
         if (this.isFinished) return;
 
         const towers = this.#buildTowersDiskObject();
-        this.#solver.buildNextSolutionMove(towers, this.diskDifficult, 0, 2, 1);
+        // this.#solver.setTowers(towers);
+        // const biggerTower = this.findBiggerTower(towers);
+        // const smallerTower = this.findSmallerTower(towers);
+        // const middleTower = 3 - biggerTower - smallerTower;
+        // this.#solver.buildNextSolutionMove(towers, this.diskDifficult, biggerTower, smallerTower, middleTower);
+
+        const towersArray = Object.values(towers);
+        this.#solver.needStop = false;
+        this.#solver.determineNextMove(towersArray, this.diskDifficult, 0, 2, 1);
 
         if (!this.#solver.hasMoveCommands()) return;
 
@@ -88,7 +124,7 @@ class HanoiTowerService {
         return this[towerName];
     };
 
-    #validateMoveCommand = (moveCommand) => {
+    validateMoveCommand = (moveCommand) => {
         const fromTower = this.#findTowerByName(moveCommand.fromTowerName);
         if (!fromTower) return false;
 
@@ -140,7 +176,7 @@ class HanoiTowerService {
         Object.values(TowerName).forEach((towerName) => {
             const tower = this.#findTowerByName(towerName);
             towersDiskObject[tower.id] = tower.getDiskStack();
-            towersDiskObject[towerName] = tower.getDiskStack();
+            // towersDiskObject[tow erName] = tower.getDiskStack();
         });
 
         return towersDiskObject;
