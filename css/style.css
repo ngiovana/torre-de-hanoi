@@ -17,6 +17,11 @@
     font-style: normal;
     color: #6d4422;
     font-optical-sizing: auto;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 html {
@@ -119,7 +124,6 @@ body {
 }
 
 .disk {
-    position: relative;
     height: 4rem;
     border-radius: 1rem;
     border: .5rem solid;
@@ -130,12 +134,8 @@ body {
     font-weight: bold;
     text-align: center;
 
-    transition: .2s ease-in-out;
-}
-
-.animated-disk {
-    transition: transform 0.5s ease-in-out;
-    z-index: 10;
+    z-index: 3;
+    position: relative;
 }
 
 #disk1 {
@@ -189,7 +189,7 @@ body {
 .disk.invalid:hover {
     background-color: #888 !important;
     border-color: #555 !important;
-    cursor: not-allowed;
+    cursor: not-allowed !important;
 }
 
 .dragging {
