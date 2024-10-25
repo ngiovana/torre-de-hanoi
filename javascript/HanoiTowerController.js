@@ -1,5 +1,5 @@
-import {HanoiTowerService} from "./HanoiTowerService.js";
-import {MoveCommand} from "./MoveCommand.js";
+import {HanoiTowerService} from './HanoiTowerService.js';
+import {MoveCommand} from './MoveCommand.js';
 
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
@@ -80,13 +80,13 @@ class HanoiTowerController {
 
     #updateTowerDisks = () => {
         this.#towerList.forEach(tower => {
-            const diskList = tower.querySelectorAll(".disk");
+            const diskList = tower.querySelectorAll('.disk');
 
             diskList.forEach((disk, index) => {
-                disk.classList.add("invalid");
+                disk.classList.add('invalid');
 
                 if (index === (diskList.length - 1)) {
-                    disk.classList.remove("invalid");
+                    disk.classList.remove('invalid');
                 }
             })
         })
@@ -106,7 +106,7 @@ class HanoiTowerController {
             diskElement.id = `disk${counter}`;
             diskElement.setAttribute('data-value', counter);
             diskElement.textContent = counter;
-            diskElement.style.transition = ".2s ease-in-out";
+            diskElement.style.transition = '.2s ease-in-out';
 
             diskElement.addEventListener('mousedown', this.#startDiskMove)
 
@@ -148,7 +148,7 @@ class HanoiTowerController {
         document.removeEventListener('mousemove', this.#moveDisk)
         document.removeEventListener('mouseup', this.#releaseDisk)
 
-        this.#draggedDisk.style.transition = ".2s ease-in-out";
+        this.#draggedDisk.style.transition = '.2s ease-in-out';
         this.#draggedDisk.style.cursor = 'grab';
         this.#draggedDisk.style.position = 'relative';
         this.#draggedDisk.style.top = '';
@@ -185,7 +185,7 @@ class HanoiTowerController {
 
 let screenController = null;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
     screenController = new HanoiTowerController();
 })
 
