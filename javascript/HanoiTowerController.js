@@ -78,7 +78,7 @@ class HanoiTowerController {
         }
 
         this.#playWinSound(false);
-        this.#feedbackMessage.textContent = `Parabéns! Você completou o jogo em ${ this.#gameService.movesCount } movimentos!`;
+        this.#feedbackMessage.innerHTML = `Parabéns! Você completou o jogo em <strong class='red'>${ this.#gameService.movesCount }</strong> movimentos!`;
         this.#currentMovesCounterReference.textContent = '';
     };
 
@@ -187,8 +187,10 @@ class HanoiTowerController {
     }
 
     #playMoveSound = () => {
-        const audioNumber = Math.floor(Math.random() * (6 + 1));
+        const audioNumber = Math.floor(Math.random() * 6) + 1;
         const audio = new Audio(`assets/audios/move${ audioNumber }.wav`);
+
+        console.log("tocando audio: " + audioNumber);
 
         audio.play();
     }
