@@ -32,11 +32,11 @@ html {
     font-size: 62.5%;
 }
 
-body {
+body.game-page-container {
     margin: 0;
     justify-content: center;
     align-items: center;
-    height: 100dvh;
+    height: 100dvh !important;
 
     background-color: #ffefad;
 

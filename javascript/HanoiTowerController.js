@@ -86,7 +86,11 @@ class HanoiTowerController {
             this.#feedbackMessage.textContent = '😲';
 
             setTimeout(() => {
-                alert('Parabéns! Você completou o jogo com o mínimo de movimentos possíveis!\nImpressionante!');
+                Swal.fire({
+                    title: "Parabéns!",
+                    text: "Você completou o jogo com o mínimo de movimentos possíveis! Impressionante!",
+                    icon: "success"
+                });
             }, 100);
 
             return;
