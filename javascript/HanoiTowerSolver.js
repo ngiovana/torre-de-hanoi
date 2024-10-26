@@ -28,7 +28,8 @@ class HanoiTowerSolver {
         this.#solutionMoves.push(new MoveCommand(
             diskValue,
             fromTower,
-            toTower
+            toTower,
+            true
         ));
 
         this.#buildSolutionMoves(diskValue - 1, swapTower, toTower, fromTower);
@@ -53,7 +54,8 @@ class HanoiTowerSolver {
         this.#solutionMoves.push({
             diskValue: diskToMove.value,
             fromTowerName: Object.values(TowerName)[fromTower],
-            toTowerName: Object.values(TowerName)[toTower]
+            toTowerName: Object.values(TowerName)[toTower],
+            isHint: true
         });
 
         // if (this.#solutionMoves.length === 1) {

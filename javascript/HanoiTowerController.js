@@ -61,6 +61,7 @@ class HanoiTowerController {
             diskElement,
             this.#getTowerByName(moveCommand.fromTowerName),
             toTowerElement,
+            (!moveCommand.isHint),
             () => {
                 diskElement.style.transition = '.2s ease-in-out';
                 diskElement.style.cursor = 'grab';
@@ -187,6 +188,8 @@ class HanoiTowerController {
         document.removeEventListener('mousemove', this.#moveDisk)
         document.removeEventListener('mouseup', this.#releaseDisk)
 
+        this.#draggedDisk.style.cursor = 'grab';
+
         const mouseX = event.clientX;
         const mouseY = event.clientY;
 
@@ -204,29 +207,30 @@ class HanoiTowerController {
         const moveCommand = new MoveCommand(
             parseInt(this.#draggedDisk.dataset.value),
             this.#draggedDiskTower.dataset.name,
-            toTower?.dataset?.name
+            toTower?.dataset?.name,
+            false
         )
 
         if (!toTower || !this.#gameService.checkMoveCommand(moveCommand)) {
             this.#animationService.executeMoveDiskToTowerAnimation(
                 this.#draggedDisk,
                 this.#draggedDiskTower,
-                toTower || this.#draggedDiskTower,
+                this.#draggedDiskTower,
+                true,
                 () => {
                     this.#draggedDisk.style.transition = '.2s ease-in-out';
-                    this.#draggedDisk.style.cursor = 'grab';
                     this.#draggedDisk.style.position = 'relative';
                     this.#draggedDisk.style.top = '';
                     this.#draggedDisk.style.left = '';
 
                     this.#draggedDiskTower.appendChild(this.#draggedDisk);
                     this.#soundService.playMoveSound();
+
+                    this.#draggedDisk = null;
+                    this.#draggedDiskTower = null;
                 }
             )
         }
-
-        this.#draggedDisk = null;
-        this.#draggedDiskTower = null;
     }
 
     #getTowerByName = (towerName) => {
