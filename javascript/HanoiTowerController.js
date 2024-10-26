@@ -70,7 +70,7 @@ class HanoiTowerController {
 
     executeWin = () => {
         this.#reference.querySelectorAll('.disk').forEach(disk => {
-            disk.draggable = false;
+            disk.classList.add('invalid');
         });
 
         const isBestWin = this.#gameService.isWinWithBestSolution()
