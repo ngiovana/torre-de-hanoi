@@ -47,6 +47,7 @@ body.game-page-container {
 
     font-size: 3rem;
     overflow: hidden;
+    text-align: center;
 }
 
 .header {
