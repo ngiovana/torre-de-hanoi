@@ -57,22 +57,9 @@ class HanoiTowerController {
         const diskElement = this.#getDiskByValue(moveCommand.diskValue);
         if (!diskElement) return;
 
-        this.#animationService.executeMoveDiskToTowerAnimation(
-            diskElement,
-            this.#getTowerByName(moveCommand.fromTowerName),
-            toTowerElement,
-            (!moveCommand.isHint),
-            () => {
-                this.#diskService.setDiskStaticState(diskElement)
-
-                toTowerElement.appendChild(diskElement);
-                this.#soundService.playMoveSound();
-                this.#updateTowerDisks();
-
-                this.#draggedDisk = null;
-                this.#draggedDiskTower = null;
-            }
-        )
+        this.#animationService.executeMoveDiskToTowerAnimation(diskElement, toTowerElement, () => {
+            this.#finishDiskMove(diskElement, toTowerElement);
+        })
     }
 
     updateMovesCount = () => {
@@ -182,11 +169,11 @@ class HanoiTowerController {
     }
 
     #moveDisk = (event) => {
-        const top = event.clientY - this.#draggedDisk.offsetHeight / 2;
-        const left = event.clientX - this.#draggedDisk.offsetWidth / 2;
+        const diskTop = event.clientY - this.#draggedDisk.offsetHeight / 2;
+        const diskLeft = event.clientX - this.#draggedDisk.offsetWidth / 2;
 
-        this.#draggedDisk.style.top  = `${ top }px`;
-        this.#draggedDisk.style.left = `${ left }px`;
+        this.#draggedDisk.style.top  = `${ diskTop }px`;
+        this.#draggedDisk.style.left = `${ diskLeft }px`;
     }
 
     #dropDisk = (event) => {
@@ -195,44 +182,48 @@ class HanoiTowerController {
 
         this.#draggedDisk.style.cursor = 'grab';
 
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-
-        const toTower = this.#towerList.find((tower) => {
-            const rect = tower.getBoundingClientRect();
-
-            return (
-                mouseX >= rect.left &&
-                mouseX <= rect.right &&
-                mouseY >= rect.top &&
-                mouseY <= rect.bottom
-            );
-        });
-
+        const toTowerElement = this.#findTowerInMousePosition(event);
         const moveCommand = new MoveCommand(
             parseInt(this.#draggedDisk.dataset.value),
             this.#draggedDiskTower.dataset.name,
-            toTower?.dataset?.name,
+            toTowerElement?.dataset?.name,
             false
         )
 
-        if (!toTower || !this.#gameService.checkMoveCommand(moveCommand)) {
-            this.#animationService.executeMoveDiskToTowerAnimation(
-                this.#draggedDisk,
-                this.#draggedDiskTower,
-                this.#draggedDiskTower,
-                true,
-                () => {
-                    this.#diskService.setDiskStaticState(this.#draggedDisk)
+        if (toTowerElement && this.#gameService.checkMoveCommand(moveCommand)) return;
 
-                    this.#draggedDiskTower.appendChild(this.#draggedDisk);
-                    this.#soundService.playMoveSound();
+        this.#animationService.executeMoveDiskToTowerAnimation(this.#draggedDisk, this.#draggedDiskTower, () => {
+            this.#finishDiskMove(this.#draggedDisk, this.#draggedDiskTower);
+        })
+    }
 
-                    this.#draggedDisk = null;
-                    this.#draggedDiskTower = null;
-                }
-            )
+    #findTowerInMousePosition = (event) => {
+        return this.#towerList.find((tower) => {
+            const towerRect = tower.getBoundingClientRect();
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            if (mouseX < towerRect.left) return false
+            if (mouseX > towerRect.right) return false
+            if (mouseY < towerRect.top) return false
+            if (mouseY > towerRect.bottom) return false
+
+            return true
+        });
+    }
+
+    #finishDiskMove = (diskElement, toTowerElement) => {
+        this.#diskService.setDiskStaticState(diskElement)
+
+        toTowerElement.appendChild(diskElement);
+        this.#soundService.playMoveSound();
+
+        if (this.#draggedDiskTower !== toTowerElement) {
+            this.#updateTowerDisks();
         }
+
+        this.#draggedDisk = null;
+        this.#draggedDiskTower = null;
     }
 
     #getTowerByName = (towerName) => {

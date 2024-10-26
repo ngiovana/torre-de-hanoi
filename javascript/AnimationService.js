@@ -5,15 +5,12 @@ class AnimationService {
     #maxConfettiNumber = 100;
 
     #documentStyle
-    #animationQueue = []
 
     constructor() {
         const style  = document.createElement('style');
         document.head.appendChild(style);
 
         this.#documentStyle = style.sheet;
-
-        this.#consumeAnimationQueue();
     }
 
     playConfettiFall = () => {
@@ -55,27 +52,23 @@ class AnimationService {
         }, 200)
     }
 
-    executeMoveDiskToTowerAnimation = (diskElement, fromTowerElement, toTowerElement, bypassQueue, callback) => {
-        const animation = () => {
-            const diskValue = diskElement.dataset.value;
-            const ruleIndex = this.#documentStyle.cssRules.length;
-            const animationName = `disk-${diskValue}-move-animation-${ruleIndex}`
+    executeMoveDiskToTowerAnimation = (diskElement, toTowerElement, callback) => {
+        const diskValue = diskElement.dataset.value;
+        const ruleIndex = this.#documentStyle.cssRules.length;
+        const animationName = `disk-${diskValue}-move-animation-${ruleIndex}`
 
-            const keyframes = this.#createDiskToTowerAnimation(diskElement, toTowerElement, animationName);
-            this.#documentStyle.insertRule(keyframes, ruleIndex);
+        const keyframes = this.#createDiskToTowerAnimation(diskElement, toTowerElement, animationName);
+        this.#documentStyle.insertRule(keyframes, ruleIndex);
 
+        diskElement.style.animation = '';
+        diskElement.style.animation = `${ animationName } .5s forwards`;
+
+        setTimeout(() => {
             diskElement.style.animation = '';
-            diskElement.style.animation = `${ animationName } .5s forwards`;
+            this.#documentStyle.deleteRule(ruleIndex);
 
-            setTimeout(() => {
-                diskElement.style.animation = '';
-                this.#documentStyle.deleteRule(ruleIndex);
-
-                if (callback) callback();
-            }, 500);
-        }
-
-        bypassQueue ? animation() : this.#animationQueue.push(animation);
+            if (callback) callback();
+        }, 500);
     }
 
     #createDiskToTowerAnimation = (diskElement, toTowerElement, animationName) => {
@@ -102,20 +95,6 @@ class AnimationService {
                 100% { transform: translateY(${diskYOffsetToDiskTop}px) translateX(${diskXOffsetToTowerMiddle}px); }
             }
         `;
-    }
-
-    #consumeAnimationQueue = () => {
-        this.#executeNextAnimation();
-
-        setTimeout(() => {
-            this.#consumeAnimationQueue();
-        }, 510);
-    }
-
-    #executeNextAnimation = () => {
-        if (!this.#animationQueue.length) return;
-        const animation = this.#animationQueue.shift();
-        animation();
     }
 }
 
