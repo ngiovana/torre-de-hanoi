@@ -1,0 +1,68 @@
+.disk {
+    height: 4rem;
+    border-radius: 1rem;
+    border: .5rem solid;
+    cursor: grab;
+
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+
+    z-index: 3;
+    position: relative;
+}
+
+#disk1 {
+    width: 8rem;
+    background-color: #FF4500;
+    border-color: #dd3b00;
+}
+
+#disk2 {
+    width: 11rem;
+    background-color: #FF8C00;
+    border-color: #db7900;
+}
+
+#disk3 {
+    width: 14rem;
+    background-color: #FFD700;
+    border-color: #dab900;
+}
+
+#disk4 {
+    width: 17rem;
+    background-color: #32CD32;
+    border-color: #2db62d;
+}
+
+#disk5 {
+    width: 20rem;
+    background-color: #1E90FF;
+    border-color: #1977d4;
+}
+
+#disk6 {
+    width: 23rem;
+    background-color: #9400D3;
+    border-color: #7800ac;
+}
+
+#disk7 {
+    width: 26rem;
+    background-color: #8B008B;
+    border-color: #750075;
+}
+
+#disk8 {
+    width: 29rem;
+    background-color: #FF1493;
+    border-color: #cb257f;
+}
+
+.disk.invalid:hover {
+    background-color: #888 !important;
+    border-color: #555 !important;
+    cursor: not-allowed !important;
+}

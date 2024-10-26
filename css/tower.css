@@ -1,0 +1,39 @@
+.tower {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 35rem;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.tower .disk:first-child {
+    margin-bottom: 2.4rem;
+}
+
+.tower::before {
+    position: absolute;
+
+    content: " ";
+
+    width: 100%;
+    height: 100%;
+
+    clip-path: polygon(0% 100%,
+            100% 100%,
+            100% 94%,
+            54% 94%,
+            54% 0%,
+            46% 0%,
+            46% 94%,
+            0% 94%);
+
+    border-radius: 1.5rem;
+
+    background-color: #da8743;
+}
