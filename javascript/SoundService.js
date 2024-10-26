@@ -30,7 +30,6 @@ class SoundService {
         }
 
         const winAudio = new Audio(`assets/audios/win.mp3`);
-        winAudio.volume = .09;
         winAudio.play();
     }
 
