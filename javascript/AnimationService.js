@@ -44,6 +44,17 @@ class AnimationService {
         });
     }
 
+    executeDiskFallAnimation = (disk, callback) => {
+        const diskFallAnimationName = 'disk-fall';
+
+        disk.style.animation = `${diskFallAnimationName} .2s ease-in`;
+
+        setTimeout(() => {
+            disk.style.animation = '';
+            callback()
+        }, 200)
+    }
+
     executeMoveDiskToTowerAnimation = (disk, fromTower, toTower, bypassQueue, callback) => {
         const animation = () => {
             const diskValue = disk.dataset.value;

@@ -14,3 +14,9 @@
         opacity: 0;
     }
 }
+
+@keyframes disk-fall {
+    100% {
+        transform: translateY(50vh);
+    }
+}

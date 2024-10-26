@@ -31,11 +31,10 @@ class HanoiTowerController {
         this.#hintButton.addEventListener('click', this.#gameService.executeHint);
 
         this.#diskDifficultSelect.addEventListener('change', this.startGame);
-
-        this.startGame();
     }
 
     startGame = () => {
+        this.#restartButton.textContent = "Reiniciar";
         this.#animationService.stopConfettiFall();
 
         const diskDifficult = this.#diskDifficultSelect.value
@@ -134,19 +133,47 @@ class HanoiTowerController {
     #createDisks = (diskDifficult) => {
         this.#towerList.forEach(tower => tower.innerHTML = '');
 
-        for (let counter = diskDifficult; counter > 0; counter--) {
-            const diskElement = document.createElement('div');
-
-            diskElement.classList.add('disk');
-            diskElement.id = `disk${counter}`;
-            diskElement.setAttribute('data-value', counter);
-            diskElement.textContent = counter;
-            diskElement.style.transition = '.2s ease-in-out';
-
-            diskElement.addEventListener('mousedown', this.#startDiskMove)
-
-            this.#firstTower.appendChild(diskElement);
+        for (let diskValue = diskDifficult; diskValue > 0; diskValue--) {
+            setTimeout(() => {
+                this.#createDisk(diskValue)
+            }, 200 * (diskDifficult - diskValue))
         }
+    }
+
+    #createDisk = (diskValue) => {
+        const diskElement = document.createElement('div');
+        const diskWidth = 50 + 30 * diskValue;
+        const diskHeight = 40;
+
+        diskElement.classList.add('disk');
+        diskElement.id = `disk${diskValue}`;
+        diskElement.setAttribute('data-value', diskValue);
+        diskElement.textContent = diskValue;
+        diskElement.style.position = 'absolute';
+        diskElement.style.width = `${ diskWidth }px`;
+        diskElement.style.height = `${ diskHeight }px`;
+
+        const towerRect = this.#firstTower.getBoundingClientRect()
+        const towerMiddle = towerRect.left + this.#firstTower.offsetWidth / 2;
+        const diskMiddle = towerMiddle - (diskWidth / 2);
+        const diskTopOffset = 100;
+        const diskTop = -(diskTopOffset + diskHeight * diskValue);
+
+        diskElement.style.left = `${diskMiddle}px`;
+        diskElement.style.top = `${diskTop}px`;
+
+        diskElement.addEventListener('mousedown', this.#startDiskMove)
+        document.body.appendChild(diskElement);
+
+        this.#animationService.executeDiskFallAnimation(diskElement, () => {
+            diskElement.style.transition = '.2s ease-in-out';
+            diskElement.style.position = 'relative';
+            diskElement.style.left = '';
+            diskElement.style.top = '';
+
+            this.#soundService.playDragSound();
+            this.#firstTower.appendChild(diskElement);
+        })
     }
 
     #startDiskMove = (event) => {
