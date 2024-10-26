@@ -2,7 +2,7 @@ import {HanoiTowerService} from './HanoiTowerService.js';
 import {MoveCommand} from './MoveCommand.js';
 import {SoundService} from "./SoundService.js";
 import {AnimationService} from "./AnimationService.js";
-import {DiskStyleService} from "./DiskStyleService.js";
+import {DiskService} from "./DiskService.js";
 
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
@@ -26,7 +26,7 @@ class HanoiTowerController {
     #animationService = new AnimationService();
     #gameService = new HanoiTowerService(this);
     #soundService = new SoundService();
-    #diskStyleService = new DiskStyleService();
+    #diskService = new DiskService();
 
     constructor() {
         this.#restartButton.addEventListener('click', this.startGame);
@@ -63,7 +63,7 @@ class HanoiTowerController {
             toTowerElement,
             (!moveCommand.isHint),
             () => {
-                this.#diskStyleService.setDiskStaticState(diskElement)
+                this.#diskService.setDiskStaticState(diskElement)
 
                 toTowerElement.appendChild(diskElement);
                 this.#soundService.playMoveSound();
@@ -141,14 +141,14 @@ class HanoiTowerController {
     }
 
     #createDisk = (diskValue) => {
-        const diskElement = this.#diskStyleService.createDiskElement(diskValue, this.#firstTower)
+        const diskElement = this.#diskService.createDiskElement(diskValue, this.#firstTower)
 
         diskElement.addEventListener('mousedown', this.#startDiskMove)
 
         document.body.appendChild(diskElement);
 
         this.#animationService.executeDiskFallAnimation(diskElement, () => {
-            this.#diskStyleService.setDiskStaticState(diskElement)
+            this.#diskService.setDiskStaticState(diskElement)
 
             this.#soundService.playDragSound();
             this.#firstTower.appendChild(diskElement);
@@ -169,8 +169,8 @@ class HanoiTowerController {
 
         this.#reference.appendChild(diskElement);
 
-        this.#diskStyleService.setDiskDraggingState(diskElement)
-        this.#diskStyleService.setDraggingDiskPosition(diskElement, event)
+        this.#diskService.setDiskDraggingState(diskElement)
+        this.#diskService.setDraggingDiskPosition(diskElement, event)
 
         document.addEventListener('mousemove', this.#moveDisk);
         document.addEventListener('mouseup', this.#dropDisk);
@@ -220,7 +220,7 @@ class HanoiTowerController {
                 this.#draggedDiskTower,
                 true,
                 () => {
-                    this.#diskStyleService.setDiskStaticState(this.#draggedDisk)
+                    this.#diskService.setDiskStaticState(this.#draggedDisk)
 
                     this.#draggedDiskTower.appendChild(this.#draggedDisk);
                     this.#soundService.playMoveSound();

@@ -1,11 +1,11 @@
-class DiskStyleService {
+class DiskService {
 
     static DISK_HEIGHT = 40;
     static CALCULATE_DISK_WIDTH = (diskValue) => 50 + 30 * diskValue;
 
     createDiskElement = (diskValue, towerElement) => {
         const diskElement = document.createElement('div');
-        const diskWidth = DiskStyleService.CALCULATE_DISK_WIDTH(diskValue);
+        const diskWidth = DiskService.CALCULATE_DISK_WIDTH(diskValue);
 
         diskElement.setAttribute('data-value', diskValue);
         diskElement.classList.add(`disk`);
@@ -14,13 +14,13 @@ class DiskStyleService {
         diskElement.textContent = diskValue;
         diskElement.style.position = 'absolute';
         diskElement.style.width = `${ diskWidth }px`;
-        diskElement.style.height = `${ DiskStyleService.DISK_HEIGHT }px`;
+        diskElement.style.height = `${ DiskService.DISK_HEIGHT }px`;
 
         const towerRect = towerElement.getBoundingClientRect()
         const towerMiddle = towerRect.left + towerElement.offsetWidth / 2;
         const diskMiddle = towerMiddle - (diskWidth / 2);
         const diskTopOffset = 100;
-        const diskTop = -(diskTopOffset + DiskStyleService.DISK_HEIGHT * diskValue);
+        const diskTop = -(diskTopOffset + DiskService.DISK_HEIGHT * diskValue);
 
         diskElement.style.left = `${ diskMiddle }px`;
         diskElement.style.top = `${ diskTop }px`;
@@ -52,4 +52,4 @@ class DiskStyleService {
 
 }
 
-export {DiskStyleService}
+export {DiskService}
