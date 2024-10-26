@@ -44,31 +44,31 @@ class AnimationService {
         });
     }
 
-    executeDiskFallAnimation = (disk, callback) => {
+    executeDiskFallAnimation = (diskElement, callback) => {
         const diskFallAnimationName = 'disk-fall';
 
-        disk.style.animation = `${diskFallAnimationName} .2s ease-in`;
+        diskElement.style.animation = `${diskFallAnimationName} .2s ease-in`;
 
         setTimeout(() => {
-            disk.style.animation = '';
+            diskElement.style.animation = '';
             callback()
         }, 200)
     }
 
-    executeMoveDiskToTowerAnimation = (disk, fromTower, toTower, bypassQueue, callback) => {
+    executeMoveDiskToTowerAnimation = (diskElement, fromTowerElement, toTowerElement, bypassQueue, callback) => {
         const animation = () => {
-            const diskValue = disk.dataset.value;
+            const diskValue = diskElement.dataset.value;
             const ruleIndex = this.#documentStyle.cssRules.length;
             const animationName = `disk-${diskValue}-move-animation-${ruleIndex}`
 
-            const keyframes = this.#createDiskToTowerAnimation(disk, toTower, animationName);
+            const keyframes = this.#createDiskToTowerAnimation(diskElement, toTowerElement, animationName);
             this.#documentStyle.insertRule(keyframes, ruleIndex);
 
-            disk.style.animation = '';
-            disk.style.animation = `${ animationName } .5s forwards`;
+            diskElement.style.animation = '';
+            diskElement.style.animation = `${ animationName } .5s forwards`;
 
             setTimeout(() => {
-                disk.style.animation = '';
+                diskElement.style.animation = '';
                 this.#documentStyle.deleteRule(ruleIndex);
 
                 if (callback) callback();
@@ -78,19 +78,19 @@ class AnimationService {
         bypassQueue ? animation() : this.#animationQueue.push(animation);
     }
 
-    #createDiskToTowerAnimation = (disk, toTower, animationName) => {
-        const towerRect = toTower.getBoundingClientRect();
-        const diskRect = disk.getBoundingClientRect();
+    #createDiskToTowerAnimation = (diskElement, toTowerElement, animationName) => {
+        const towerRect = toTowerElement.getBoundingClientRect();
+        const diskRect = diskElement.getBoundingClientRect();
 
-        const towerTop = towerRect.top - disk.offsetHeight;
-        const towerMiddle = towerRect.left + toTower.offsetWidth / 2;
+        const towerTop = towerRect.top - diskElement.offsetHeight;
+        const towerMiddle = towerRect.left + toTowerElement.offsetWidth / 2;
 
         const topTowerOffset = 20;
         const diskYOffsetToTowerTop = towerTop - diskRect.top - topTowerOffset;
-        const diskXOffsetToTowerMiddle = towerMiddle - (diskRect.left + disk.offsetWidth / 2);
+        const diskXOffsetToTowerMiddle = towerMiddle - (diskRect.left + diskElement.offsetWidth / 2);
 
-        const towerDisksCount = toTower.querySelectorAll('.disk').length;
-        const disksHeightOffset = disk.offsetHeight * towerDisksCount;
+        const towerDisksCount = toTowerElement.querySelectorAll('.disk').length;
+        const disksHeightOffset = diskElement.offsetHeight * towerDisksCount;
         const towerBaseHeight = 24;
         const finalDiskTop = towerRect.bottom - disksHeightOffset - towerBaseHeight;
 

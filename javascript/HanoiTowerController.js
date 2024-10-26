@@ -46,7 +46,6 @@ class HanoiTowerController {
         this.#setMinMovesToFinish(this.#gameService.minMovesToFinish);
         this.updateMovesCount();
         this.#createDisks(diskDifficult);
-        this.#updateTowerDisks();
 
         this.#soundService.playStarGameSound();
     }
@@ -115,11 +114,11 @@ class HanoiTowerController {
 
             diskList.forEach((disk, index) => {
                 disk.classList.add('invalid');
-
-                if (!this.#gameService.isFinished && index === (diskList.length - 1)) {
-                    disk.classList.remove('invalid');
-                }
             })
+
+            if (!this.#gameService.isFinished && diskList.length) {
+                diskList[diskList.length - 1].classList.remove('invalid');
+            }
         })
     };
 
@@ -135,31 +134,17 @@ class HanoiTowerController {
                 this.#createDisk(diskValue)
             }, 200 * (diskDifficult - diskValue))
         }
+
+        setTimeout(() => {
+            this.#updateTowerDisks()
+        }, 2000);
     }
 
     #createDisk = (diskValue) => {
-        const diskElement = document.createElement('div');
-        const diskWidth = 50 + 30 * diskValue;
-        const diskHeight = 40;
-
-        diskElement.classList.add('disk');
-        diskElement.id = `disk${diskValue}`;
-        diskElement.setAttribute('data-value', diskValue);
-        diskElement.textContent = diskValue;
-        diskElement.style.position = 'absolute';
-        diskElement.style.width = `${ diskWidth }px`;
-        diskElement.style.height = `${ diskHeight }px`;
-
-        const towerRect = this.#firstTower.getBoundingClientRect()
-        const towerMiddle = towerRect.left + this.#firstTower.offsetWidth / 2;
-        const diskMiddle = towerMiddle - (diskWidth / 2);
-        const diskTopOffset = 100;
-        const diskTop = -(diskTopOffset + diskHeight * diskValue);
-
-        diskElement.style.left = `${diskMiddle}px`;
-        diskElement.style.top = `${diskTop}px`;
+        const diskElement = this.#diskStyleService.createDiskElement(diskValue, this.#firstTower)
 
         diskElement.addEventListener('mousedown', this.#startDiskMove)
+
         document.body.appendChild(diskElement);
 
         this.#animationService.executeDiskFallAnimation(diskElement, () => {
@@ -171,6 +156,7 @@ class HanoiTowerController {
     }
 
     #startDiskMove = (event) => {
+        if (this.#draggedDisk) return;
 
         const diskElement = event.target;
         if (diskElement.classList.contains('invalid')) {
@@ -183,17 +169,11 @@ class HanoiTowerController {
 
         this.#reference.appendChild(diskElement);
 
-        const top = event.clientY - this.#draggedDisk.offsetHeight / 2;
-        const left = event.clientX - this.#draggedDisk.offsetWidth / 2;
-
-        diskElement.style.cursor = 'grabbing';
-        diskElement.style.position = 'absolute';
-        diskElement.style.top  = `${ top }px`;
-        diskElement.style.left = `${ left }px`;
-        diskElement.style.transition = '';
+        this.#diskStyleService.setDiskDraggingState(diskElement)
+        this.#diskStyleService.setDraggingDiskPosition(diskElement, event)
 
         document.addEventListener('mousemove', this.#moveDisk);
-        document.addEventListener('mouseup', this.#releaseDisk);
+        document.addEventListener('mouseup', this.#dropDisk);
 
         this.#soundService.playDragSound()
     }
@@ -206,9 +186,9 @@ class HanoiTowerController {
         this.#draggedDisk.style.left = `${ left }px`;
     }
 
-    #releaseDisk = (event) => {
+    #dropDisk = (event) => {
         document.removeEventListener('mousemove', this.#moveDisk)
-        document.removeEventListener('mouseup', this.#releaseDisk)
+        document.removeEventListener('mouseup', this.#dropDisk)
 
         this.#draggedDisk.style.cursor = 'grab';
 
@@ -240,10 +220,7 @@ class HanoiTowerController {
                 this.#draggedDiskTower,
                 true,
                 () => {
-                    this.#draggedDisk.style.transition = '.2s ease-in-out';
-                    this.#draggedDisk.style.position = 'relative';
-                    this.#draggedDisk.style.top = '';
-                    this.#draggedDisk.style.left = '';
+                    this.#diskStyleService.setDiskStaticState(this.#draggedDisk)
 
                     this.#draggedDiskTower.appendChild(this.#draggedDisk);
                     this.#soundService.playMoveSound();
