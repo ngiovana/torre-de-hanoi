@@ -1,8 +1,8 @@
 class MoveCommand {
 
-    diskValue = 0
-    fromTowerName = ""
-    toTowerName = ""
+    diskValue
+    fromTowerName
+    toTowerName
 
     constructor(diskValue, fromTowerName, toTowerName) {
         this.diskValue = diskValue;
