@@ -89,6 +89,8 @@ class HanoiTowerService {
     };
 
     #validateMoveCommand = (moveCommand) => {
+        if (this.isFinished) return false;
+
         const fromTower = this.#findTowerByName(moveCommand.fromTowerName);
         if (!fromTower) return false;
 
