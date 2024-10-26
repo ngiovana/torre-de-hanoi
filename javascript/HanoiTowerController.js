@@ -2,6 +2,7 @@ import {HanoiTowerService} from './HanoiTowerService.js';
 import {MoveCommand} from './MoveCommand.js';
 import {SoundService} from "./SoundService.js";
 import {AnimationService} from "./AnimationService.js";
+import {DiskStyleService} from "./DiskStyleService.js";
 
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
@@ -25,6 +26,7 @@ class HanoiTowerController {
     #animationService = new AnimationService();
     #gameService = new HanoiTowerService(this);
     #soundService = new SoundService();
+    #diskStyleService = new DiskStyleService();
 
     constructor() {
         this.#restartButton.addEventListener('click', this.startGame);
@@ -62,11 +64,7 @@ class HanoiTowerController {
             toTowerElement,
             (!moveCommand.isHint),
             () => {
-                diskElement.style.transition = '.2s ease-in-out';
-                diskElement.style.cursor = 'grab';
-                diskElement.style.position = 'relative';
-                diskElement.style.top = '';
-                diskElement.style.left = '';
+                this.#diskStyleService.setDiskStaticState(diskElement)
 
                 toTowerElement.appendChild(diskElement);
                 this.#soundService.playMoveSound();
@@ -165,10 +163,7 @@ class HanoiTowerController {
         document.body.appendChild(diskElement);
 
         this.#animationService.executeDiskFallAnimation(diskElement, () => {
-            diskElement.style.transition = '.2s ease-in-out';
-            diskElement.style.position = 'relative';
-            diskElement.style.left = '';
-            diskElement.style.top = '';
+            this.#diskStyleService.setDiskStaticState(diskElement)
 
             this.#soundService.playDragSound();
             this.#firstTower.appendChild(diskElement);
@@ -176,6 +171,7 @@ class HanoiTowerController {
     }
 
     #startDiskMove = (event) => {
+
         const diskElement = event.target;
         if (diskElement.classList.contains('invalid')) {
             this.#soundService.playInvalidMoveSound();
