@@ -1,4 +1,4 @@
-class SoundController {
+class SoundService {
 
     playStarGameSound = () => {
         const audio = new Audio(`assets/audios/start.wav`);
@@ -36,4 +36,4 @@ class SoundController {
 
 }
 
-export {SoundController}
+export {SoundService}

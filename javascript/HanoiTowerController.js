@@ -1,6 +1,6 @@
 import {HanoiTowerService} from './HanoiTowerService.js';
 import {MoveCommand} from './MoveCommand.js';
-import {SoundController} from "./SoundController.js";
+import {SoundService} from "./SoundService.js";
 
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
@@ -22,7 +22,7 @@ class HanoiTowerController {
     #draggedDisk = null;
 
     #gameService = new HanoiTowerService(this);
-    #soundController = new SoundController();
+    #soundService = new SoundService();
 
     constructor() {
         this.#restartButton.addEventListener('click', this.startGame);
@@ -43,7 +43,7 @@ class HanoiTowerController {
         this.#createDisks(diskDifficult);
         this.#updateTowerDisks();
 
-        this.#soundController.playStarGameSound();
+        this.#soundService.playStarGameSound();
     }
 
     executeMoveCommand = (moveCommand) => {
@@ -55,7 +55,7 @@ class HanoiTowerController {
 
         toTowerElement.appendChild(diskElement);
 
-        this.#soundController.playMoveSound();
+        this.#soundService.playMoveSound();
 
         this.#updateTowerDisks();
     }
@@ -74,7 +74,7 @@ class HanoiTowerController {
         });
 
         const isBestWin = this.#gameService.isWinWithBestSolution()
-        this.#soundController.playWinSound(isBestWin);
+        this.#soundService.playWinSound(isBestWin);
 
         if (isBestWin) {
             this.#feedbackMessage.textContent = '😲';
@@ -129,7 +129,7 @@ class HanoiTowerController {
     #startDiskMove = (event) => {
         const diskElement = event.target;
         if (diskElement.classList.contains('invalid')) {
-            this.#soundController.playInvalidMoveSound();
+            this.#soundService.playInvalidMoveSound();
             return;
         }
 
@@ -150,7 +150,7 @@ class HanoiTowerController {
         document.addEventListener('mousemove', this.#moveDisk);
         document.addEventListener('mouseup', this.#releaseDisk);
 
-        this.#soundController.playDragSound()
+        this.#soundService.playDragSound()
     }
 
     #moveDisk = (event) => {
@@ -193,7 +193,7 @@ class HanoiTowerController {
 
         if (!toTower || !this.#gameService.checkMoveCommand(command)) {
             this.#draggedDiskTower.appendChild(this.#draggedDisk);
-            this.#soundController.playMoveSound();
+            this.#soundService.playMoveSound();
         }
 
         this.#draggedDisk = null;
