@@ -1,5 +1,6 @@
 import {HanoiTowerService} from './HanoiTowerService.js';
 import {MoveCommand} from './MoveCommand.js';
+import {SoundController} from "./SoundController.js";
 
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
@@ -16,10 +17,12 @@ class HanoiTowerController {
     #lastTower = this.#reference.querySelector('.last-tower');
 
     #towerList = [this.#firstTower, this.#middleTower, this.#lastTower];
-    #gameService = new HanoiTowerService(this);
 
     #draggedDiskTower = null;
     #draggedDisk = null;
+
+    #gameService = new HanoiTowerService(this);
+    #soundController = new SoundController();
 
     constructor() {
         this.#restartButton.addEventListener('click', this.startGame);
@@ -49,7 +52,9 @@ class HanoiTowerController {
         if (!diskElement) return;
 
         toTowerElement.appendChild(diskElement);
-        this.#playMoveSound()
+
+        this.#soundController.playMoveSound();
+
         this.#updateTowerDisks();
     }
 
@@ -66,18 +71,19 @@ class HanoiTowerController {
             disk.draggable = false;
         });
 
-        if (this.#gameService.isWinWithBestSolution()) {
+        const isBestWin = this.#gameService.isWinWithBestSolution()
+        this.#soundController.playWinSound(isBestWin);
+
+        if (isBestWin) {
             this.#feedbackMessage.textContent = '😲';
 
             setTimeout(() => {
                 alert('Parabéns! Você completou o jogo com o mínimo de movimentos possíveis!\nImpressionante!');
             }, 100);
 
-            this.#playWinSound(true);
             return;
         }
 
-        this.#playWinSound(false);
         this.#feedbackMessage.innerHTML = `Parabéns! Você completou o jogo em <strong class='red'>${ this.#gameService.movesCount }</strong> movimentos!`;
         this.#currentMovesCounterReference.textContent = '';
     };
@@ -120,7 +126,10 @@ class HanoiTowerController {
 
     #startDiskMove = (event) => {
         const diskElement = event.target;
-        if (diskElement.classList.contains('invalid')) return;
+        if (diskElement.classList.contains('invalid')) {
+            this.#soundController.playInvalidMoveSound();
+            return;
+        }
 
         this.#draggedDisk = diskElement;
         this.#draggedDiskTower = diskElement.parentElement;
@@ -138,6 +147,8 @@ class HanoiTowerController {
 
         document.addEventListener('mousemove', this.#moveDisk);
         document.addEventListener('mouseup', this.#releaseDisk);
+
+        this.#soundController.playDragSound()
     }
 
     #moveDisk = (event) => {
@@ -180,29 +191,11 @@ class HanoiTowerController {
 
         if (!toTower || !this.#gameService.checkMoveCommand(command)) {
             this.#draggedDiskTower.appendChild(this.#draggedDisk);
+            this.#soundController.playMoveSound();
         }
 
         this.#draggedDisk = null;
         this.#draggedDiskTower = null;
-    }
-
-    #playMoveSound = () => {
-        const audioNumber = Math.floor(Math.random() * 6) + 1;
-        const audio = new Audio(`assets/audios/move${ audioNumber }.wav`);
-
-        audio.play();
-    }
-
-    #playWinSound = (isBestWin) => {
-        if (isBestWin) {
-            const bestWinAudio = new Audio(`assets/audios/best-win.mp3`);
-            bestWinAudio.volume = .09;
-            bestWinAudio.play();
-        }
-
-        const winAudio = new Audio(`assets/audios/win.mp3`);
-        winAudio.volume = .09;
-        winAudio.play();
     }
 
 }
