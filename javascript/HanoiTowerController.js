@@ -51,10 +51,10 @@ class HanoiTowerController {
     }
 
     executeMoveCommand = (moveCommand) => {
-        const toTowerElement = this.#reference.querySelector(`[data-name=${ moveCommand.toTowerName }]`)
+        const toTowerElement = this.#getTowerByName(moveCommand.toTowerName);
         if (!toTowerElement) return;
 
-        const diskElement = this.#reference.querySelector(`[data-value='${ moveCommand.diskValue }']`)
+        const diskElement = this.#getDiskByValue(moveCommand.diskValue);
         if (!diskElement) return;
 
         toTowerElement.appendChild(diskElement);
@@ -209,6 +209,14 @@ class HanoiTowerController {
 
         this.#draggedDisk = null;
         this.#draggedDiskTower = null;
+    }
+
+    #getTowerByName = (towerName) => {
+        return this.#reference.querySelector(`[data-name='${ towerName }']`);
+    }
+
+    #getDiskByValue = (diskValue) => {
+        return this.#reference.querySelector(`[data-value='${ diskValue }']`);
     }
 
 }
