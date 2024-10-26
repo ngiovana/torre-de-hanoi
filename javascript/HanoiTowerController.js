@@ -89,7 +89,8 @@ class HanoiTowerController {
                 Swal.fire({
                     title: "Parabéns!",
                     text: "Você completou o jogo com o mínimo de movimentos possíveis! Impressionante!",
-                    icon: "success"
+                    icon: "success",
+                    confirmButtonColor: "#3085d6"
                 });
             }, 100);
 
