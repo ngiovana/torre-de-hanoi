@@ -13,42 +13,42 @@
     position: relative;
 }
 
-#disk1 {
+.disk-1 {
     background-color: #FF4500;
     border-color: #dd3b00;
 }
 
-#disk2 {
+.disk-2 {
     background-color: #FF8C00;
     border-color: #db7900;
 }
 
-#disk3 {
+.disk-3 {
     background-color: #FFD700;
     border-color: #dab900;
 }
 
-#disk4 {
+.disk-4 {
     background-color: #32CD32;
     border-color: #2db62d;
 }
 
-#disk5 {
+.disk-5 {
     background-color: #1E90FF;
     border-color: #1977d4;
 }
 
-#disk6 {
+.disk-6 {
     background-color: #9400D3;
     border-color: #7800ac;
 }
 
-#disk7 {
+.disk-7 {
     background-color: #8B008B;
     border-color: #750075;
 }
 
-#disk8 {
+.disk-8 {
     background-color: #FF1493;
     border-color: #cb257f;
 }
