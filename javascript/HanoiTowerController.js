@@ -1,6 +1,7 @@
 import {HanoiTowerService} from './HanoiTowerService.js';
 import {MoveCommand} from './MoveCommand.js';
 import {SoundService} from "./SoundService.js";
+import {AnimationService} from "./AnimationService.js";
 
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
@@ -21,6 +22,7 @@ class HanoiTowerController {
     #draggedDiskTower = null;
     #draggedDisk = null;
 
+    #animationService = new AnimationService();
     #gameService = new HanoiTowerService(this);
     #soundService = new SoundService();
 
@@ -34,6 +36,8 @@ class HanoiTowerController {
     }
 
     startGame = () => {
+        this.#animationService.stopConfettiFall();
+
         const diskDifficult = this.#diskDifficultSelect.value
 
         this.#gameService.startGame(diskDifficult)
@@ -69,6 +73,8 @@ class HanoiTowerController {
     };
 
     executeWin = () => {
+        this.#animationService.playConfettiFall();
+
         this.#reference.querySelectorAll('.disk').forEach(disk => {
             disk.classList.add('invalid');
         });

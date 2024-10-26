@@ -2,6 +2,7 @@
 
 @import "tower.css";
 @import "disk.css";
+@import "animation.css";
 
 *,
 *::before,
@@ -45,6 +46,7 @@ body {
     position: relative;
 
     font-size: 3rem;
+    overflow: hidden;
 }
 
 .header {
