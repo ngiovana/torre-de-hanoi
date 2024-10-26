@@ -49,6 +49,7 @@ class HanoiTowerController {
         if (!diskElement) return;
 
         toTowerElement.appendChild(diskElement);
+        this.#playMoveSound()
         this.#updateTowerDisks();
     }
 
@@ -67,13 +68,16 @@ class HanoiTowerController {
 
         if (this.#gameService.isWinWithBestSolution()) {
             this.#feedbackMessage.textContent = '😲';
+
             setTimeout(() => {
                 alert('Parabéns! Você completou o jogo com o mínimo de movimentos possíveis!\nImpressionante!');
             }, 100);
 
+            this.#playWinSound(true);
             return;
         }
 
+        this.#playWinSound(false);
         this.#feedbackMessage.textContent = `Parabéns! Você completou o jogo em ${ this.#gameService.movesCount } movimentos!`;
         this.#currentMovesCounterReference.textContent = '';
     };
@@ -181,6 +185,26 @@ class HanoiTowerController {
         this.#draggedDisk = null;
         this.#draggedDiskTower = null;
     }
+
+    #playMoveSound = () => {
+        const audioNumber = Math.floor(Math.random() * (6 + 1));
+        const audio = new Audio(`assets/audios/move${ audioNumber }.wav`);
+
+        audio.play();
+    }
+
+    #playWinSound = (isBestWin) => {
+        if (isBestWin) {
+            const bestWinAudio = new Audio(`assets/audios/best-win.mp3`);
+            bestWinAudio.volume = .09;
+            bestWinAudio.play();
+        }
+
+        const winAudio = new Audio(`assets/audios/win.mp3`);
+        winAudio.volume = .09;
+        winAudio.play();
+    }
+
 }
 
 let screenController = null;
