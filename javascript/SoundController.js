@@ -1,5 +1,10 @@
 class SoundController {
 
+    playStarGameSound = () => {
+        const audio = new Audio(`assets/audios/start.wav`);
+        audio.play();
+    }
+
     playInvalidMoveSound = () => {
         const audio = new Audio(`assets/audios/invalid.wav`);
         audio.play();

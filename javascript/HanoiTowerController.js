@@ -42,6 +42,8 @@ class HanoiTowerController {
         this.updateMovesCount();
         this.#createDisks(diskDifficult);
         this.#updateTowerDisks();
+
+        this.#soundController.playStarGameSound();
     }
 
     executeMoveCommand = (moveCommand) => {
