@@ -53,7 +53,9 @@ class HanoiTowerController {
         this.#createDisks(diskDifficult);
 
         this.#soundService.playStarGameSound();
-        this.#canRequestHint = true
+
+        this.#hintButton.classList.remove('hide');
+        this.#canRequestHint = true;
     }
 
     executeMoveCommand = (moveCommand) => {
