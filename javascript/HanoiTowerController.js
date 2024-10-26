@@ -28,9 +28,14 @@ class HanoiTowerController {
     #soundService = new SoundService();
     #diskService = new DiskService();
 
+    #canRequestHint = false;
+
     constructor() {
         this.#restartButton.addEventListener('click', this.startGame);
-        this.#hintButton.addEventListener('click', this.#gameService.executeHint);
+        this.#hintButton.addEventListener('click', () => {
+            if (!this.#canRequestHint) return;
+            this.#gameService.executeHint();
+        });
 
         this.#diskDifficultSelect.addEventListener('change', this.startGame);
     }
@@ -48,6 +53,7 @@ class HanoiTowerController {
         this.#createDisks(diskDifficult);
 
         this.#soundService.playStarGameSound();
+        this.#canRequestHint = true
     }
 
     executeMoveCommand = (moveCommand) => {
@@ -57,8 +63,13 @@ class HanoiTowerController {
         const diskElement = this.#getDiskByValue(moveCommand.diskValue);
         if (!diskElement) return;
 
+        if (moveCommand.isHint) {
+            this.#canRequestHint = false;
+        }
+
         this.#animationService.executeMoveDiskToTowerAnimation(diskElement, toTowerElement, () => {
             this.#finishDiskMove(diskElement, toTowerElement);
+            this.#canRequestHint = true;
         })
     }
 
@@ -96,6 +107,7 @@ class HanoiTowerController {
 
         this.#feedbackMessage.innerHTML = `Parabéns! Você completou o jogo em <strong class='red'>${ this.#gameService.movesCount }</strong> movimentos!`;
         this.#currentMovesCounterReference.textContent = '';
+        this.#canRequestHint = false;
     };
 
     #updateTowerDisks = () => {
