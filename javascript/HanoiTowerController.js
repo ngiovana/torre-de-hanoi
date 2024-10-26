@@ -68,6 +68,9 @@ class HanoiTowerController {
                 toTowerElement.appendChild(diskElement);
                 this.#soundService.playMoveSound();
                 this.#updateTowerDisks();
+
+                this.#draggedDisk = null;
+                this.#draggedDiskTower = null;
             }
         )
     }
