@@ -4,6 +4,8 @@
     border: .5rem solid;
     cursor: grab;
 
+    z-index: 1;
+
     font-size: 2rem;
     color: white;
     font-weight: bold;
