@@ -190,8 +190,6 @@ class HanoiTowerController {
         const audioNumber = Math.floor(Math.random() * 6) + 1;
         const audio = new Audio(`assets/audios/move${ audioNumber }.wav`);
 
-        console.log("tocando audio: " + audioNumber);
-
         audio.play();
     }
 
