@@ -84,11 +84,11 @@ class HanoiTowerController {
     };
 
     executeWin = () => {
-        this.#animationService.playConfettiFall();
-
-        this.#reference.querySelectorAll('.disk').forEach(disk => {
+        document.querySelectorAll('.disk').forEach(disk => {
             disk.classList.add('invalid');
         });
+
+        this.#animationService.playConfettiFall();
 
         const isBestWin = this.#gameService.isWinWithBestSolution()
         this.#soundService.playWinSound(isBestWin);
@@ -104,7 +104,6 @@ class HanoiTowerController {
                     confirmButtonColor: "#3085d6"
                 });
             }, 100);
-
             return;
         }
 
@@ -119,7 +118,7 @@ class HanoiTowerController {
             diskList.forEach((disk, index) => {
                 disk.classList.add('invalid');
 
-                if (index === (diskList.length - 1)) {
+                if (!this.#gameService.isFinished && index === (diskList.length - 1)) {
                     disk.classList.remove('invalid');
                 }
             })
