@@ -6,7 +6,8 @@ class MoveCommandDTO {
     toTowerName
     isHint
 
-    constructor(diskNumber, fromTowerName, toTowerName, isHint) {
+    constructor(gameId, diskNumber, fromTowerName, toTowerName, isHint) {
+        this.gameId = gameId;
         this.diskNumber = diskNumber;
         this.fromTowerName = fromTowerName;
         this.toTowerName = toTowerName;
