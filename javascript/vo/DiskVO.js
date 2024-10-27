@@ -1,13 +1,13 @@
 class DiskVO {
 
-    value
+    number
 
-    constructor(value) {
-        this.value = value;
+    constructor(number) {
+        this.number = number;
     }
 
-    getValue = () => {
-        return this.value;
+    getNumber = () => {
+        return this.number;
     };
 
 }
