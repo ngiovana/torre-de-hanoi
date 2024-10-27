@@ -41,8 +41,7 @@ class HanoiTowerController {
         this.#restartButtonReference.textContent = "Reiniciar";
         this.#animationController.stopConfettiFall();
 
-        const diskDifficult = this.#diskDifficultSelectReference.value
-
+        const diskDifficult = parseInt(this.#diskDifficultSelectReference.value);
         this.#gameService.startGame(diskDifficult)
 
         this.#setMinMovesToFinish(this.#gameService.minMovesToFinish);
