@@ -70,10 +70,10 @@ class HanoiTowerController {
     #createDisks = (diskDifficult) => {
         this.#towerElementList.forEach(tower => tower.innerHTML = '');
 
-        for (let diskValue = diskDifficult; diskValue > 0; diskValue--) {
+        for (let diskNumber = diskDifficult; diskNumber > 0; diskNumber--) {
             setTimeout(() => {
-                this.#createDisk(diskValue)
-            }, 200 * (diskDifficult - diskValue))
+                this.#createDisk(diskNumber)
+            }, 200 * (diskDifficult - diskNumber))
         }
 
         setTimeout(() => {
@@ -81,8 +81,8 @@ class HanoiTowerController {
         }, 210 * diskDifficult);
     }
 
-    #createDisk = (diskValue) => {
-        const diskElement = this.#diskController.createDiskElement(diskValue, this.#firstTowerReference)
+    #createDisk = (diskNumber) => {
+        const diskElement = this.#diskController.createDiskElement(diskNumber, this.#firstTowerReference)
 
         diskElement.addEventListener('mousedown', this.#startDiskMove)
 
@@ -169,7 +169,7 @@ class HanoiTowerController {
         const toTowerElement = this.#getTowerByName(moveCommand.toTowerName);
         if (!toTowerElement) return;
 
-        const diskElement = this.#getDiskByValue(moveCommand.diskValue);
+        const diskElement = this.#getDiskByValue(moveCommand.diskNumber);
         if (!diskElement) return;
 
         if (moveCommand.isHint) {
@@ -256,8 +256,8 @@ class HanoiTowerController {
         return this.#reference.querySelector(`[data-name='${ towerName }']`);
     }
 
-    #getDiskByValue = (diskValue) => {
-        return this.#reference.querySelector(`[data-value='${ diskValue }']`);
+    #getDiskByValue = (diskNumber) => {
+        return this.#reference.querySelector(`[data-value='${ diskNumber }']`);
     }
 
 }

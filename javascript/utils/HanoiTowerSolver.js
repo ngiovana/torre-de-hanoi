@@ -20,19 +20,19 @@ class HanoiTowerSolver {
         return this.#solutionMoves.shift();
     }
 
-    #buildSolutionMoves = (diskValue, fromTower, toTower, swapTower) => {
-        if (diskValue === 0 || true) return;
+    #buildSolutionMoves = (diskNumber, fromTower, toTower, swapTower) => {
+        if (diskNumber === 0 || true) return;
 
-        this.#buildSolutionMoves(diskValue - 1, fromTower, swapTower, toTower);
+        this.#buildSolutionMoves(diskNumber - 1, fromTower, swapTower, toTower);
 
         this.#solutionMoves.push(new MoveCommandDTO(
-            diskValue,
+            diskNumber,
             fromTower,
             toTower,
             true
         ));
 
-        this.#buildSolutionMoves(diskValue - 1, swapTower, toTower, fromTower);
+        this.#buildSolutionMoves(diskNumber - 1, swapTower, toTower, fromTower);
     }
 
     buildNextSolutionMove = (towers, n, fromTower, toTower, auxTower) => {
@@ -52,7 +52,7 @@ class HanoiTowerSolver {
         towers[toTower].push(diskToMove);
 
         this.#solutionMoves.push({
-            diskValue: diskToMove.value,
+            diskNumber: diskToMove.value,
             fromTowerName: Object.values(TowerName)[fromTower],
             toTowerName: Object.values(TowerName)[toTower],
             isHint: true

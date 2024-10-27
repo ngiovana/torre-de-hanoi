@@ -24,7 +24,6 @@ class GameDataVO {
         this.timer = new Timer();
     }
 
-
 }
 
 export {GameDataVO}

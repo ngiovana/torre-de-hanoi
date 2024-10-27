@@ -1,7 +1,7 @@
 class DiskController {
 
     static DISK_HEIGHT = 40;
-    static CALCULATE_DISK_WIDTH = (diskValue) => 50 + 30 * diskValue;
+    static CALCULATE_DISK_WIDTH = (diskNumber) => 50 + 30 * diskNumber;
 
     createDiskElement = (diskNumber, towerElement) => {
         const diskElement = document.createElement('div');
