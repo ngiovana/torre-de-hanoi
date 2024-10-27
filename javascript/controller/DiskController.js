@@ -1,17 +1,17 @@
 class DiskController {
 
     static DISK_HEIGHT = 40;
-    static CALCULATE_DISK_WIDTH = (diskValue) => 50 + 30 * diskValue;
+    static CALCULATE_DISK_WIDTH = (diskNumber) => 50 + 30 * diskNumber;
 
-    createDiskElement = (diskValue, towerElement) => {
+    createDiskElement = (diskNumber, towerElement) => {
         const diskElement = document.createElement('div');
-        const diskWidth = DiskController.CALCULATE_DISK_WIDTH(diskValue);
+        const diskWidth = DiskController.CALCULATE_DISK_WIDTH(diskNumber);
 
-        diskElement.setAttribute('data-value', diskValue);
+        diskElement.setAttribute('data-number', diskNumber);
         diskElement.classList.add(`disk`);
-        diskElement.classList.add(`disk-${ diskValue }`);
+        diskElement.classList.add(`disk-${ diskNumber }`);
         diskElement.classList.add('invalid');
-        diskElement.textContent = diskValue;
+        diskElement.textContent = diskNumber;
         diskElement.style.position = 'absolute';
         diskElement.style.width = `${ diskWidth }px`;
         diskElement.style.height = `${ DiskController.DISK_HEIGHT }px`;
@@ -21,7 +21,7 @@ class DiskController {
         const diskLeft = towerXCenter - (diskWidth / 2);
 
         const diskTopOffset = 100;
-        const diskTop = -(diskTopOffset + DiskController.DISK_HEIGHT * diskValue);
+        const diskTop = -(diskTopOffset + DiskController.DISK_HEIGHT * diskNumber);
 
         diskElement.style.left = `${ diskLeft }px`;
         diskElement.style.top = `${ diskTop }px`;

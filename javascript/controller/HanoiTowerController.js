@@ -23,7 +23,8 @@ class HanoiTowerController {
     #draggedDiskTowerReference = null;
     #draggedDiskReference = null;
 
-    #gameService = new HanoiTowerService();
+    #gameId;
+    #gameService;
 
     #animationController = new AnimationController();
     #soundController = new SoundController();
@@ -31,7 +32,9 @@ class HanoiTowerController {
 
     #canRequestHint = false;
 
-    constructor() {
+    constructor(gameService) {
+        this.#gameService = gameService;
+
         this.#restartButtonReference.addEventListener('click', this.#startGame);
         this.#hintButtonReference.addEventListener('click', this.#requestHint);
         this.#diskDifficultSelectReference.addEventListener('change', this.#startGame);
@@ -41,13 +44,14 @@ class HanoiTowerController {
         this.#restartButtonReference.textContent = "Reiniciar";
         this.#animationController.stopConfettiFall();
 
-        const diskDifficult = this.#diskDifficultSelectReference.value
+        const diskDifficult = parseInt(this.#diskDifficultSelectReference.value);
+        const gameData = this.#gameService.startGame('player-1', diskDifficult)
 
-        this.#gameService.startGame(diskDifficult)
+        this.#gameId = gameData.id;
 
-        this.#setMinMovesToFinish(this.#gameService.minMovesToFinish);
-        this.#updateMovesCount();
-        this.#createDisks(diskDifficult);
+        this.#setMinMovesToFinish(gameData.minMoves);
+        this.#updateMovesCount(gameData.state.movesCount);
+        this.#createDisks(gameData.difficultLevel);
 
         this.#soundController.playStarGameSound();
 
@@ -57,11 +61,13 @@ class HanoiTowerController {
 
     #requestHint = () => {
         if (!this.#canRequestHint) return;
-        const moveCommand = this.#gameService.requestHint();
+        const hintObject = this.#gameService.requestHint(this.#gameId);
+        if (!hintObject) return;
 
-        if (!moveCommand) return;
+        const gameState = hintObject.gameState;
+        const moveCommand = hintObject.moveCommand;
 
-        this.#executeMoveCommand(moveCommand);
+        this.#executeMoveCommand(gameState, moveCommand);
     };
 
     #setMinMovesToFinish = (minMovesToFinish) => {
@@ -71,10 +77,10 @@ class HanoiTowerController {
     #createDisks = (diskDifficult) => {
         this.#towerElementList.forEach(tower => tower.innerHTML = '');
 
-        for (let diskValue = diskDifficult; diskValue > 0; diskValue--) {
+        for (let diskNumber = diskDifficult; diskNumber > 0; diskNumber--) {
             setTimeout(() => {
-                this.#createDisk(diskValue)
-            }, 200 * (diskDifficult - diskValue))
+                this.#createDisk(diskNumber)
+            }, 200 * (diskDifficult - diskNumber))
         }
 
         setTimeout(() => {
@@ -82,8 +88,8 @@ class HanoiTowerController {
         }, 210 * diskDifficult);
     }
 
-    #createDisk = (diskValue) => {
-        const diskElement = this.#diskController.createDiskElement(diskValue, this.#firstTowerReference)
+    #createDisk = (diskNumber) => {
+        const diskElement = this.#diskController.createDiskElement(diskNumber, this.#firstTowerReference)
 
         diskElement.addEventListener('mousedown', this.#startDiskMove)
 
@@ -136,14 +142,16 @@ class HanoiTowerController {
 
         const toTowerElement = this.#findTowerInMousePosition(event);
         const moveCommand = new MoveCommandDTO(
-            parseInt(this.#draggedDiskReference.dataset.value),
+            this.#gameId,
+            parseInt(this.#draggedDiskReference.dataset.number),
             this.#draggedDiskTowerReference.dataset.name,
             toTowerElement?.dataset?.name,
             false
         )
 
-        if (toTowerElement && this.#gameService.checkMoveCommand(moveCommand)) {
-            this.#executeMoveCommand(moveCommand);
+        const gameState = this.#gameService.checkMoveCommand(moveCommand);
+        if (gameState) {
+            this.#executeMoveCommand(gameState, moveCommand);
             return;
         }
 
@@ -166,11 +174,11 @@ class HanoiTowerController {
         this.#draggedDiskTowerReference = null;
     }
 
-    #executeMoveCommand = (moveCommand) => {
+    #executeMoveCommand = (gameState, moveCommand) => {
         const toTowerElement = this.#getTowerByName(moveCommand.toTowerName);
         if (!toTowerElement) return;
 
-        const diskElement = this.#getDiskByValue(moveCommand.diskValue);
+        const diskElement = this.#getDiskByNumber(moveCommand.diskNumber);
         if (!diskElement) return;
 
         if (moveCommand.isHint) {
@@ -181,31 +189,32 @@ class HanoiTowerController {
             this.#finishDiskMove(diskElement, toTowerElement);
             this.#canRequestHint = true;
 
-            this.#updateMovesCount();
+            this.#updateMovesCount(gameState.movesCount);
 
-            if (this.#gameService.isFinished) this.#executeWin();
+            if (gameState.isFinished) {
+                this.#executeWin(gameState);
+            }
         })
     }
 
-    #updateMovesCount = () => {
-        const moveLabel = this.#gameService.movesCount === 1 ? 'movimento' : 'movimentos';
-        const actionLabel = this.#gameService.movesCount === 1 ? 'feito' : 'feitos';
+    #updateMovesCount = (movesCount) => {
+        const moveLabel = movesCount === 1 ? 'movimento' : 'movimentos';
+        const actionLabel = movesCount === 1 ? 'feito' : 'feitos';
 
-        const message = `<strong class='red'>${this.#gameService.movesCount}</strong> ${moveLabel} ${actionLabel}`;
-        this.#currentMovesCounterReference.innerHTML = message;
+        this.#currentMovesCounterReference.innerHTML =
+            `<strong class='red'>${ movesCount }</strong> ${ moveLabel } ${ actionLabel }`;
     };
 
-    #executeWin = () => {
-        document.querySelectorAll('.disk').forEach(disk => {
-            disk.classList.add('invalid');
+    #executeWin = (gameState) => {
+        document.querySelectorAll('.disk').forEach(diskElement => {
+            diskElement.classList.add('invalid');
         });
 
         this.#animationController.playConfettiFall();
 
-        const isBestWin = this.#gameService.isWinWithBestSolution()
-        this.#soundController.playWinSound(isBestWin);
+        this.#soundController.playWinSound(gameState.isBestSolution);
 
-        if (isBestWin) {
+        if (gameState.isBestSolution) {
             this.#feedbackMessageReference.textContent = '😲';
 
             setTimeout(() => {
@@ -219,9 +228,11 @@ class HanoiTowerController {
             return;
         }
 
-        this.#feedbackMessageReference.innerHTML = `Parabéns! Você completou o jogo em <strong class='red'>${ this.#gameService.movesCount }</strong> movimentos!`;
         this.#currentMovesCounterReference.textContent = '';
         this.#canRequestHint = false;
+
+        this.#feedbackMessageReference.innerHTML =
+            `Parabéns! Você completou o jogo em <strong class='red'>${ gameState.movesCount }</strong> movimentos!`;
     };
 
     #updateInvalidDisks = () => {
@@ -257,8 +268,8 @@ class HanoiTowerController {
         return this.#reference.querySelector(`[data-name='${ towerName }']`);
     }
 
-    #getDiskByValue = (diskValue) => {
-        return this.#reference.querySelector(`[data-value='${ diskValue }']`);
+    #getDiskByNumber = (diskNumber) => {
+        return this.#reference.querySelector(`[data-number='${ diskNumber }']`);
     }
 
 }

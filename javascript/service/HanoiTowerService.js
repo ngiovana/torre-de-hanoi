@@ -1,96 +1,57 @@
-import {TowerVO} from "../vo/TowerVO.js";
-import {DiskVO} from "../vo/DiskVO.js";
-import {HanoiTowerSolver} from "../utils/HanoiTowerSolver.js";
-import {TowerName} from "../enum/TowerName.js";
+import {HanoiTowerBuilder} from "../utils/HanoiTowerBuilder.js";
+import {Utils} from "../utils/Utils.js";
 
 class HanoiTowerService {
 
-    static MAX_DISK_DIFFICULT = 8
+    #currentGames = {};
 
-    /**
-     * @type {HanoiTowerSolver}
-     */
-    #solver
+    startGame = (playerName, externalDifficultLevel) => {
+        const gameId = Utils.generateUUID();
 
-    minMovesToFinish;
-    movesCount;
-    diskDifficult;
-    isFinished;
+        const gameData = HanoiTowerBuilder.buildNewGame(gameId, playerName, externalDifficultLevel);
+        this.#currentGames[gameId] = gameData;
 
-    firstTower;
-    middleTower;
-    lastTower;
-
-    startGame = (diskDifficult) => {
-        diskDifficult = Math.min(diskDifficult, HanoiTowerService.MAX_DISK_DIFFICULT);
-
-        this.minMovesToFinish = this.#calculateMinMovesToFinish(diskDifficult)
-        this.movesCount = 0
-        this.diskDifficult = diskDifficult
-        this.isFinished = false
-
-        const diskStack = []
-        for (let counter = diskDifficult; counter > 0; counter--) {
-            const disk = new DiskVO(counter)
-            diskStack.push(disk)
-        }
-
-        this.firstTower = new TowerVO(TowerName.FIRST_TOWER, 0, diskStack);
-        this.middleTower = new TowerVO(TowerName.MIDDLE_TOWER, 1, []);
-        this.lastTower = new TowerVO(TowerName.LAST_TOWER, 2, []);
-
-        this.#solver = new HanoiTowerSolver(diskDifficult, ...Object.values(TowerName))
+        return Utils.deepClone(gameData);
     };
 
     checkMoveCommand = (moveCommand) => {
-        if (this.#validateMoveCommand(moveCommand)) {
-            this.#executeMoveCommand(moveCommand);
-            return true;
-        }
+        const gameData = this.#currentGames[moveCommand.gameId];
+        if (!gameData) return;
 
-        return false
-    };
-
-    requestHint = () => {
-        if (this.isFinished) return;
-
-        const towers = this.#buildTowersDiskObject();
-        this.#solver.buildNextSolutionMove(towers, this.diskDifficult, 0, 2, 1);
-
-        if (!this.#solver.hasMoveCommands()) return;
-
-        const moveCommand = this.#solver.getNextMoveCommand();
-        if (this.checkMoveCommand(moveCommand)) {
-            return moveCommand;
+        if (HanoiTowerService.#validateMoveCommand(gameData, moveCommand)) {
+            HanoiTowerService.#executeMoveCommand(gameData, moveCommand);
+            return Utils.deepClone(gameData.state);
         }
     };
 
-    isWinWithBestSolution = () => {
-        return this.movesCount === this.minMovesToFinish;
+    requestHint = (gameId) => {
+        const gameData = this.#currentGames[gameId];
+        if (!gameData) return;
+        if (gameData.state.isFinished) return;
+
+        const solver = gameData.solver;
+        solver.buildNextSolutionMove(gameData.state.disksByTower, gameData.difficultLevel, 0, 2, 1);
+
+        if (!solver.hasMoveCommands()) return;
+
+        const moveCommand = solver.getNextMoveCommand();
+        const gameState = this.checkMoveCommand(moveCommand);
+
+        if (gameState) {
+            return Utils.deepClone({gameState: gameState, moveCommand: moveCommand});
+        }
     };
 
-    #incrementMovesCount = () => {
-        this.movesCount++;
-    };
+    static #validateMoveCommand = (gameData, moveCommand) => {
+        if (gameData.state.isFinished) return false;
 
-    #calculateMinMovesToFinish = (diskDifficult) => {
-        return Math.pow(2, diskDifficult) - 1
-    };
-
-    #findTowerByName = (towerName) => {
-        return this[towerName];
-    };
-
-    #validateMoveCommand = (moveCommand) => {
-        if (this.isFinished) return false;
-
-        const fromTower = this.#findTowerByName(moveCommand.fromTowerName);
+        const fromTower = gameData.state.getTowerByName(moveCommand.fromTowerName);
         if (!fromTower) return false;
 
         const disk = fromTower.getTopDisk()
-        if (disk.getValue() !== moveCommand.diskValue) return false;
+        if (disk.getNumber() !== moveCommand.diskNumber) return false;
 
-        const toTower = this.#findTowerByName(moveCommand.toTowerName);
+        const toTower = gameData.state.getTowerByName(moveCommand.toTowerName);
         if (!toTower) return false;
 
         if (fromTower === toTower) return false;
@@ -98,44 +59,31 @@ class HanoiTowerService {
         const currentTopDisk = toTower.getTopDisk();
         if (!currentTopDisk) return true;
 
-        return currentTopDisk.getValue() > disk.getValue();
+        return currentTopDisk.getNumber() > disk.getNumber();
     };
 
-    #executeMoveCommand = (moveCommand) => {
-        const fromTower = this.#findTowerByName(moveCommand.fromTowerName);
+    static #executeMoveCommand = (gameData, moveCommand) => {
+        const fromTower = gameData.state.getTowerByName(moveCommand.fromTowerName);
         const disk = fromTower.getTopDisk()
-        const toTower = this.#findTowerByName(moveCommand.toTowerName);
+        const toTower = gameData.state.getTowerByName(moveCommand.toTowerName);
 
         fromTower.removeTopDisk();
         toTower.addDisk(disk);
 
-        this.#incrementMovesCount();
-        this.#checkWin()
-    };
+        gameData.state.movesCount++;
 
-    #checkWin = () => {
-        if (this.#validateWin()) {
-            this.isFinished = true;
+        if (HanoiTowerService.#validateWin(gameData)) {
+            gameData.state.isFinished = true;
+            gameData.state.isBestSolution = gameData.state.movesCount === gameData.minMoves;
         }
     };
 
-    #validateWin = () => {
-        return [this.middleTower, this.lastTower].some(tower => {
-            return tower.size() === this.diskDifficult;
+    static #validateWin = (gameData) => {
+        return [gameData.state.middleTower, gameData.state.lastTower].some(tower => {
+            return tower.size() === gameData.difficultLevel;
         });
     }
 
-    #buildTowersDiskObject = () => {
-        const towersDiskObject = {};
-
-        Object.values(TowerName).forEach((towerName) => {
-            const tower = this.#findTowerByName(towerName);
-            towersDiskObject[tower.id] = tower.getDiskStack();
-            towersDiskObject[towerName] = tower.getDiskStack();
-        });
-
-        return towersDiskObject;
-    }
 }
 
 export {HanoiTowerService}

@@ -1,5 +1,7 @@
 import {HanoiTowerController} from "./controller/HanoiTowerController.js";
+import {HanoiTowerService} from "./service/HanoiTowerService.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    new HanoiTowerController();
+    const gameService = new HanoiTowerService()
+    new HanoiTowerController(gameService);
 })
