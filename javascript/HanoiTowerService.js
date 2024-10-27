@@ -1,17 +1,11 @@
 import {Tower} from "./Tower.js";
 import {Disk} from "./Disk.js";
-import {HanoiTowerController} from "./HanoiTowerController.js";
 import {HanoiTowerSolver} from "./HanoiTowerSolver.js";
 import {TowerName} from "./TowerName.js";
 
 class HanoiTowerService {
 
     static MAX_DISK_DIFFICULT = 8
-
-    /**
-     * @type {HanoiTowerController}
-     */
-    #screenController;
 
     /**
      * @type {HanoiTowerSolver}
@@ -26,10 +20,6 @@ class HanoiTowerService {
     firstTower;
     middleTower;
     lastTower;
-
-    constructor(screenController) {
-        this.#screenController = screenController;
-    }
 
     startGame = (diskDifficult) => {
         diskDifficult = Math.min(diskDifficult, HanoiTowerService.MAX_DISK_DIFFICULT);
@@ -61,7 +51,7 @@ class HanoiTowerService {
         return false
     };
 
-    executeHint = () => {
+    requestHint = () => {
         if (this.isFinished) return;
 
         const towers = this.#buildTowersDiskObject();
@@ -70,14 +60,15 @@ class HanoiTowerService {
         if (!this.#solver.hasMoveCommands()) return;
 
         const moveCommand = this.#solver.getNextMoveCommand();
-        this.checkMoveCommand(moveCommand)
+        if (this.checkMoveCommand(moveCommand)) {
+            return moveCommand;
+        }
     };
 
     isWinWithBestSolution = () => this.movesCount === this.minMovesToFinish;
 
     #incrementMovesCount = () => {
         this.movesCount++;
-        this.#screenController.updateMovesCount();
     };
 
     #calculateMinMovesToFinish = (diskDifficult) => {
@@ -116,13 +107,14 @@ class HanoiTowerService {
         fromTower.removeTopDisk();
         toTower.addDisk(disk);
 
-        this.#screenController.executeMoveCommand(moveCommand);
         this.#incrementMovesCount();
         this.#checkWin()
     };
 
     #checkWin = () => {
-        if (this.#validateWin()) this.#executeWin();
+        if (this.#validateWin()) {
+            this.isFinished = true;
+        }
     };
 
     #validateWin = () => {
@@ -130,11 +122,6 @@ class HanoiTowerService {
             return tower.size() === this.diskDifficult;
         });
     }
-
-    #executeWin = () => {
-        this.isFinished = true;
-        this.#screenController.executeWin();
-    };
 
     #buildTowersDiskObject = () => {
         const towersDiskObject = {};
