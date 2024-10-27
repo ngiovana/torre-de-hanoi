@@ -57,7 +57,7 @@ class HanoiTowerSolver {
 
         this.#solutionMoves.push({
             gameId: this.#gameId,
-            diskNumber: diskToMove.value,
+            diskNumber: diskToMove.number,
             fromTowerName: Object.values(TowerName)[fromTower],
             toTowerName: Object.values(TowerName)[toTower],
             isHint: true
