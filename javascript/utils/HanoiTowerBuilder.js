@@ -1,8 +1,8 @@
 import {TowerVO} from "../vo/TowerVO.js";
 import {DiskVO} from "../vo/DiskVO.js";
 import {TowerName} from "../enum/TowerName.js";
-import {GameStateDTO} from "../dto/GameStateDTO";
-import {GameDataVO} from "../vo/GameDataVO";
+import {GameStateDTO} from "../dto/GameStateDTO.js";
+import {GameDataVO} from "../vo/GameDataVO.js";
 
 class HanoiTowerBuilder {
 

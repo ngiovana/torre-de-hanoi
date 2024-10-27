@@ -1,5 +1,6 @@
 class MoveCommandDTO {
 
+    gameId
     diskValue
     fromTowerName
     toTowerName

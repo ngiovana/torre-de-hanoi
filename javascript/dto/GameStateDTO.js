@@ -1,4 +1,4 @@
-import {TowerName} from "../enum/TowerName";
+import {TowerName} from "../enum/TowerName.js";
 
 class GameStateDTO {
 
