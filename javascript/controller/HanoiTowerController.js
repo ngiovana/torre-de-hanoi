@@ -79,7 +79,7 @@ class HanoiTowerController {
 
         setTimeout(() => {
             this.#updateInvalidDisks()
-        }, 2000);
+        }, 210 * diskDifficult);
     }
 
     #createDisk = (diskValue) => {
