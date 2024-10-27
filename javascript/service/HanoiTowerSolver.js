@@ -1,5 +1,5 @@
-import {MoveCommand} from "./MoveCommand.js";
-import { TowerName } from "./TowerName.js";
+import {MoveCommand} from "../dto/MoveCommand.js";
+import { TowerName } from "../enum/TowerName.js";
 
 class HanoiTowerSolver {
 

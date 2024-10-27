@@ -1,5 +1,5 @@
-import {HanoiTowerService} from './HanoiTowerService.js';
-import {MoveCommand} from './MoveCommand.js';
+import {HanoiTowerService} from '../service/HanoiTowerService.js';
+import {MoveCommand} from '../dto/MoveCommand.js';
 import {SoundController} from "./SoundController.js";
 import {AnimationController} from "./AnimationController.js";
 import {DiskController} from "./DiskController.js";
@@ -263,6 +263,4 @@ class HanoiTowerController {
 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    new HanoiTowerController();
-})
+export {HanoiTowerController}

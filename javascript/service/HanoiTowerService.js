@@ -1,7 +1,7 @@
-import {Tower} from "./Tower.js";
-import {Disk} from "./Disk.js";
+import {Tower} from "../vo/Tower.js";
+import {Disk} from "../vo/Disk.js";
 import {HanoiTowerSolver} from "./HanoiTowerSolver.js";
-import {TowerName} from "./TowerName.js";
+import {TowerName} from "../enum/TowerName.js";
 
 class HanoiTowerService {
 
