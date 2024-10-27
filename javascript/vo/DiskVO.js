@@ -1,4 +1,4 @@
-class Disk {
+class DiskVO {
 
     value
 
@@ -12,4 +12,4 @@ class Disk {
 
 }
 
-export {Disk}
+export {DiskVO}

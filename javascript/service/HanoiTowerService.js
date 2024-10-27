@@ -1,6 +1,6 @@
-import {Tower} from "../vo/Tower.js";
-import {Disk} from "../vo/Disk.js";
-import {HanoiTowerSolver} from "./HanoiTowerSolver.js";
+import {TowerVO} from "../vo/TowerVO.js";
+import {DiskVO} from "../vo/DiskVO.js";
+import {HanoiTowerSolver} from "../utils/HanoiTowerSolver.js";
 import {TowerName} from "../enum/TowerName.js";
 
 class HanoiTowerService {
@@ -31,13 +31,13 @@ class HanoiTowerService {
 
         const diskStack = []
         for (let counter = diskDifficult; counter > 0; counter--) {
-            const disk = new Disk(counter)
+            const disk = new DiskVO(counter)
             diskStack.push(disk)
         }
 
-        this.firstTower = new Tower(TowerName.FIRST_TOWER, 0, diskStack);
-        this.middleTower = new Tower(TowerName.MIDDLE_TOWER, 1, []);
-        this.lastTower = new Tower(TowerName.LAST_TOWER, 2, []);
+        this.firstTower = new TowerVO(TowerName.FIRST_TOWER, 0, diskStack);
+        this.middleTower = new TowerVO(TowerName.MIDDLE_TOWER, 1, []);
+        this.lastTower = new TowerVO(TowerName.LAST_TOWER, 2, []);
 
         this.#solver = new HanoiTowerSolver(diskDifficult, ...Object.values(TowerName))
     };

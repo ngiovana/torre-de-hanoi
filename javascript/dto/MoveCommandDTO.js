@@ -1,4 +1,4 @@
-class MoveCommand {
+class MoveCommandDTO {
 
     diskValue
     fromTowerName
@@ -14,4 +14,4 @@ class MoveCommand {
 
 }
 
-export {MoveCommand}
+export {MoveCommandDTO}

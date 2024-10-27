@@ -1,10 +1,10 @@
-import {MoveCommand} from "../dto/MoveCommand.js";
+import {MoveCommandDTO} from "../dto/MoveCommandDTO.js";
 import { TowerName } from "../enum/TowerName.js";
 
 class HanoiTowerSolver {
 
     /**
-     * @type {Array<MoveCommand>}
+     * @type {Array<MoveCommandDTO>}
      */
     #solutionMoves = [];
 
@@ -25,7 +25,7 @@ class HanoiTowerSolver {
 
         this.#buildSolutionMoves(diskValue - 1, fromTower, swapTower, toTower);
 
-        this.#solutionMoves.push(new MoveCommand(
+        this.#solutionMoves.push(new MoveCommandDTO(
             diskValue,
             fromTower,
             toTower,

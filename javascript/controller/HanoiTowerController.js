@@ -1,5 +1,5 @@
 import {HanoiTowerService} from '../service/HanoiTowerService.js';
-import {MoveCommand} from '../dto/MoveCommand.js';
+import {MoveCommandDTO} from '../dto/MoveCommandDTO.js';
 import {SoundController} from "./SoundController.js";
 import {AnimationController} from "./AnimationController.js";
 import {DiskController} from "./DiskController.js";
@@ -135,7 +135,7 @@ class HanoiTowerController {
         this.#draggedDiskReference.style.cursor = 'grab';
 
         const toTowerElement = this.#findTowerInMousePosition(event);
-        const moveCommand = new MoveCommand(
+        const moveCommand = new MoveCommandDTO(
             parseInt(this.#draggedDiskReference.dataset.value),
             this.#draggedDiskTowerReference.dataset.name,
             toTowerElement?.dataset?.name,

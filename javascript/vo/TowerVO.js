@@ -1,12 +1,12 @@
-import {Disk} from "./Disk.js";
+import {DiskVO} from "./DiskVO.js";
 
-class Tower {
+class TowerVO {
 
     name
     id
 
     /**
-     * @type {Array<Disk>}
+     * @type {Array<DiskVO>}
      */
     diskStack;
 
@@ -38,4 +38,4 @@ class Tower {
 
 }
 
-export {Tower}
+export {TowerVO}
