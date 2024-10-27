@@ -8,8 +8,8 @@ class HanoiTowerSolver {
      */
     #solutionMoves = [];
 
-    constructor(diskDifficult, firstTowerName, middleTowerName, lastTowerName) {
-        this.#buildSolutionMoves(diskDifficult, firstTowerName, lastTowerName, middleTowerName);
+    constructor(difficultLevel, firstTowerName, middleTowerName, lastTowerName) {
+        this.#buildSolutionMoves(difficultLevel, firstTowerName, lastTowerName, middleTowerName);
     }
 
     hasMoveCommands = () => {
