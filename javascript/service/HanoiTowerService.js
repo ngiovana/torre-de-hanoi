@@ -72,8 +72,9 @@ class HanoiTowerService {
 
         gameData.state.movesCount++;
 
-        if (HanoiTowerService.#validateWin(gameData.state)) {
-            this.isFinished = true;
+        if (HanoiTowerService.#validateWin(gameData)) {
+            gameData.state.isFinished = true;
+            gameData.state.isBestSolution = gameData.state.movesCount === gameData.minMoves;
         }
     };
 

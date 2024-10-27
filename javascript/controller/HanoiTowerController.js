@@ -143,7 +143,7 @@ class HanoiTowerController {
         const toTowerElement = this.#findTowerInMousePosition(event);
         const moveCommand = new MoveCommandDTO(
             this.#gameId,
-            parseInt(this.#draggedDiskReference.dataset.value),
+            parseInt(this.#draggedDiskReference.dataset.number),
             this.#draggedDiskTowerReference.dataset.name,
             toTowerElement?.dataset?.name,
             false
@@ -269,7 +269,7 @@ class HanoiTowerController {
     }
 
     #getDiskByNumber = (diskNumber) => {
-        return this.#reference.querySelector(`[data-value='${ diskNumber }']`);
+        return this.#reference.querySelector(`[data-number='${ diskNumber }']`);
     }
 
 }
