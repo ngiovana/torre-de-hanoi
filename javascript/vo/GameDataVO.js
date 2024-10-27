@@ -20,7 +20,7 @@ class GameDataVO {
         this.minMoves = minMoves
         this.state = state
 
-        this.solver = new HanoiTowerSolver(difficultLevel, ...Object.values(TowerName))
+        this.solver = new HanoiTowerSolver(id, difficultLevel, ...Object.values(TowerName))
         this.timer = new Timer();
     }
 

@@ -3,12 +3,15 @@ import { TowerName } from "../enum/TowerName.js";
 
 class HanoiTowerSolver {
 
+    #gameId;
+
     /**
      * @type {Array<MoveCommandDTO>}
      */
     #solutionMoves = [];
 
-    constructor(difficultLevel, firstTowerName, middleTowerName, lastTowerName) {
+    constructor(gameId, difficultLevel, firstTowerName, middleTowerName, lastTowerName) {
+        this.#gameId = gameId;
         this.#buildSolutionMoves(difficultLevel, firstTowerName, lastTowerName, middleTowerName);
     }
 
@@ -26,6 +29,7 @@ class HanoiTowerSolver {
         this.#buildSolutionMoves(diskNumber - 1, fromTower, swapTower, toTower);
 
         this.#solutionMoves.push(new MoveCommandDTO(
+            this.#gameId,
             diskNumber,
             fromTower,
             toTower,
@@ -52,6 +56,7 @@ class HanoiTowerSolver {
         towers[toTower].push(diskToMove);
 
         this.#solutionMoves.push({
+            gameId: this.#gameId,
             diskNumber: diskToMove.value,
             fromTowerName: Object.values(TowerName)[fromTower],
             toTowerName: Object.values(TowerName)[toTower],
