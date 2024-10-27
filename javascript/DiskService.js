@@ -17,12 +17,13 @@ class DiskService {
         diskElement.style.height = `${ DiskService.DISK_HEIGHT }px`;
 
         const towerRect = towerElement.getBoundingClientRect()
-        const towerMiddle = towerRect.left + towerElement.offsetWidth / 2;
-        const diskMiddle = towerMiddle - (diskWidth / 2);
+        const towerXCenter = towerRect.left + towerElement.offsetWidth / 2;
+        const diskLeft = towerXCenter - (diskWidth / 2);
+
         const diskTopOffset = 100;
         const diskTop = -(diskTopOffset + DiskService.DISK_HEIGHT * diskValue);
 
-        diskElement.style.left = `${ diskMiddle }px`;
+        diskElement.style.left = `${ diskLeft }px`;
         diskElement.style.top = `${ diskTop }px`;
 
         return diskElement;
@@ -43,11 +44,11 @@ class DiskService {
     }
 
     setDraggingDiskPosition = (diskElement, event) => {
-        const top = event.clientY - diskElement.offsetHeight / 2;
-        const left = event.clientX - diskElement.offsetWidth / 2;
+        const diskTop = event.clientY - diskElement.offsetHeight / 2;
+        const diskLeft = event.clientX - diskElement.offsetWidth / 2;
 
-        diskElement.style.top  = `${ top }px`;
-        diskElement.style.left = `${ left }px`;
+        diskElement.style.top  = `${ diskTop }px`;
+        diskElement.style.left = `${ diskLeft }px`;
     }
 
 }

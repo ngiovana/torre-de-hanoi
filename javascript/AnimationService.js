@@ -1,9 +1,5 @@
 class AnimationService {
 
-    #colors = ['#ff4757', '#1e90ff', '#2ed573', '#ff6348', '#ffa502', '#2f3542'];
-
-    #maxConfettiNumber = 100;
-
     #documentStyle
 
     constructor() {
@@ -14,11 +10,14 @@ class AnimationService {
     }
 
     playConfettiFall = () => {
-        for (let counter = 0; counter < this.#maxConfettiNumber; counter++) {
+        const confettiColors = ['#ff4757', '#1e90ff', '#2ed573', '#ff6348', '#ffa502', '#2f3542'];
+        const maxConfettiQuantity = 100;
+
+        for (let counter = 0; counter < maxConfettiQuantity; counter++) {
             const confetti = document.createElement('div');
 
             const size = `${Math.random() * 6 + 4}px`;
-            const color = this.#colors[Math.floor(Math.random() * this.#colors.length)];
+            const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
             const top = `${Math.random() * -300}px`;
             const left = `${Math.random() * 100}vw`;
             const animationDuration = `${Math.random() * 3 + 2}s`;
@@ -36,8 +35,8 @@ class AnimationService {
     }
 
     stopConfettiFall = () => {
-        document.querySelectorAll('.confetti').forEach(confetti => {
-            confetti.remove();
+        document.querySelectorAll('.confetti').forEach(confettiElement => {
+            confettiElement.remove();
         });
     }
 
@@ -54,18 +53,18 @@ class AnimationService {
 
     executeMoveDiskToTowerAnimation = (diskElement, toTowerElement, callback) => {
         const diskValue = diskElement.dataset.value;
-        const ruleIndex = this.#documentStyle.cssRules.length;
-        const animationName = `disk-${diskValue}-move-animation-${ruleIndex}`
+        const cssRuleIndex = this.#documentStyle.cssRules.length;
+        const animationName = `disk-${diskValue}-move-animation-${cssRuleIndex}`
 
-        const keyframes = this.#createDiskToTowerAnimation(diskElement, toTowerElement, animationName);
-        this.#documentStyle.insertRule(keyframes, ruleIndex);
+        const animationRule = this.#createDiskToTowerAnimation(diskElement, toTowerElement, animationName);
+        this.#documentStyle.insertRule(animationRule, cssRuleIndex);
 
         diskElement.style.animation = '';
         diskElement.style.animation = `${ animationName } .5s forwards`;
 
         setTimeout(() => {
             diskElement.style.animation = '';
-            this.#documentStyle.deleteRule(ruleIndex);
+            this.#documentStyle.deleteRule(cssRuleIndex);
 
             if (callback) callback();
         }, 500);
@@ -76,23 +75,23 @@ class AnimationService {
         const diskRect = diskElement.getBoundingClientRect();
 
         const towerTop = towerRect.top - diskElement.offsetHeight;
-        const towerMiddle = towerRect.left + toTowerElement.offsetWidth / 2;
+        const towerXCenter = towerRect.left + toTowerElement.offsetWidth / 2;
 
         const topTowerOffset = 20;
         const diskYOffsetToTowerTop = towerTop - diskRect.top - topTowerOffset;
-        const diskXOffsetToTowerMiddle = towerMiddle - (diskRect.left + diskElement.offsetWidth / 2);
+        const diskXOffsetToTowerMiddle = towerXCenter - (diskRect.left + diskElement.offsetWidth / 2);
 
         const towerDisksCount = toTowerElement.querySelectorAll('.disk').length;
-        const disksHeightOffset = diskElement.offsetHeight * towerDisksCount;
+        const diskStackHeight = diskElement.offsetHeight * towerDisksCount;
         const towerBaseHeight = 24;
-        const finalDiskTop = towerRect.bottom - disksHeightOffset - towerBaseHeight;
+        const finalDiskTop = towerRect.bottom - diskStackHeight - towerBaseHeight;
 
-        const diskYOffsetToDiskTop = finalDiskTop - diskRect.bottom;
+        const diskYOffsetToDiskStackTop = finalDiskTop - diskRect.bottom;
 
         return `
             @keyframes ${ animationName } {
-                50% { transform: translateY(${diskYOffsetToTowerTop}px) translateX(${diskXOffsetToTowerMiddle}px); }
-                100% { transform: translateY(${diskYOffsetToDiskTop}px) translateX(${diskXOffsetToTowerMiddle}px); }
+                 50% { transform: translateY(${ diskYOffsetToTowerTop }px)     translateX(${ diskXOffsetToTowerMiddle }px); }
+                100% { transform: translateY(${ diskYOffsetToDiskStackTop }px) translateX(${ diskXOffsetToTowerMiddle }px); }
             }
         `;
     }

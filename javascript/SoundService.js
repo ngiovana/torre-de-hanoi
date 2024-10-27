@@ -16,7 +16,8 @@ class SoundService {
     }
 
     playMoveSound = () => {
-        const audioNumber = Math.floor(Math.random() * 3) + 1;
+        const moveSoundCount = 3
+        const audioNumber = Math.floor(Math.random() * moveSoundCount) + 1;
         const audio = new Audio(`assets/audios/move${ audioNumber }.wav`);
 
         audio.play();

@@ -7,21 +7,21 @@ import {DiskService} from "./DiskService.js";
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
 
-    #diskDifficultSelect = this.#reference.querySelector('.disk-difficult-select');
-    #restartButton = this.#reference.querySelector('.restart-button');
-    #hintButton = this.#reference.querySelector('.hint-button');
+    #diskDifficultSelectReference = this.#reference.querySelector('.disk-difficult-select');
+    #restartButtonReference = this.#reference.querySelector('.restart-button');
+    #hintButtonReference = this.#reference.querySelector('.hint-button');
 
     #currentMovesCounterReference = this.#reference.querySelector('.current-moves-count');
-    #feedbackMessage = this.#reference.querySelector('.minimum-moves-to-finish');
+    #feedbackMessageReference = this.#reference.querySelector('.minimum-moves-to-finish');
 
-    #firstTower = this.#reference.querySelector('.first-tower');
-    #middleTower = this.#reference.querySelector('.middle-tower');
-    #lastTower = this.#reference.querySelector('.last-tower');
+    #firstTowerReference = this.#reference.querySelector('.first-tower');
+    #middleTowerReference = this.#reference.querySelector('.middle-tower');
+    #lastTowerReference = this.#reference.querySelector('.last-tower');
 
-    #towerList = [this.#firstTower, this.#middleTower, this.#lastTower];
+    #towerElementList = [this.#firstTowerReference, this.#middleTowerReference, this.#lastTowerReference];
 
-    #draggedDiskTower = null;
-    #draggedDisk = null;
+    #draggedDiskTowerReference = null;
+    #draggedDiskReference = null;
 
     #animationService = new AnimationService();
     #gameService = new HanoiTowerService();
@@ -31,16 +31,16 @@ class HanoiTowerController {
     #canRequestHint = false;
 
     constructor() {
-        this.#restartButton.addEventListener('click', this.#startGame);
-        this.#hintButton.addEventListener('click', this.#requestHist);
-        this.#diskDifficultSelect.addEventListener('change', this.#startGame);
+        this.#restartButtonReference.addEventListener('click', this.#startGame);
+        this.#hintButtonReference.addEventListener('click', this.#requestHint);
+        this.#diskDifficultSelectReference.addEventListener('change', this.#startGame);
     }
 
     #startGame = () => {
-        this.#restartButton.textContent = "Reiniciar";
+        this.#restartButtonReference.textContent = "Reiniciar";
         this.#animationService.stopConfettiFall();
 
-        const diskDifficult = this.#diskDifficultSelect.value
+        const diskDifficult = this.#diskDifficultSelectReference.value
 
         this.#gameService.startGame(diskDifficult)
 
@@ -50,11 +50,11 @@ class HanoiTowerController {
 
         this.#soundService.playStarGameSound();
 
-        this.#hintButton.classList.remove('hide');
+        this.#hintButtonReference.classList.remove('hide');
         this.#canRequestHint = true;
     }
 
-    #requestHist = () => {
+    #requestHint = () => {
         if (!this.#canRequestHint) return;
         const moveCommand = this.#gameService.requestHint();
 
@@ -64,11 +64,11 @@ class HanoiTowerController {
     };
 
     #setMinMovesToFinish = (minMovesToFinish) => {
-        this.#feedbackMessage.innerHTML = `Mínimo de movimentos necessários: <strong class='red'>${minMovesToFinish}</strong>`;
+        this.#feedbackMessageReference.innerHTML = `Mínimo de movimentos necessários: <strong class='red'>${minMovesToFinish}</strong>`;
     };
 
     #createDisks = (diskDifficult) => {
-        this.#towerList.forEach(tower => tower.innerHTML = '');
+        this.#towerElementList.forEach(tower => tower.innerHTML = '');
 
         for (let diskValue = diskDifficult; diskValue > 0; diskValue--) {
             setTimeout(() => {
@@ -77,12 +77,12 @@ class HanoiTowerController {
         }
 
         setTimeout(() => {
-            this.#updateTowerDisks()
+            this.#updateInvalidDisks()
         }, 2000);
     }
 
     #createDisk = (diskValue) => {
-        const diskElement = this.#diskService.createDiskElement(diskValue, this.#firstTower)
+        const diskElement = this.#diskService.createDiskElement(diskValue, this.#firstTowerReference)
 
         diskElement.addEventListener('mousedown', this.#startDiskMove)
 
@@ -92,12 +92,12 @@ class HanoiTowerController {
             this.#diskService.setDiskStaticState(diskElement)
 
             this.#soundService.playDragSound();
-            this.#firstTower.appendChild(diskElement);
+            this.#firstTowerReference.appendChild(diskElement);
         })
     }
 
     #startDiskMove = (event) => {
-        if (this.#draggedDisk) return;
+        if (this.#draggedDiskReference) return;
 
         const diskElement = event.target;
         if (diskElement.classList.contains('invalid')) {
@@ -105,8 +105,8 @@ class HanoiTowerController {
             return;
         }
 
-        this.#draggedDisk = diskElement;
-        this.#draggedDiskTower = diskElement.parentElement;
+        this.#draggedDiskReference = diskElement;
+        this.#draggedDiskTowerReference = diskElement.parentElement;
 
         this.#reference.appendChild(diskElement);
 
@@ -120,23 +120,23 @@ class HanoiTowerController {
     }
 
     #moveDisk = (event) => {
-        const diskTop = event.clientY - this.#draggedDisk.offsetHeight / 2;
-        const diskLeft = event.clientX - this.#draggedDisk.offsetWidth / 2;
+        const diskTop = event.clientY - this.#draggedDiskReference.offsetHeight / 2;
+        const diskLeft = event.clientX - this.#draggedDiskReference.offsetWidth / 2;
 
-        this.#draggedDisk.style.top  = `${ diskTop }px`;
-        this.#draggedDisk.style.left = `${ diskLeft }px`;
+        this.#draggedDiskReference.style.top  = `${ diskTop }px`;
+        this.#draggedDiskReference.style.left = `${ diskLeft }px`;
     }
 
     #dropDisk = (event) => {
         document.removeEventListener('mousemove', this.#moveDisk)
         document.removeEventListener('mouseup', this.#dropDisk)
 
-        this.#draggedDisk.style.cursor = 'grab';
+        this.#draggedDiskReference.style.cursor = 'grab';
 
         const toTowerElement = this.#findTowerInMousePosition(event);
         const moveCommand = new MoveCommand(
-            parseInt(this.#draggedDisk.dataset.value),
-            this.#draggedDiskTower.dataset.name,
+            parseInt(this.#draggedDiskReference.dataset.value),
+            this.#draggedDiskTowerReference.dataset.name,
             toTowerElement?.dataset?.name,
             false
         )
@@ -146,8 +146,8 @@ class HanoiTowerController {
             return;
         }
 
-        this.#animationService.executeMoveDiskToTowerAnimation(this.#draggedDisk, this.#draggedDiskTower, () => {
-            this.#finishDiskMove(this.#draggedDisk, this.#draggedDiskTower);
+        this.#animationService.executeMoveDiskToTowerAnimation(this.#draggedDiskReference, this.#draggedDiskTowerReference, () => {
+            this.#finishDiskMove(this.#draggedDiskReference, this.#draggedDiskTowerReference);
         })
     }
 
@@ -157,12 +157,12 @@ class HanoiTowerController {
         toTowerElement.appendChild(diskElement);
         this.#soundService.playMoveSound();
 
-        if (this.#draggedDiskTower !== toTowerElement) {
-            this.#updateTowerDisks();
+        if (this.#draggedDiskTowerReference !== toTowerElement) {
+            this.#updateInvalidDisks();
         }
 
-        this.#draggedDisk = null;
-        this.#draggedDiskTower = null;
+        this.#draggedDiskReference = null;
+        this.#draggedDiskTowerReference = null;
     }
 
     #executeMoveCommand = (moveCommand) => {
@@ -205,7 +205,7 @@ class HanoiTowerController {
         this.#soundService.playWinSound(isBestWin);
 
         if (isBestWin) {
-            this.#feedbackMessage.textContent = '😲';
+            this.#feedbackMessageReference.textContent = '😲';
 
             setTimeout(() => {
                 Swal.fire({
@@ -218,13 +218,13 @@ class HanoiTowerController {
             return;
         }
 
-        this.#feedbackMessage.innerHTML = `Parabéns! Você completou o jogo em <strong class='red'>${ this.#gameService.movesCount }</strong> movimentos!`;
+        this.#feedbackMessageReference.innerHTML = `Parabéns! Você completou o jogo em <strong class='red'>${ this.#gameService.movesCount }</strong> movimentos!`;
         this.#currentMovesCounterReference.textContent = '';
         this.#canRequestHint = false;
     };
 
-    #updateTowerDisks = () => {
-        this.#towerList.forEach(tower => {
+    #updateInvalidDisks = () => {
+        this.#towerElementList.forEach(tower => {
             const diskList = tower.querySelectorAll('.disk');
 
             diskList.forEach((disk, index) => {
@@ -238,7 +238,7 @@ class HanoiTowerController {
     };
 
     #findTowerInMousePosition = (event) => {
-        return this.#towerList.find((tower) => {
+        return this.#towerElementList.find((tower) => {
             const towerRect = tower.getBoundingClientRect();
             const mouseX = event.clientX;
             const mouseY = event.clientY;

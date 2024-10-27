@@ -65,7 +65,9 @@ class HanoiTowerService {
         }
     };
 
-    isWinWithBestSolution = () => this.movesCount === this.minMovesToFinish;
+    isWinWithBestSolution = () => {
+        return this.movesCount === this.minMovesToFinish;
+    };
 
     #incrementMovesCount = () => {
         this.movesCount++;
