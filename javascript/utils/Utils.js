@@ -12,6 +12,10 @@ class Utils {
         });
     }
 
+    static deepClone = (object) => {
+        return JSON.parse(JSON.stringify(object));
+    }
+
 }
 
 export {Utils}
