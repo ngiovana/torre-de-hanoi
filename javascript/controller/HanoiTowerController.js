@@ -146,7 +146,6 @@ class HanoiTowerController {
             parseInt(this.#draggedDiskReference.dataset.number),
             this.#draggedDiskTowerReference.dataset.name,
             toTowerElement?.dataset?.name,
-            false
         )
 
         const gameState = this.#gameService.checkMoveCommand(moveCommand);
@@ -185,7 +184,7 @@ class HanoiTowerController {
             this.#canRequestHint = false;
         }
 
-        this.#animationController.executeMoveDiskToTowerAnimation(diskElement, toTowerElement, () => {
+        const moveDiskCallback = () => {
             this.#finishDiskMove(diskElement, toTowerElement);
             this.#canRequestHint = true;
 
@@ -194,7 +193,13 @@ class HanoiTowerController {
             if (gameState.isFinished) {
                 this.#executeWin(gameState);
             }
-        })
+        }
+
+        if (moveCommand.isHint) {
+            this.#animationController.executeMoveDiskToTowerAnimation(diskElement, toTowerElement, moveDiskCallback)
+        } else {
+            moveDiskCallback();
+        }
     }
 
     #updateMovesCount = (movesCount) => {
