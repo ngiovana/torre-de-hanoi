@@ -1,4 +1,4 @@
-class AnimationService {
+class AnimationController {
 
     #documentStyle
 
@@ -97,4 +97,4 @@ class AnimationService {
     }
 }
 
-export {AnimationService}
+export {AnimationController}

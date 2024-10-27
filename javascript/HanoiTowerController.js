@@ -1,8 +1,8 @@
 import {HanoiTowerService} from './HanoiTowerService.js';
 import {MoveCommand} from './MoveCommand.js';
-import {SoundService} from "./SoundService.js";
-import {AnimationService} from "./AnimationService.js";
-import {DiskService} from "./DiskService.js";
+import {SoundController} from "./SoundController.js";
+import {AnimationController} from "./AnimationController.js";
+import {DiskController} from "./DiskController.js";
 
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
@@ -23,10 +23,11 @@ class HanoiTowerController {
     #draggedDiskTowerReference = null;
     #draggedDiskReference = null;
 
-    #animationService = new AnimationService();
     #gameService = new HanoiTowerService();
-    #soundService = new SoundService();
-    #diskService = new DiskService();
+
+    #animationController = new AnimationController();
+    #soundController = new SoundController();
+    #diskController = new DiskController();
 
     #canRequestHint = false;
 
@@ -38,7 +39,7 @@ class HanoiTowerController {
 
     #startGame = () => {
         this.#restartButtonReference.textContent = "Reiniciar";
-        this.#animationService.stopConfettiFall();
+        this.#animationController.stopConfettiFall();
 
         const diskDifficult = this.#diskDifficultSelectReference.value
 
@@ -48,7 +49,7 @@ class HanoiTowerController {
         this.#updateMovesCount();
         this.#createDisks(diskDifficult);
 
-        this.#soundService.playStarGameSound();
+        this.#soundController.playStarGameSound();
 
         this.#hintButtonReference.classList.remove('hide');
         this.#canRequestHint = true;
@@ -82,16 +83,16 @@ class HanoiTowerController {
     }
 
     #createDisk = (diskValue) => {
-        const diskElement = this.#diskService.createDiskElement(diskValue, this.#firstTowerReference)
+        const diskElement = this.#diskController.createDiskElement(diskValue, this.#firstTowerReference)
 
         diskElement.addEventListener('mousedown', this.#startDiskMove)
 
         document.body.appendChild(diskElement);
 
-        this.#animationService.executeDiskFallAnimation(diskElement, () => {
-            this.#diskService.setDiskStaticState(diskElement)
+        this.#animationController.executeDiskFallAnimation(diskElement, () => {
+            this.#diskController.setDiskStaticState(diskElement)
 
-            this.#soundService.playDragSound();
+            this.#soundController.playDragSound();
             this.#firstTowerReference.appendChild(diskElement);
         })
     }
@@ -101,7 +102,7 @@ class HanoiTowerController {
 
         const diskElement = event.target;
         if (diskElement.classList.contains('invalid')) {
-            this.#soundService.playInvalidMoveSound();
+            this.#soundController.playInvalidMoveSound();
             return;
         }
 
@@ -110,13 +111,13 @@ class HanoiTowerController {
 
         this.#reference.appendChild(diskElement);
 
-        this.#diskService.setDiskDraggingState(diskElement)
-        this.#diskService.setDraggingDiskPosition(diskElement, event)
+        this.#diskController.setDiskDraggingState(diskElement)
+        this.#diskController.setDraggingDiskPosition(diskElement, event)
 
         document.addEventListener('mousemove', this.#moveDisk);
         document.addEventListener('mouseup', this.#dropDisk);
 
-        this.#soundService.playDragSound()
+        this.#soundController.playDragSound()
     }
 
     #moveDisk = (event) => {
@@ -146,16 +147,16 @@ class HanoiTowerController {
             return;
         }
 
-        this.#animationService.executeMoveDiskToTowerAnimation(this.#draggedDiskReference, this.#draggedDiskTowerReference, () => {
+        this.#animationController.executeMoveDiskToTowerAnimation(this.#draggedDiskReference, this.#draggedDiskTowerReference, () => {
             this.#finishDiskMove(this.#draggedDiskReference, this.#draggedDiskTowerReference);
         })
     }
 
     #finishDiskMove = (diskElement, toTowerElement) => {
-        this.#diskService.setDiskStaticState(diskElement)
+        this.#diskController.setDiskStaticState(diskElement)
 
         toTowerElement.appendChild(diskElement);
-        this.#soundService.playMoveSound();
+        this.#soundController.playMoveSound();
 
         if (this.#draggedDiskTowerReference !== toTowerElement) {
             this.#updateInvalidDisks();
@@ -176,7 +177,7 @@ class HanoiTowerController {
             this.#canRequestHint = false;
         }
 
-        this.#animationService.executeMoveDiskToTowerAnimation(diskElement, toTowerElement, () => {
+        this.#animationController.executeMoveDiskToTowerAnimation(diskElement, toTowerElement, () => {
             this.#finishDiskMove(diskElement, toTowerElement);
             this.#canRequestHint = true;
 
@@ -199,10 +200,10 @@ class HanoiTowerController {
             disk.classList.add('invalid');
         });
 
-        this.#animationService.playConfettiFall();
+        this.#animationController.playConfettiFall();
 
         const isBestWin = this.#gameService.isWinWithBestSolution()
-        this.#soundService.playWinSound(isBestWin);
+        this.#soundController.playWinSound(isBestWin);
 
         if (isBestWin) {
             this.#feedbackMessageReference.textContent = '😲';
