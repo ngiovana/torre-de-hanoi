@@ -52,7 +52,7 @@ class AnimationController {
     }
 
     executeMoveDiskToTowerAnimation = (diskElement, toTowerElement, callback) => {
-        const diskNumber = diskElement.dataset.value;
+        const diskNumber = diskElement.dataset.number;
         const cssRuleIndex = this.#documentStyle.cssRules.length;
         const animationName = `disk-${diskNumber}-move-animation-${cssRuleIndex}`
 
