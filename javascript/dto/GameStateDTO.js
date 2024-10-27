@@ -5,22 +5,34 @@ class GameStateDTO {
     id;
     movesCount;
     isFinished;
+    isBestSolution;
 
-    towerDisks;
+    towerByName;
+
     firstTower;
     middleTower;
     lastTower;
 
-    constructor(id, towerDisks) {
+    disksByTower;
+
+    constructor(id, towerByName, disksByTower) {
         this.id = id;
 
         this.movesCount = 0;
         this.isFinished = false;
+        this.isBestSolution = false;
 
-        this.towerDisks = towerDisks;
-        this.firstTower = towerDisks[TowerName.FIRST_TOWER];
-        this.middleTower = towerDisks[TowerName.MIDDLE_TOWER];
-        this.lastTower = towerDisks[TowerName.LAST_TOWER];
+        this.towerByName = towerByName;
+
+        this.firstTower = towerByName[TowerName.FIRST_TOWER];
+        this.middleTower = towerByName[TowerName.MIDDLE_TOWER];
+        this.lastTower = towerByName[TowerName.LAST_TOWER];
+
+        this.disksByTower = disksByTower;
+    }
+
+    getTowerByName = (towerName) => {
+        return this.towerByName[towerName];
     }
 
 }

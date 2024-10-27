@@ -11,8 +11,11 @@ class HanoiTowerBuilder {
 
     static buildNewGame = (id, playerName, externalDifficultLevel) => {
         const difficultLevel = this.#calculateDifficultLevel(externalDifficultLevel)
-        const towersDisksObject = HanoiTowerBuilder.#buildTowersDisksObject(difficultLevel);
-        const gameState = new GameStateDTO(id, towersDisksObject)
+
+        const towerByNameObject = HanoiTowerBuilder.#buildTowerByTowerNameObject(difficultLevel);
+        const disksByTowerObject = HanoiTowerBuilder.#buildDisksByTowerObject(towerByNameObject);
+
+        const gameState = new GameStateDTO(id, towerByNameObject, disksByTowerObject)
 
         const gameData = new GameDataVO(
             id,
@@ -27,19 +30,17 @@ class HanoiTowerBuilder {
         return gameData;
     }
 
-    static #buildTowersDisksObject = (diskQuantity) => {
-        const towersDisksObject = {};
+    static #buildTowerByTowerNameObject = (diskQuantity) => {
+        const towerByNameObject = {};
         Object.values(TowerName).forEach((towerName, index) => {
             const diskStack = towerName === TowerName.FIRST_TOWER
                 ? HanoiTowerBuilder.#buildDiskStack(diskQuantity)
                 : [];
 
-            const tower = new TowerVO(towerName, index, diskStack)
-            towersDisksObject[tower.id] = tower;
-            towersDisksObject[tower.name] = tower;
+            towerByNameObject[towerName] = new TowerVO(towerName, index, diskStack);
         });
 
-        return towersDisksObject;
+        return towerByNameObject;
     }
 
     static #buildDiskStack = (diskQuantity) => {
@@ -50,6 +51,19 @@ class HanoiTowerBuilder {
         }
 
         return diskStack
+    }
+
+    static #buildDisksByTowerObject = (towerByNameObject) => {
+        const disksByTowerObject = {};
+
+        Object.values(towerByNameObject).forEach((tower) => {
+            const diskStack = tower.getDiskStack();
+
+            disksByTowerObject[tower.id] = diskStack;
+            disksByTowerObject[tower.name] = diskStack;
+        });
+
+        return disksByTowerObject;
     }
 
     static #calculateDifficultLevel = (difficultLevel) => {
