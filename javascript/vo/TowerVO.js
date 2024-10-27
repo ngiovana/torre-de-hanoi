@@ -2,8 +2,8 @@ import {DiskVO} from "./DiskVO.js";
 
 class TowerVO {
 
-    name
     id
+    name
 
     /**
      * @type {Array<DiskVO>}
