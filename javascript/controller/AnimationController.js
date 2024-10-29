@@ -90,8 +90,9 @@ class AnimationController {
 
         return `
             @keyframes ${ animationName } {
-                 50% { transform: translateY(${ diskYOffsetToTowerTop }px)     translateX(${ diskXOffsetToTowerMiddle }px); }
-                100% { transform: translateY(${ diskYOffsetToDiskStackTop }px) translateX(${ diskXOffsetToTowerMiddle }px); }
+                 33% { transform: translateY(${ diskYOffsetToTowerTop }px) }
+                 66% { transform: translateY(${ diskYOffsetToTowerTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }
+                100% { transform: translateY(${ diskYOffsetToDiskStackTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }
             }
         `;
     }
