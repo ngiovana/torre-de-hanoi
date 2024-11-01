@@ -59,7 +59,6 @@ class AnimationController {
         const animationRule = this.#createDiskToTowerAnimation(diskElement, toTowerElement, animationName);
         this.#documentStyle.insertRule(animationRule, cssRuleIndex);
 
-        diskElement.style.animation = '';
         diskElement.style.animation = `${ animationName } .5s forwards`;
 
         setTimeout(() => {

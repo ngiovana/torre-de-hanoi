@@ -35,10 +35,8 @@ class HanoiTowerService {
         if (!solver.hasMoveCommands()) return;
 
         const moveCommand = solver.getNextMoveCommand();
-        const gameState = this.checkMoveCommand(moveCommand);
-
-        if (gameState) {
-            return Utils.deepClone({gameState: gameState, moveCommand: moveCommand});
+        if (HanoiTowerService.#validateMoveCommand(gameData, moveCommand)) {
+            return Utils.deepClone(moveCommand);
         }
     };
 

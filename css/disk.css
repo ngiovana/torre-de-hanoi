@@ -58,3 +58,9 @@
     border-color: #555 !important;
     cursor: not-allowed !important;
 }
+
+.disk.phantom {
+    opacity: .5;
+    background-color: #1E90FF;
+    border-color: #1977d4;
+}
