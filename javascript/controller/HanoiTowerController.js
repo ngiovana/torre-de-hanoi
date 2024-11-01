@@ -192,8 +192,11 @@ class HanoiTowerController {
             this.#phantomDisk = this.#diskController.createDiskElement(moveCommand.diskNumber, fromTower);
             this.#finishDiskMove(this.#phantomDisk, fromTower);
 
+            this.#phantomDisk.data = '';
             this.#phantomDisk.style.top = '';
             this.#phantomDisk.style.left = '';
+            this.#phantomDisk.removeAttribute('data-number');
+
             this.#phantomDisk.classList.add('phantom');
 
             diskElement = this.#phantomDisk;
