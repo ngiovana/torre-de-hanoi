@@ -2,7 +2,7 @@ import {Timer} from "../utils/Timer.js";
 import {HanoiTowerSolver} from "../utils/HanoiTowerSolver.js";
 import {TowerName} from "../enum/TowerName.js";
 
-class GameDataVO {
+class GameData {
 
     id;
     playerName;
@@ -26,4 +26,4 @@ class GameDataVO {
 
 }
 
-export {GameDataVO}
+export {GameData}

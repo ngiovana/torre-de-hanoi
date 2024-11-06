@@ -1,6 +1,4 @@
-import {DiskVO} from "./DiskVO.js";
-
-class TowerVO {
+class Tower {
 
     id
     name
@@ -34,4 +32,4 @@ class TowerVO {
 
 }
 
-export {TowerVO}
+export {Tower}
