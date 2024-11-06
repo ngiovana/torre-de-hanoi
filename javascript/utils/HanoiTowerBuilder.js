@@ -46,8 +46,7 @@ class HanoiTowerBuilder {
     static #buildDiskStack = (diskQuantity) => {
         const diskStack = []
         for (let diskNumber = diskQuantity; diskNumber > 0; diskNumber--) {
-            const disk = new DiskVO(diskNumber)
-            diskStack.push(disk)
+            diskStack.push(diskNumber)
         }
 
         return diskStack

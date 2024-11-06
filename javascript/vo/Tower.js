@@ -4,10 +4,6 @@ class TowerVO {
 
     id
     name
-
-    /**
-     * @type {Array<DiskVO>}
-     */
     diskStack;
 
     constructor(name, id, diskStack) {
