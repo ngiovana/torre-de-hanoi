@@ -9,7 +9,7 @@ class TriangleNode {
     topCount;
     rightCount;
 
-    TriangleNode(position) {
+    constructor(position) {
         this.position = position;
     }
 
