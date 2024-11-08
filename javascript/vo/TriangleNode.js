@@ -1,16 +1,16 @@
 class TriangleNode {
 
-    position;
-    bestPosition;
-    middlePosition;
-    worstPosition;
+    disksState;
+    betterDisksState;
+    relativeDisksState;
+    worseDisksState;
 
     leftCount;
     topCount;
     rightCount;
 
-    constructor(position) {
-        this.position = position;
+    constructor(disksState) {
+        this.disksState = disksState;
     }
 
     setCounters = (leftCount, topCount, rightCount) => {
