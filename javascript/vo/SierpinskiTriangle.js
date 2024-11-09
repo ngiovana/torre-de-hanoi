@@ -9,9 +9,9 @@ class SierpinskiTriangle {
 
     static nodeMap = {};
 
-    #left = [0, 1];
-    #top = [0, 2];
-    #right = [1, 2];
+    #left;
+    #top;
+    #right;
 
     #countTop;
     #countRight;
@@ -37,9 +37,13 @@ class SierpinskiTriangle {
 
         this.#iterationNumber = iterationNumber;
 
+        this.#left = left;
+        this.#top = top;
+        this.#right = right;
+
         this.#countTop = countTop;
-        this.#countLeft = countRight;
-        this.#countRight = countLeft;
+        this.#countLeft = countLeft;
+        this.#countRight = countRight;
 
         this.#gameState = gameState;
 
