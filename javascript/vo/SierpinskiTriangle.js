@@ -120,10 +120,33 @@ class SierpinskiTriangle {
         this.#triangle.topNode = this.#triangle.top.topNode;
         this.#triangle.rightNode = this.#triangle.right.rightNode;
 
-        this.#setBestAndMidName(this.#triangle.left.rightNode, this.#triangle.left.topNode, this.#triangle.right.leftNode, this.#triangle.left.leftNode);
-        this.#setBestAndMidName(this.#triangle.top.rightNode, this.#triangle.top.topNode, this.#triangle.right.topNode, this.#triangle.top.leftNode);
-        this.#setBestAndMidName(this.#triangle.left.topNode, this.#triangle.top.leftNode, this.#triangle.left.rightNode, this.#triangle.left.leftNode);
-        this.#setBestAndMidName(this.#triangle.right.topNode, this.#triangle.top.rightNode, this.#triangle.right.rightNode, this.#triangle.right.leftNode);
+        this.#setBestAndMidName(
+            this.#triangle.left.rightNode,
+            this.#triangle.left.topNode,
+            this.#triangle.right.leftNode,
+            this.#triangle.left.leftNode
+        );
+
+        this.#setBestAndMidName(
+            this.#triangle.top.rightNode,
+            this.#triangle.top.topNode,
+            this.#triangle.right.topNode,
+            this.#triangle.top.leftNode
+        );
+
+        this.#setBestAndMidName(
+            this.#triangle.left.topNode,
+            this.#triangle.top.leftNode,
+            this.#triangle.left.rightNode,
+            this.#triangle.left.leftNode
+        );
+
+        this.#setBestAndMidName(
+            this.#triangle.right.topNode,
+            this.#triangle.top.rightNode,
+            this.#triangle.right.rightNode,
+            this.#triangle.right.leftNode
+        );
 
         if (this.#triangle.top.leftNode.worseDisksState === undefined) {
             this.#triangle.top.leftNode.worseDisksState = this.#triangle.left.topNode.disksState;
