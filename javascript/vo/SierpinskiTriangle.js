@@ -66,6 +66,22 @@ class SierpinskiTriangle {
         return this.#triangle;
     }
 
+    buildTriangleNodeDisksState = (gameState) => {
+        let disksState = "";
+
+
+        for (let diskIndex = 0; diskIndex < this.#diskCount; diskIndex++) {
+            for (let towerIndex = 0; towerIndex < SierpinskiTriangle.TOWER_COUNT; towerIndex++) {
+                if (gameState[towerIndex].some((diskNumber) => diskNumber === diskIndex )) {
+                    disksState = towerIndex.toString() + disksState;
+                    break;
+                }
+            }
+        }
+
+        return disksState;
+    }
+
     #buildTriangles = () => {
         this.#buildLeftTriangle();
         this.#buildTopTriangle();
@@ -206,21 +222,6 @@ class SierpinskiTriangle {
 
         this.#triangle.topNode = new TriangleNode(disksState);
         this.#triangle.topNode.setCounters(this.#countTop + 1, this.#countRight, this.#countLeft);
-    }
-
-    #buildTriangleNodeDisksState = (gameState) => {
-        let disksState = "";
-
-        for (let diskIndex = 0; diskIndex < this.#diskCount; diskIndex++) {
-            for (let towerIndex = 0; towerIndex < SierpinskiTriangle.TOWER_COUNT; towerIndex++) {
-                if (gameState[towerIndex].some((diskNumber) => diskNumber === diskIndex )) {
-                    disksState = towerIndex.toString() + disksState;
-                    break;
-                }
-            }
-        }
-
-        return disksState;
     }
 
     #carryDisks(gameState, base, to) {
