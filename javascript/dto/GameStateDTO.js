@@ -35,6 +35,14 @@ class GameStateDTO {
         return this.towerByName[towerName];
     }
 
+    getTowerList = () => {
+        return [
+            this.firstTower.getDiskStack().map(disk => disk - 1),
+            this.middleTower.getDiskStack().map(disk => disk - 1),
+            this.lastTower.getDiskStack().map(disk => disk - 1),
+        ]
+    }
+
 }
 
 export {GameStateDTO}

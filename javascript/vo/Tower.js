@@ -1,13 +1,7 @@
-import {DiskVO} from "./DiskVO.js";
-
-class TowerVO {
+class Tower {
 
     id
     name
-
-    /**
-     * @type {Array<DiskVO>}
-     */
     diskStack;
 
     constructor(name, id, diskStack) {
@@ -38,4 +32,4 @@ class TowerVO {
 
 }
 
-export {TowerVO}
+export {Tower}

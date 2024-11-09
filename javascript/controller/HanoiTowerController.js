@@ -31,6 +31,8 @@ class HanoiTowerController {
     #diskController = new DiskController();
 
     #canRequestHint = false;
+    #lastHintMoveCommand;
+    #phantomDisk;
 
     constructor(gameService) {
         this.#gameService = gameService;
@@ -61,13 +63,18 @@ class HanoiTowerController {
 
     #requestHint = () => {
         if (!this.#canRequestHint) return;
-        const hintObject = this.#gameService.requestHint(this.#gameId);
-        if (!hintObject) return;
 
-        const gameState = hintObject.gameState;
-        const moveCommand = hintObject.moveCommand;
+        if (!this.#lastHintMoveCommand) {
+            this.#lastHintMoveCommand = this.#gameService.requestHint(this.#gameId);
+            if (!this.#lastHintMoveCommand) return;
+        }
 
-        this.#executeMoveCommand(gameState, moveCommand);
+        if (this.#phantomDisk) {
+            this.#phantomDisk.remove();
+            this.#phantomDisk = null;
+        }
+
+        this.#executeMoveCommand(null, this.#lastHintMoveCommand);
     };
 
     #setMinMovesToFinish = (minMovesToFinish) => {
@@ -75,7 +82,7 @@ class HanoiTowerController {
     };
 
     #createDisks = (diskDifficult) => {
-        this.#towerElementList.forEach(tower => tower.innerHTML = '');
+        document.querySelectorAll('.disk').forEach(diskElement => diskElement.remove())
 
         for (let diskNumber = diskDifficult; diskNumber > 0; diskNumber--) {
             setTimeout(() => {
@@ -177,16 +184,32 @@ class HanoiTowerController {
         const toTowerElement = this.#getTowerByName(moveCommand.toTowerName);
         if (!toTowerElement) return;
 
-        const diskElement = this.#getDiskByNumber(moveCommand.diskNumber);
-        if (!diskElement) return;
-
+        let diskElement;
         if (moveCommand.isHint) {
             this.#canRequestHint = false;
+
+            const fromTower = this.#getTowerByName(moveCommand.fromTowerName);
+            this.#phantomDisk = this.#diskController.createDiskElement(moveCommand.diskNumber, fromTower);
+            this.#finishDiskMove(this.#phantomDisk, fromTower);
+
+            this.#phantomDisk.data = '';
+            this.#phantomDisk.style.top = '';
+            this.#phantomDisk.style.left = '';
+            this.#phantomDisk.removeAttribute('data-number');
+
+            this.#phantomDisk.classList.add('phantom');
+
+            diskElement = this.#phantomDisk;
+        } else {
+            diskElement = this.#getDiskByNumber(moveCommand.diskNumber);
+            if (!diskElement) return;
         }
 
         const moveDiskCallback = () => {
             this.#finishDiskMove(diskElement, toTowerElement);
             this.#canRequestHint = true;
+
+            if (!gameState) return;
 
             this.#updateMovesCount(gameState.movesCount);
 
@@ -198,6 +221,12 @@ class HanoiTowerController {
         if (moveCommand.isHint) {
             this.#animationController.executeMoveDiskToTowerAnimation(diskElement, toTowerElement, moveDiskCallback)
         } else {
+            if (this.#phantomDisk) {
+                this.#phantomDisk.remove();
+                this.#phantomDisk = null;
+            }
+
+            this.#lastHintMoveCommand = null;
             moveDiskCallback();
         }
     }

@@ -1,8 +1,7 @@
-import {TowerVO} from "../vo/TowerVO.js";
-import {DiskVO} from "../vo/DiskVO.js";
+import {Tower} from "../vo/Tower.js";
 import {TowerName} from "../enum/TowerName.js";
 import {GameStateDTO} from "../dto/GameStateDTO.js";
-import {GameDataVO} from "../vo/GameDataVO.js";
+import {GameData} from "../vo/GameData.js";
 
 class HanoiTowerBuilder {
 
@@ -17,7 +16,7 @@ class HanoiTowerBuilder {
 
         const gameState = new GameStateDTO(id, towerByNameObject, disksByTowerObject)
 
-        const gameData = new GameDataVO(
+        const gameData = new GameData(
             id,
             playerName,
             difficultLevel,
@@ -37,7 +36,7 @@ class HanoiTowerBuilder {
                 ? HanoiTowerBuilder.#buildDiskStack(diskQuantity)
                 : [];
 
-            towerByNameObject[towerName] = new TowerVO(towerName, index, diskStack);
+            towerByNameObject[towerName] = new Tower(towerName, index, diskStack);
         });
 
         return towerByNameObject;
@@ -46,8 +45,7 @@ class HanoiTowerBuilder {
     static #buildDiskStack = (diskQuantity) => {
         const diskStack = []
         for (let diskNumber = diskQuantity; diskNumber > 0; diskNumber--) {
-            const disk = new DiskVO(diskNumber)
-            diskStack.push(disk)
+            diskStack.push(diskNumber)
         }
 
         return diskStack
