@@ -29,12 +29,9 @@ class HanoiTowerService {
         if (!gameData) return;
         if (gameData.state.isFinished) return;
 
-        const solver = gameData.solver;
-        solver.buildNextSolutionMove(gameData.state.disksByTower, gameData.difficultLevel, 0, 2, 1);
+        const moveCommand = gameData.solver.getNextMoveCommand(gameData.state);
+        if (!moveCommand) return;
 
-        if (!solver.hasMoveCommands()) return;
-
-        const moveCommand = solver.getNextMoveCommand();
         if (HanoiTowerService.#validateMoveCommand(gameData, moveCommand)) {
             return Utils.deepClone(moveCommand);
         }
@@ -47,7 +44,7 @@ class HanoiTowerService {
         if (!fromTower) return false;
 
         const disk = fromTower.getTopDisk()
-        if (disk.getNumber() !== moveCommand.diskNumber) return false;
+        if (disk !== moveCommand.diskNumber) return false;
 
         const toTower = gameData.state.getTowerByName(moveCommand.toTowerName);
         if (!toTower) return false;
@@ -57,7 +54,7 @@ class HanoiTowerService {
         const currentTopDisk = toTower.getTopDisk();
         if (!currentTopDisk) return true;
 
-        return currentTopDisk.getNumber() > disk.getNumber();
+        return currentTopDisk > disk;
     };
 
     static #executeMoveCommand = (gameData, moveCommand) => {
