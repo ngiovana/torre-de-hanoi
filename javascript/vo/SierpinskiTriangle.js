@@ -73,10 +73,9 @@ class SierpinskiTriangle {
     buildTriangleNodeDisksState = (gameState) => {
         let disksState = "";
 
-
         for (let diskIndex = 0; diskIndex < this.#diskCount; diskIndex++) {
             for (let towerIndex = 0; towerIndex < SierpinskiTriangle.TOWER_COUNT; towerIndex++) {
-                if (gameState[towerIndex].some((diskNumber) => diskNumber === diskIndex )) {
+                if (gameState[towerIndex].some((diskNumber) => diskNumber === diskIndex)) {
                     disksState = towerIndex.toString() + disksState;
                     break;
                 }
@@ -224,12 +223,7 @@ class SierpinskiTriangle {
 
     #buildLeftTower = () => {
         const newGameState = Utils.deepClone(this.#carryDisks(this.#gameState, this.#iterationNumber, this.#left[0]));
-        const disksState = this.#buildTriangleNodeDisksState(newGameState);
-
-        // console.log("+++++++++++++++++++++++++++++++++++")
-        // console.log(this.#gameState[0], this.#gameState[1], this.#gameState[2], this.#gameState)
-        // console.log(newGameState[0], newGameState[1], newGameState[2], newGameState)
-        // console.log("+++++++++++++++++++++++++++++++++++")
+        const disksState = this.buildTriangleNodeDisksState(newGameState);
 
         this.#triangle.leftNode = new TriangleNode(disksState);
         this.#triangle.leftNode.setCounters(this.#countTop, this.#countRight, this.#countLeft + 1);
@@ -237,7 +231,7 @@ class SierpinskiTriangle {
 
     #buildRightTower = () => {
         const newGameState = Utils.deepClone(this.#carryDisks(this.#gameState, this.#iterationNumber, this.#right[1]));
-        const disksState = this.#buildTriangleNodeDisksState(newGameState);
+        const disksState = this.buildTriangleNodeDisksState(newGameState);
 
         this.#triangle.rightNode = new TriangleNode(disksState);
         this.#triangle.rightNode.setCounters(this.#countTop, this.#countRight + 1, this.#countLeft);
@@ -245,7 +239,7 @@ class SierpinskiTriangle {
 
     #buildTopTower = () => {
         const newGameState = Utils.deepClone(this.#carryDisks(this.#gameState, this.#iterationNumber, this.#left[1]));
-        const disksState = this.#buildTriangleNodeDisksState(newGameState);
+        const disksState = this.buildTriangleNodeDisksState(newGameState);
 
         this.#triangle.topNode = new TriangleNode(disksState);
         this.#triangle.topNode.setCounters(this.#countTop + 1, this.#countRight, this.#countLeft);
@@ -307,9 +301,9 @@ class SierpinskiTriangle {
     }
 
     static #buildInitialGameState = (diskCount) => {
-        const gameState = [[],[],[]];
+        const gameState = [[], [], []];
 
-        Array.from({ length: diskCount }).forEach((_, diskNumber) => {
+        Array.from({length: diskCount}).forEach((_, diskNumber) => {
             gameState[0].push(diskCount - diskNumber - 1);
         });
 
@@ -317,6 +311,5 @@ class SierpinskiTriangle {
     }
 
 }
-
 
 export {SierpinskiTriangle}
