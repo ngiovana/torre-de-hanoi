@@ -1,85 +1,52 @@
-import {MoveCommandDTO} from "../dto/MoveCommandDTO.js";
-import { TowerName } from "../enum/TowerName.js";
 import {SierpinskiTriangle} from "../vo/SierpinskiTriangle.js";
+import {MoveCommandDTO} from "../dto/MoveCommandDTO.js";
+import {TowerName} from "../enum/TowerName.js";
 
 class HanoiTowerSolver {
 
     #gameId;
 
-    /**
-     * @type {Array<MoveCommandDTO>}
-     */
-    #solutionMoves = [];
-
-    banana;
+    #sierpinskiTriangle;
 
     constructor(gameId, difficultLevel, firstTowerName, middleTowerName, lastTowerName) {
         this.#gameId = gameId;
-        this.#buildSolutionMoves(difficultLevel, firstTowerName, lastTowerName, middleTowerName);
 
-        this.banana = new SierpinskiTriangle(difficultLevel)
-        this.banana.init()
+        SierpinskiTriangle.nodeMap = {};
+        this.#sierpinskiTriangle = new SierpinskiTriangle(difficultLevel)
+        this.#sierpinskiTriangle.init()
     }
 
-    hasMoveCommands = () => {
-        return this.#solutionMoves.length > 0;
-    }
+    getNextMoveCommand = (gameState) => {
+        const currentDisksState = this.#sierpinskiTriangle.buildTriangleNodeDisksState(gameState.getTowerList());
+        const currentNode = SierpinskiTriangle.nodeMap[currentDisksState]
 
-    getNextMoveCommand = () => {
-        return this.#solutionMoves.shift();
-    }
+        if (currentNode.betterDisksState === undefined) return;
 
-    #buildSolutionMoves = (diskNumber, fromTower, toTower, swapTower) => {
-        if (diskNumber === 0 || true) return;
+        const newDisksState = currentNode.betterDisksState;
 
-        this.#buildSolutionMoves(diskNumber - 1, fromTower, swapTower, toTower);
-
-        this.#solutionMoves.push(new MoveCommandDTO(
-            this.#gameId,
-            diskNumber,
-            fromTower,
-            toTower,
-            true
-        ));
-
-        this.#buildSolutionMoves(diskNumber - 1, swapTower, toTower, fromTower);
-    }
-
-    buildNextSolutionMove = (towers, n, fromTower, toTower, auxTower) => {
-        if (n === 0) return;
-
-        if (towers[toTower][n - 1] && towers[toTower][n - 1].value === n) {
-            this.buildNextSolutionMove(towers, n - 1, fromTower, toTower, auxTower);
-            return;
+        let fromTowerIndex
+        let toTowerIndex
+        let diskToMoveIndex
+        for (let diskIndex = 0; diskIndex < newDisksState.length; diskIndex++) {
+            if (currentDisksState[diskIndex] !== newDisksState[diskIndex]) {
+                diskToMoveIndex = diskIndex;
+                break;
+            }
         }
 
-        this.buildNextSolutionMove(towers, n - 1, fromTower, auxTower, toTower);
+        const diskToMoveNumber = (newDisksState.length) - diskToMoveIndex;
+        fromTowerIndex = parseInt(currentDisksState[diskToMoveIndex]);
+        toTowerIndex = parseInt(newDisksState[diskToMoveIndex]);
 
-        const diskToMove = towers[fromTower].pop();
-
-        if (!diskToMove) return;
-
-        towers[toTower].push(diskToMove);
-
-        this.#solutionMoves.push({
-            gameId: this.#gameId,
-            diskNumber: diskToMove.number,
-            fromTowerName: Object.values(TowerName)[fromTower],
-            toTowerName: Object.values(TowerName)[toTower],
-            isHint: true
-        });
-
-        // if (this.#solutionMoves.length === 1) {
-        //     const moveCommand = this.#solutionMoves.shift();
-        //     if (new HanoiTowerService().validateMoveCommand(moveCommand)) {
-        //         this.#solutionMoves.push(moveCommand);
-        //     } else {
-        //         this.buildNextSolutionMove(towers, n, auxTower, toTower, fromTower);
-        //     }
-        // }
-
-        this.buildNextSolutionMove(towers, n - 1, auxTower, toTower, fromTower);
+        return new MoveCommandDTO(
+            this.#gameId,
+            diskToMoveNumber,
+            TowerName.towerIndexToName(fromTowerIndex),
+            TowerName.towerIndexToName(toTowerIndex),
+            true
+        )
     }
+
 }
 
 export {HanoiTowerSolver}
