@@ -1,5 +1,6 @@
 import {MoveCommandDTO} from "../dto/MoveCommandDTO.js";
 import { TowerName } from "../enum/TowerName.js";
+import {SierpinskiTriangle} from "../vo/SierpinskiTriangle.js";
 
 class HanoiTowerSolver {
 
@@ -10,9 +11,14 @@ class HanoiTowerSolver {
      */
     #solutionMoves = [];
 
+    banana;
+
     constructor(gameId, difficultLevel, firstTowerName, middleTowerName, lastTowerName) {
         this.#gameId = gameId;
         this.#buildSolutionMoves(difficultLevel, firstTowerName, lastTowerName, middleTowerName);
+
+        this.banana = new SierpinskiTriangle(difficultLevel)
+        this.banana.init()
     }
 
     hasMoveCommands = () => {
