@@ -13,7 +13,7 @@ class TriangleNode {
         this.disksState = disksState;
     }
 
-    setCounters = (leftCount, topCount, rightCount) => {
+    setCounters = (topCount, rightCount, leftCount) => {
         this.leftCount = leftCount;
         this.topCount = topCount;
         this.rightCount = rightCount;
