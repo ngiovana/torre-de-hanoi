@@ -306,7 +306,7 @@ class SierpinskiTriangle {
         const gameState = [[],[],[]];
 
         Array.from({ length: diskCount }).forEach((_, diskNumber) => {
-            gameState[0].push(diskNumber);
+            gameState[0].push(diskCount - diskNumber - 1);
         });
 
         return gameState;
