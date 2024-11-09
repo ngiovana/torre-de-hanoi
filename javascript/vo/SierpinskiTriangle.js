@@ -176,7 +176,7 @@ class SierpinskiTriangle {
         }
     }
 
-    #buildLeftTriangle = () =>  {
+    #buildLeftTriangle = () => {
         this.#triangle.left = new SierpinskiTriangle(
             this.#diskCount,
             this.#iterationNumber - 1,
@@ -209,8 +209,8 @@ class SierpinskiTriangle {
             this.#diskCount,
             this.#iterationNumber - 1,
             this.#flip(this.#right),
-            this.#flip(this.#left),
             this.#flip(this.#top),
+            this.#flip(this.#left),
             this.#countTop + 1,
             this.#countRight,
             this.#countLeft,
