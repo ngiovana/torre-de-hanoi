@@ -44,8 +44,8 @@ class DiskController {
     }
 
     setDraggingDiskPosition = (diskElement, event) => {
-        const diskTop = event.clientY - diskElement.offsetHeight / 2;
-        const diskLeft = event.clientX - diskElement.offsetWidth / 2;
+        const diskTop = (event.clientY || event.touches[0].clientY) - diskElement.offsetHeight / 2;
+        const diskLeft = (event.clientX || event.touches[0].clientX) - diskElement.offsetWidth / 2;
 
         diskElement.style.top  = `${ diskTop }px`;
         diskElement.style.left = `${ diskLeft }px`;

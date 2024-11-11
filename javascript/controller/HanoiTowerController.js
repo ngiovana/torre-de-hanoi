@@ -99,6 +99,7 @@ class HanoiTowerController {
         const diskElement = this.#diskController.createDiskElement(diskNumber, this.#firstTowerReference)
 
         diskElement.addEventListener('mousedown', this.#startDiskMove)
+        diskElement.addEventListener('touchstart', this.#startDiskMove)
 
         document.body.appendChild(diskElement);
 
@@ -129,13 +130,18 @@ class HanoiTowerController {
 
         document.addEventListener('mousemove', this.#moveDisk);
         document.addEventListener('mouseup', this.#dropDisk);
+        document.addEventListener('touchmove', this.#moveDisk)
+        document.addEventListener('touchend', this.#dropDisk)
 
         this.#soundController.playDragSound()
     }
 
     #moveDisk = (event) => {
-        const diskTop = event.clientY - this.#draggedDiskReference.offsetHeight / 2;
-        const diskLeft = event.clientX - this.#draggedDiskReference.offsetWidth / 2;
+        const clientY = event.clientY || event.touches[0].clientY;
+        const clientX = event.clientX || event.touches[0].clientX;
+
+        const diskTop = clientY - this.#draggedDiskReference.offsetHeight / 2;
+        const diskLeft = clientX - this.#draggedDiskReference.offsetWidth / 2;
 
         this.#draggedDiskReference.style.top  = `${ diskTop }px`;
         this.#draggedDiskReference.style.left = `${ diskLeft }px`;
@@ -144,6 +150,8 @@ class HanoiTowerController {
     #dropDisk = (event) => {
         document.removeEventListener('mousemove', this.#moveDisk)
         document.removeEventListener('mouseup', this.#dropDisk)
+        document.removeEventListener('touchmove', this.#moveDisk)
+        document.removeEventListener('touchend', this.#dropDisk)
 
         this.#draggedDiskReference.style.cursor = 'grab';
 
@@ -286,13 +294,14 @@ class HanoiTowerController {
     #findTowerInMousePosition = (event) => {
         return this.#towerElementList.find((tower) => {
             const towerRect = tower.getBoundingClientRect();
-            const mouseX = event.clientX;
-            const mouseY = event.clientY;
 
-            if (mouseX < towerRect.left) return false
-            if (mouseX > towerRect.right) return false
-            if (mouseY < towerRect.top) return false
-            if (mouseY > towerRect.bottom) return false
+            const clientX = event.clientX || event.changedTouches[0].clientX;
+            const clientY = event.clientY  || event.changedTouches[0].clientY;
+
+            if (clientX < towerRect.left) return false
+            if (clientX > towerRect.right) return false
+            if (clientY < towerRect.top) return false
+            if (clientY > towerRect.bottom) return false
 
             return true
         });
