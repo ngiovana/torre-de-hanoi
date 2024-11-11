@@ -18,6 +18,11 @@
             <h1 class="title">Torre de Hanói</h1>
         </header>
 
+        <div class="config-container top-moves">
+            <p class="current-moves-count"></p>
+            <p class="minimum-moves-to-finish"></p>
+        </div>
+
         <main class="main">
             <div class="hanoi-game">
                 <div class="tower first-tower" id="tower1" data-name="firstTower"></div>
@@ -28,7 +33,6 @@
 
         <footer class="footer">
             <div class="config-container">
-                <label for="disk-count">Quantidade de discos:</label>
                 <select id="disk-count" class="disk-difficult-select">
                     <option value="1">1 disco</option>
                     <option value="2">2 discos</option>
@@ -41,7 +45,7 @@
                 </select>
             </div>
 
-            <div class="config-container">
+            <div class="config-container bottom-moves">
                 <p class="current-moves-count"></p>
                 <p class="minimum-moves-to-finish"></p>
             </div>

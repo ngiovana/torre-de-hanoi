@@ -11,8 +11,8 @@ class HanoiTowerController {
     #restartButtonReference = this.#reference.querySelector('.restart-button');
     #hintButtonReference = this.#reference.querySelector('.hint-button');
 
-    #currentMovesCounterReference = this.#reference.querySelector('.current-moves-count');
-    #feedbackMessageReference = this.#reference.querySelector('.minimum-moves-to-finish');
+    #currentMovesCounterReferenceList = this.#reference.querySelectorAll('.current-moves-count');
+    #feedbackMessageReferenceList = this.#reference.querySelectorAll('.minimum-moves-to-finish');
 
     #firstTowerReference = this.#reference.querySelector('.first-tower');
     #middleTowerReference = this.#reference.querySelector('.middle-tower');
@@ -78,7 +78,9 @@ class HanoiTowerController {
     };
 
     #setMinMovesToFinish = (minMovesToFinish) => {
-        this.#feedbackMessageReference.innerHTML = `Mínimo de movimentos necessários: <strong class='red'>${minMovesToFinish}</strong>`;
+        this.#feedbackMessageReferenceList.forEach(element => {
+            element.innerHTML = `Mínimo de movimentos necessários: <strong class='red'>${minMovesToFinish}</strong>`
+        })
     };
 
     #createDisks = (diskDifficult) => {
@@ -243,8 +245,9 @@ class HanoiTowerController {
         const moveLabel = movesCount === 1 ? 'movimento' : 'movimentos';
         const actionLabel = movesCount === 1 ? 'feito' : 'feitos';
 
-        this.#currentMovesCounterReference.innerHTML =
-            `<strong class='red'>${ movesCount }</strong> ${ moveLabel } ${ actionLabel }`;
+        this.#currentMovesCounterReferenceList.forEach((element) => {
+            element.innerHTML = `<strong class='red'>${ movesCount }</strong> ${ moveLabel } ${ actionLabel }`;
+        })
     };
 
     #executeWin = (gameState) => {
@@ -257,7 +260,7 @@ class HanoiTowerController {
         this.#soundController.playWinSound(gameState.isBestSolution);
 
         if (gameState.isBestSolution) {
-            this.#feedbackMessageReference.textContent = '😲';
+            this.#feedbackMessageReferenceList.forEach(element => element.textContent = '😲');
 
             setTimeout(() => {
                 Swal.fire({
@@ -270,11 +273,13 @@ class HanoiTowerController {
             return;
         }
 
-        this.#currentMovesCounterReference.textContent = '';
+        this.#currentMovesCounterReferenceList.forEach(element => element.textContent = '');
         this.#canRequestHint = false;
 
-        this.#feedbackMessageReference.innerHTML =
-            `Parabéns! Você completou o jogo em <strong class='red'>${ gameState.movesCount }</strong> movimentos!`;
+        this.#feedbackMessageReferenceList.forEach(element => {
+            element.innerHTML =
+                `Parabéns! Você completou o jogo em <strong class='red'>${ gameState.movesCount }</strong> movimentos!`;
+        })
     };
 
     #updateInvalidDisks = () => {
