@@ -8,6 +8,7 @@ class SierpinskiTriangle {
     static TOWER_COUNT = 3
 
     static nodeMap = {};
+    static triangleMap = {};
 
     #left;
     #top;
@@ -113,9 +114,17 @@ class SierpinskiTriangle {
         topNode.worseDisksState = leftNode.disksState;
         rightNode.worseDisksState = leftNode.disksState;
 
-        SierpinskiTriangle.nodeMap[leftNode.disksState] = leftNode;
-        SierpinskiTriangle.nodeMap[topNode.disksState] = topNode;
-        SierpinskiTriangle.nodeMap[rightNode.disksState] = rightNode;
+        this.#storeTriangleInfo(this.#triangle)
+    }
+
+    #storeTriangleInfo(triangle) {
+        SierpinskiTriangle.nodeMap[triangle.leftNode.disksState] = triangle.leftNode;
+        SierpinskiTriangle.nodeMap[triangle.topNode.disksState] = triangle.topNode;
+        SierpinskiTriangle.nodeMap[triangle.rightNode.disksState] = triangle.rightNode;
+
+        SierpinskiTriangle.triangleMap[triangle.leftNode.disksState] = triangle;
+        SierpinskiTriangle.triangleMap[triangle.topNode.disksState] = triangle;
+        SierpinskiTriangle.triangleMap[triangle.rightNode.disksState] = triangle;
     }
 
     #updateTriangleNodes = () => {
@@ -123,32 +132,36 @@ class SierpinskiTriangle {
         this.#triangle.topNode = this.#triangle.top.topNode;
         this.#triangle.rightNode = this.#triangle.right.rightNode;
 
+        let originalTriangle = SierpinskiTriangle.triangleMap[this.#triangle.left.rightNode.disksState];
         this.#setBestAndMidName(
             this.#triangle.left.rightNode,
-            this.#triangle.left.topNode,
+            originalTriangle.topNode,
             this.#triangle.right.leftNode,
-            this.#triangle.left.leftNode
+            originalTriangle.leftNode
         );
 
+        originalTriangle = SierpinskiTriangle.triangleMap[this.#triangle.top.rightNode.disksState];
         this.#setBestAndMidName(
             this.#triangle.top.rightNode,
-            this.#triangle.top.topNode,
+            originalTriangle.topNode,
             this.#triangle.right.topNode,
-            this.#triangle.top.leftNode
+            originalTriangle.leftNode
         );
 
+        originalTriangle = SierpinskiTriangle.triangleMap[this.#triangle.left.topNode.disksState];
         this.#setBestAndMidName(
             this.#triangle.left.topNode,
             this.#triangle.top.leftNode,
-            this.#triangle.left.rightNode,
-            this.#triangle.left.leftNode
+            originalTriangle.rightNode,
+            originalTriangle.leftNode
         );
 
+        originalTriangle = SierpinskiTriangle.triangleMap[this.#triangle.right.topNode.disksState];
         this.#setBestAndMidName(
             this.#triangle.right.topNode,
             this.#triangle.top.rightNode,
-            this.#triangle.right.rightNode,
-            this.#triangle.right.leftNode
+            originalTriangle.rightNode,
+            originalTriangle.leftNode
         );
 
         if (this.#triangle.top.leftNode.worseDisksState === undefined) {
@@ -188,7 +201,7 @@ class SierpinskiTriangle {
             this.#flip(this.#right),
             this.#countTop,
             this.#countRight,
-            this.#countLeft + 1,
+            this.#countLeft + Math.pow(this.#iterationNumber, this.#iterationNumber),
             Utils.deepClone(this.#carryDisks(this.#gameState, this.#iterationNumber, this.#left[0])),
         ).init();
     }
@@ -201,7 +214,7 @@ class SierpinskiTriangle {
             this.#right,
             this.#top,
             this.#countTop,
-            this.#countRight + 1,
+            this.#countRight + Math.pow(this.#iterationNumber, this.#iterationNumber),
             this.#countLeft,
             Utils.deepClone(this.#carryDisks(this.#gameState, this.#iterationNumber, this.#right[1])),
         ).init();
@@ -214,7 +227,7 @@ class SierpinskiTriangle {
             this.#flip(this.#right),
             this.#flip(this.#top),
             this.#flip(this.#left),
-            this.#countTop + 1,
+            this.#countTop + Math.pow(this.#iterationNumber, this.#iterationNumber),
             this.#countRight,
             this.#countLeft,
             Utils.deepClone(this.#carryDisks(this.#gameState, this.#iterationNumber, this.#left[1])),
