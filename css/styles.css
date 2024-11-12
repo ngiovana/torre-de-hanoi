@@ -209,7 +209,8 @@ button:hover {
     }
 
     .top-moves {
-        display: initial;
+        display: initial !important;
+        margin-bottom: 5rem;
     }
 
     .bottom-moves {
@@ -218,6 +219,8 @@ button:hover {
 
     select,
     button {
+        font-size: 1.5rem;
         max-width: none;
-    }
+        height: 4rem;
+   }
 }
