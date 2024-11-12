@@ -59,6 +59,11 @@ class HanoiTowerController {
 
         this.#hintButtonReference.classList.remove('hide');
         this.#canRequestHint = true;
+
+        if (this.#phantomDisk) {
+            this.#phantomDisk.remove();
+            this.#phantomDisk = null;
+        }
     }
 
     #requestHint = () => {
