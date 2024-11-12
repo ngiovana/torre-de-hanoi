@@ -1,7 +1,7 @@
 class DiskController {
 
     static DISK_HEIGHT = () => {
-        if (window.innerWidth <= 991) {
+        if (DiskController.isMobile()) {
             return 25;
         }
 
@@ -9,16 +9,22 @@ class DiskController {
     };
 
     static CALCULATE_DISK_WIDTH = (diskNumber) => {
-        if (window.innerWidth <= 991) {
-            return 30 + 15 * diskNumber
+        if (DiskController.isMobile()) {
+            return 5 + 4 * diskNumber
         }
 
         return 50 + 30 * diskNumber
     };
 
+    static isMobile = () => {
+        return window.innerWidth <= 991;
+    }
+
     createDiskElement = (diskNumber, towerElement) => {
         const diskElement = document.createElement('div');
         const diskWidth = DiskController.CALCULATE_DISK_WIDTH(diskNumber);
+
+        const sizeMetrics = DiskController.isMobile() ? "vw" : "px"
 
         diskElement.setAttribute('data-number', diskNumber);
         diskElement.classList.add(`disk`);
@@ -26,7 +32,7 @@ class DiskController {
         diskElement.classList.add('invalid');
         diskElement.textContent = diskNumber;
         diskElement.style.position = 'absolute';
-        diskElement.style.width = `${ diskWidth }px`;
+        diskElement.style.width = `${ diskWidth }${ sizeMetrics }`;
         diskElement.style.height = `${ DiskController.DISK_HEIGHT() }px`;
 
         const towerRect = towerElement.getBoundingClientRect()

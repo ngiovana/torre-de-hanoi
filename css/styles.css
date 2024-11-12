@@ -126,6 +126,8 @@ select,
 button {
     min-width: 30rem;
     width: 100%;
+    max-width: 32rem;
+
     height: 5rem;
     background-color: #da8743;
     border-radius: 1rem;
@@ -155,7 +157,7 @@ button:hover {
 /* Tablets (768px a 991px) */
 @media (max-width: 991px) {
     .header {
-        height: 10%;
+        height: 10dvh;
     }
 
     .header .title {
@@ -167,14 +169,14 @@ button:hover {
     }
 
     .main {
-        height: 70%;
+        height: 70dvh;
     }
 
     .hanoi-game {
         /*flex: 1 1 200px;*/
-        padding: 0 2rem;
+        padding: 0;
         flex-wrap: wrap;
-        align-content: center;
+        align-content: baseline;
 
         /*overflow-y: auto;*/
     }
@@ -196,9 +198,14 @@ button:hover {
 
     .footer {
         flex-direction: column;
-        height: 20%;
+        height: 20dvh;
+        gap: 1rem;
         padding: 2rem 2rem;
         justify-content: flex-end;
+    }
+
+    .config-container {
+        gap: 1rem;
     }
 
     .top-moves {
@@ -207,5 +214,10 @@ button:hover {
 
     .bottom-moves {
         display: none;
+    }
+
+    select,
+    button {
+        max-width: none;
     }
 }
