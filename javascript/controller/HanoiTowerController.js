@@ -1,8 +1,23 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
 import {HanoiTowerService} from '../service/HanoiTowerService.js';
 import {MoveCommandDTO} from '../dto/MoveCommandDTO.js';
 import {SoundController} from "./SoundController.js";
 import {AnimationController} from "./AnimationController.js";
 import {DiskController} from "./DiskController.js";
+
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDaR2WQvf7kfUPj_il9Ip6BWDJXvTAFVF8",
+    authDomain: "hanoi-tower-2b574.firebaseapp.com",
+    databaseURL: "https://hanoi-tower-2b574-default-rtdb.firebaseio.com",
+    projectId: "hanoi-tower-2b574",
+    storageBucket: "hanoi-tower-2b574.firebasestorage.app",
+    messagingSenderId: "479244735005",
+    appId: "1:479244735005:web:185f6a0b5704e2f25aecf4"
+};
+
+const COLLECTION_NAME = "ranking";
 
 class HanoiTowerController {
     #reference = document.querySelector('.game-page-container');
@@ -34,12 +49,16 @@ class HanoiTowerController {
     #lastHintMoveCommand;
     #phantomDisk;
 
+    #database = null;
+
     constructor(gameService) {
         this.#gameService = gameService;
 
         this.#restartButtonReference.addEventListener('click', this.#startGame);
         this.#hintButtonReference.addEventListener('click', this.#requestHint);
         this.#diskDifficultSelectReference.addEventListener('change', this.#startGame);
+
+        this.#initializeFirebase();
     }
 
     #startGame = () => {
@@ -325,6 +344,32 @@ class HanoiTowerController {
         return this.#reference.querySelector(`[data-number='${ diskNumber }']`);
     }
 
+    #initializeFirebase = () => {
+        const app = initializeApp(FIREBASE_CONFIG);
+        this.#database = getFirestore(app);
+    }
+
+    #storeScore = async (username, score) => {
+        try {
+            debugger;
+            const docRef = await addDoc(collection(this.#database, COLLECTION_NAME), {
+                username: username,
+                score: score
+            });
+
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    }
+
+    #fetchScores = async () => {
+        const qry = query(collection(this.#database, COLLECTION_NAME), orderBy("score", "desc"), limit(10));
+        const result = await getDocs(qry);
+        result.forEach(doc => {
+            console.log(doc.id, " => ", doc.data());
+        });
+    }
 }
 
 export {HanoiTowerController}
