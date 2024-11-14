@@ -69,7 +69,7 @@ class AnimationController {
         }, 500);
     }
 
-    static isMobile = () => {
+    static isPortraitMobile = () => {
         return window.innerWidth <= 767;
     }
 
@@ -91,7 +91,7 @@ class AnimationController {
 
         const diskYOffsetToDiskStackTop = finalDiskTop - diskRect.bottom;
 
-        if (AnimationController.isMobile()) {
+        if (AnimationController.isPortraitMobile()) {
             return `
                 @keyframes ${ animationName } {
                     100% { transform: translateY(${ diskYOffsetToDiskStackTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }

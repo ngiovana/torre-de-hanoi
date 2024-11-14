@@ -1,30 +1,43 @@
 class DiskController {
 
     static DISK_HEIGHT = () => {
-        if (DiskController.isMobile()) {
+        if (DiskController.isPortraitMobile()) {
             return 25;
+        }
+
+        if (DiskController.isLandscapeMobile()) {
+            return 28
         }
 
         return 40;
     };
 
     static CALCULATE_DISK_WIDTH = (diskNumber) => {
-        if (DiskController.isMobile()) {
+        if (DiskController.isPortraitMobile()) {
             return 5 + 4 * diskNumber
+        }
+
+        if (DiskController.isLandscapeMobile()) {
+            return 2 + 2.2 * diskNumber
         }
 
         return 50 + 30 * diskNumber
     };
 
-    static isMobile = () => {
+    static isPortraitMobile = () => {
         return window.innerWidth <= 767;
+    }
+
+    static isLandscapeMobile = () => {
+        return window.innerHeight <= 560;
     }
 
     createDiskElement = (diskNumber, towerElement) => {
         const diskElement = document.createElement('div');
         const diskWidth = DiskController.CALCULATE_DISK_WIDTH(diskNumber);
 
-        const sizeMetrics = DiskController.isMobile() ? "vw" : "px"
+        const sizeMetrics = DiskController.isPortraitMobile() || DiskController.isLandscapeMobile
+            ? "vw" : "px"
 
         diskElement.setAttribute('data-number', diskNumber);
         diskElement.classList.add(`disk`);
