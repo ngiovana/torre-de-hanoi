@@ -14,14 +14,10 @@ class DiskController {
 
     static CALCULATE_DISK_WIDTH = (diskNumber) => {
         if (DiskController.isPortraitMobile()) {
-            return 5 + 4 * diskNumber
+            return 5 + 3 * diskNumber
         }
 
-        if (DiskController.isLandscapeMobile()) {
-            return 2 + 2.2 * diskNumber
-        }
-
-        return 50 + 30 * diskNumber
+        return 2 + 2.2 * diskNumber
     };
 
     static isPortraitMobile = () => {
