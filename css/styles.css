@@ -174,7 +174,7 @@ button:hover {
 
 @media (max-width: 767px) and (orientation: portrait)  {
     .header {
-        height: 10vh;
+        height: 13vh;
     }
 
     .header .title {
@@ -186,7 +186,7 @@ button:hover {
     }
 
     .main {
-        height: 80vh;
+        height: 77vh;
     }
 
     .hanoi-game {
