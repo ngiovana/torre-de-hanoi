@@ -1,0 +1,6 @@
+{
+    "name": "Torre de Hanoi",
+    "short_name": "Torre de Hanoi",
+    "display": "standalone",
+    "start_url": "/"
+}
