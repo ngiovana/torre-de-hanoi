@@ -69,6 +69,10 @@ class AnimationController {
         }, 500);
     }
 
+    static isMobile = () => {
+        return window.innerWidth <= 767;
+    }
+
     #createDiskToTowerAnimation = (diskElement, toTowerElement, animationName) => {
         const towerRect = toTowerElement.getBoundingClientRect();
         const diskRect = diskElement.getBoundingClientRect();
@@ -87,13 +91,23 @@ class AnimationController {
 
         const diskYOffsetToDiskStackTop = finalDiskTop - diskRect.bottom;
 
-        return `
-            @keyframes ${ animationName } {
-                 33% { transform: translateY(${ diskYOffsetToTowerTop }px) }
-                 66% { transform: translateY(${ diskYOffsetToTowerTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }
-                100% { transform: translateY(${ diskYOffsetToDiskStackTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }
-            }
-        `;
+        if (AnimationController.isMobile()) {
+            return `
+                @keyframes ${ animationName } {
+                     50% { transform: translateY(${ diskYOffsetToTowerTop }px) }
+                    100% { transform: translateY(${ diskYOffsetToDiskStackTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }
+                }
+            `;
+        } else {
+            return `
+                @keyframes ${ animationName } {
+                     33% { transform: translateY(${ diskYOffsetToTowerTop }px) }
+                     66% { transform: translateY(${ diskYOffsetToTowerTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }
+                    100% { transform: translateY(${ diskYOffsetToDiskStackTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }
+                }
+            `;
+        }
+
     }
 }
 

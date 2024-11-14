@@ -17,7 +17,7 @@ class DiskController {
     };
 
     static isMobile = () => {
-        return window.innerWidth <= 991;
+        return window.innerWidth <= 767;
     }
 
     createDiskElement = (diskNumber, towerElement) => {

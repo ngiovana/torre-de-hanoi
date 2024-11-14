@@ -63,7 +63,7 @@ body.game-page-container {
     position: relative;
 
     width: 100%;
-    height: 15%;
+    height: 15dvh;
 
     display: flex;
     justify-content: center;
@@ -79,7 +79,7 @@ body.game-page-container {
 .main {
     position: relative;
     width: 100%;
-    height: 70%;
+    height: 70dvh;
 
     display: flex;
     justify-content: center;
@@ -103,7 +103,7 @@ body.game-page-container {
     position: relative;
 
     width: 100%;
-    height: 15%;
+    height: 15dvh;
 
     display: flex;
     justify-content: space-around;
@@ -114,6 +114,7 @@ body.game-page-container {
 }
 
 .config-container {
+    position: relative;
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -154,14 +155,30 @@ button:hover {
     display: none;
 }
 
-/* Tablets (768px a 991px) */
 @media (max-width: 991px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        height: 18dvh;
+    }
+
+    .top-moves {
+        display: initial !important;
+    }
+
+    .bottom-moves {
+        display: none;
+    }
+}
+
+
+@media (max-width: 767px) and (orientation: portrait)  {
     .header {
         height: 10dvh;
     }
 
     .header .title {
-        font-size: 6rem;
+        font-size: 4rem;
     }
 
     body.game-page-container {
@@ -169,14 +186,14 @@ button:hover {
     }
 
     .main {
-        height: 70dvh;
+        height: 80dvh;
     }
 
     .hanoi-game {
         /*flex: 1 1 200px;*/
         padding: 0;
         flex-wrap: wrap;
-        align-content: baseline;
+        align-content: center;
 
         /*overflow-y: auto;*/
     }
@@ -198,9 +215,9 @@ button:hover {
 
     .footer {
         flex-direction: column;
-        height: 20dvh;
+        height: 10dvh;
         gap: 1rem;
-        padding: 2rem 2rem;
+        padding: 1rem;
         justify-content: flex-end;
     }
 
@@ -210,17 +227,38 @@ button:hover {
 
     .top-moves {
         display: initial !important;
-        margin-bottom: 5rem;
+        margin-bottom: 2rem;
+        font-size: 1.2rem;
     }
 
     .bottom-moves {
         display: none;
     }
 
+    .tower::before {
+        clip-path: polygon(0% 100%,
+        100% 100%,
+        100% 92%,
+        54% 92%,
+        54% 0%,
+        46% 0%,
+        46% 92%,
+        0% 92%);
+    }
+
     select,
     button {
+        border-width: .4rem;
         font-size: 1.5rem;
+        width: 100%;
+        height: 3.5rem;
+
         max-width: none;
-        height: 4rem;
-   }
+        min-width: auto;
+    }
+
+    .config-container.buttons {
+        flex-direction: row;
+    }
+
 }
