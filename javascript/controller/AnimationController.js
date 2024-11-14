@@ -94,7 +94,6 @@ class AnimationController {
         if (AnimationController.isMobile()) {
             return `
                 @keyframes ${ animationName } {
-                     50% { transform: translateY(${ diskYOffsetToTowerTop }px) }
                     100% { transform: translateY(${ diskYOffsetToDiskStackTop }px) translateX(${ diskXOffsetToTowerMiddle }px) }
                 }
             `;
