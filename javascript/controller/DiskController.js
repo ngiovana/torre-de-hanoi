@@ -17,7 +17,15 @@ class DiskController {
             return 5 + 3 * diskNumber
         }
 
-        return 2 + 2.2 * diskNumber
+        if (DiskController.isLandscapeMobile()) {
+            return 2 + 2.2 * diskNumber
+        }
+
+        if (window.innerWidth <= 960) {
+            return 40 + 25 * diskNumber
+        }
+
+        return 50 + 30 * diskNumber
     };
 
     static isPortraitMobile = () => {
@@ -32,7 +40,7 @@ class DiskController {
         const diskElement = document.createElement('div');
         const diskWidth = DiskController.CALCULATE_DISK_WIDTH(diskNumber);
 
-        const sizeMetrics = DiskController.isPortraitMobile() || DiskController.isLandscapeMobile
+        const sizeMetrics = (DiskController.isPortraitMobile() || DiskController.isLandscapeMobile())
             ? "vw" : "px"
 
         diskElement.setAttribute('data-number', diskNumber);
