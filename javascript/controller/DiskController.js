@@ -1,24 +1,24 @@
 class DiskController {
 
     static DISK_HEIGHT = () => {
-        if (DiskController.isPortraitMobile()) {
-            return 25;
+        if (DiskController.isLandscapeMobile()) {
+            return 22;
         }
 
-        if (DiskController.isLandscapeMobile()) {
-            return 28
+        if (DiskController.isPortraitMobile()) {
+            return 25;
         }
 
         return 40;
     };
 
     static CALCULATE_DISK_WIDTH = (diskNumber) => {
-        if (DiskController.isPortraitMobile()) {
-            return 5 + 3 * diskNumber
+        if (DiskController.isLandscapeMobile()) {
+            return 2.5 + 2.2 * diskNumber
         }
 
-        if (DiskController.isLandscapeMobile()) {
-            return 2 + 2.2 * diskNumber
+        if (DiskController.isPortraitMobile()) {
+            return 5 + 3 * diskNumber
         }
 
         if (window.innerWidth <= 960) {
