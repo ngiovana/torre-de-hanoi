@@ -6,7 +6,7 @@ class DiskController {
         }
 
         if (DiskController.isPortraitMobile()) {
-            return 25;
+            return 22;
         }
 
         return 40;
@@ -18,7 +18,7 @@ class DiskController {
         }
 
         if (DiskController.isPortraitMobile()) {
-            return 5 + 3 * diskNumber
+            return 3 + 4.5 * diskNumber
         }
 
         if (window.innerWidth <= 960) {
