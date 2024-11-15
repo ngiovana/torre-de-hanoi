@@ -10,30 +10,28 @@
     align-items: center;
 }
 
-.tower .disk:first-child {
-    margin-bottom: 2.5vh;
-}
-
 .tower::before {
     position: absolute;
 
     content: " ";
 
-    width: 100%;
+    width: 2.5rem;
     height: 100%;
 
-    clip-path: polygon(0% 100%,
-            100% 100%,
-            100% 94%,
-            54% 94%,
-            54% 0%,
-            46% 0%,
-            46% 94%,
-            0% 94%);
-
-    border-radius: 1.5rem;
+    border-radius: 1rem;
 
     background-color: #da8743;
     background-image: url('./../assets/img/wood.png');
     background-blend-mode: hard-light;
+}
+
+.tower-base {
+    width: 100%;
+    border-radius: 0 0 1rem 1rem;
+
+    background-color: #da8743;
+    background-image: url('./../assets/img/wood.png');
+    background-blend-mode: hard-light;
+
+    height: 2.5rem;
 }
