@@ -1,0 +1,17 @@
+@import "../styles.css";
+
+.header .title {
+    font-family: "Akaya Kanadaka", system-ui;
+    font-size: 10rem;
+    font-weight: bold;
+}
+
+.main {
+    width: 100%;
+    padding: 0 2rem;
+    justify-content: center;
+    align-content: center;
+    margin-top: 5rem;
+    display: flex;
+    gap: 2rem;
+}

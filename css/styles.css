@@ -63,3 +63,33 @@ body {
     overflow: hidden;
     text-align: center;
 }
+
+a {
+    display: contents;
+    text-decoration: none;
+}
+
+.link-button {
+    width: 100%;
+    max-width: 32rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 5rem;
+    background-color: #da8743;
+    border-radius: 1rem;
+    font-size: 2rem;
+    padding: .5rem;
+    outline: none;
+    border: .5rem solid #a36532;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color .2s ease-in-out;
+}
+
+.link-button:hover {
+    background-color: #c97939;
+}

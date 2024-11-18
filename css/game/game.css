@@ -88,7 +88,8 @@
 }
 
 .config-container > select,
-.config-container > button {
+.config-container > button,
+.link-button {
     width: 100%;
     max-width: 32rem;
 
@@ -110,7 +111,8 @@
 }
 
 .config-container > select:hover,
-.config-container > button:hover {
+.config-container > button:hover,
+.link-button {
     background-color: #c97939;
 }
 
@@ -243,7 +245,8 @@
     }
 
     .config-container > select,
-    .config-container > button {
+    .config-container > button,
+    .link-button {
         border-width: .4rem;
         font-size: 1.5rem;
         width: 100%;
@@ -320,7 +323,8 @@
     }
 
     .config-container > select,
-    .config-container > button {
+    .config-container > button,
+    .link-button {
         border-width: .4rem;
         font-size: 1rem;
         width: 100%;
