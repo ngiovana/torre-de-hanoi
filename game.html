@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Torre de Hanói</title>
+
+        <link rel="stylesheet" href="css/game/styles.css">
+        <link rel="icon" href="assets/img/ico.ico" type="image/png">
+        <link rel="manifest" href="manifest.json">
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.4/dist/sweetalert2.all.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.4/dist/sweetalert2.min.css" rel="stylesheet">
+    </head>
+
+    <body class="game-page-container" style="height: 100dvh !important;">
+        <header class="header">
+            <h1 class="title">Torre de Hanói</h1>
+        </header>
+
+        <main class="main">
+            <div class="hanoi-game">
+                <div class="tower first-tower" id="tower1" data-name="firstTower">
+                    <div class="tower-base"></div>
+                </div>
+                <div class="tower middle-tower" id="tower2" data-name="middleTower">
+                    <div class="tower-base"></div>
+                </div>
+                <div class="tower last-tower" id="tower3" data-name="lastTower">
+                    <div class="tower-base"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="config-container align-container">
+                <div class="config-container">
+                    <select id="disk-count" class="disk-difficult-select">
+                        <option value="1">1 disco</option>
+                        <option value="2">2 discos</option>
+                        <option value="3">3 discos</option>
+                        <option value="4">4 discos</option>
+                        <option value="5" selected>5 discos</option>
+                        <option value="6">6 discos</option>
+                        <option value="7">7 discos</option>
+                        <option value="8">8 discos</option>
+                    </select>
+                </div>
+
+                <div class="config-container top-moves">
+                    <p class="current-moves-count"></p>
+                    <p class="minimum-moves-to-finish"></p>
+                </div>
+            </div>
+
+            <div class="config-container bottom-moves">
+                <p class="current-moves-count"></p>
+                <p class="minimum-moves-to-finish"></p>
+            </div>
+
+            <div class="config-container buttons">
+                <button class="restart-button">Começar</button>
+                <button class="hint-button hide">Dica</button>
+            </div>
+        </footer>
+
+        <script type="module" src="javascript/game/main.js"></script>
+    </body>
+
+</html>
