@@ -21,7 +21,7 @@
     border-radius: 1rem;
 
     background-color: #da8743;
-    background-image: url('./../assets/img/wood.png');
+    background-image: url('../../assets/img/wood.png');
     background-blend-mode: hard-light;
 }
 
@@ -30,7 +30,7 @@
     border-radius: 0 0 1rem 1rem;
 
     background-color: #da8743;
-    background-image: url('./../assets/img/wood.png');
+    background-image: url('../../assets/img/wood.png');
     background-blend-mode: hard-light;
 
     height: 2.5rem;
