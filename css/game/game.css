@@ -87,8 +87,8 @@
     flex-direction: row;
 }
 
-select,
-button {
+.config-container > select,
+.config-container > button {
     width: 100%;
     max-width: 32rem;
 
@@ -109,8 +109,8 @@ button {
     transition: background-color .2s ease-in-out;
 }
 
-select:hover,
-button:hover {
+.config-container > select:hover,
+.config-container > button:hover {
     background-color: #c97939;
 }
 
@@ -171,7 +171,7 @@ button:hover {
         font-size: 4rem;
     }
 
-    body.game-page-container {
+    .game-page-container {
         font-size: 2rem;
     }
 
@@ -242,8 +242,8 @@ button:hover {
         height: 1.2rem;
     }
 
-    select,
-    button {
+    .config-container > select,
+    .config-container > button {
         border-width: .4rem;
         font-size: 1.5rem;
         width: 100%;
@@ -264,7 +264,7 @@ button:hover {
 }
 
 @media (max-height: 560px) and (orientation: landscape)  {
-    body.game-page-container {
+    .game-page-container {
         display: grid;
 
         justify-content: initial;
@@ -319,8 +319,8 @@ button:hover {
         padding: 3vw 2vh;
     }
 
-    select,
-    button {
+    .config-container > select,
+    .config-container > button {
         border-width: .4rem;
         font-size: 1rem;
         width: 100%;
