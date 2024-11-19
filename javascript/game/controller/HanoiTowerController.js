@@ -46,6 +46,7 @@ class HanoiTowerController {
     #diskController = new DiskController();
 
     #canRequestHint = false;
+    #canRestarGame = true;
     #lastHintMoveCommand;
     #phantomDisk;
 
@@ -62,12 +63,15 @@ class HanoiTowerController {
     }
 
     #startGame = () => {
+        if (!this.#canRestarGame) return;
+        this.#canRestarGame = false;
+
         this.#restartButtonReference.textContent = "Reiniciar";
         this.#animationController.stopConfettiFall();
 
         const diskDifficult = parseInt(this.#diskDifficultSelectReference.value);
         const gameData = this.#gameService.startGame('player-1', diskDifficult)
-
+        
         this.#gameId = gameData.id;
 
         this.#setMinMovesToFinish(gameData.minMoves);
@@ -118,6 +122,7 @@ class HanoiTowerController {
 
         setTimeout(() => {
             this.#updateInvalidDisks()
+            this.#canRestarGame = true;
         }, 210 * diskDifficult);
     }
 
