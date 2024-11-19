@@ -112,7 +112,7 @@
 
 .config-container > select:hover,
 .config-container > button:hover,
-.link-button {
+.link-button:hover {
     background-color: #c97939;
 }
 
