@@ -72,10 +72,6 @@ class RankingController {
         }
     }
 
-    async addRanking(ranking) {
-        await this.db.collection(COLLECTION_NAME).add(ranking);
-    }
-
     #fetchScores = async () => {
         const qry = query(collection(this.#db, COLLECTION_NAME), orderBy("score", "desc"), limit(10));
         const result = await getDocs(qry);
