@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Torre de Hanói</title>
 
-        <link rel="stylesheet" href="../css/menu/menu.css">
+        <link rel="stylesheet" href="../css/ranking/ranking.css">
         <link rel="icon" href="../assets/img/ico.ico" type="image/png">
         <link rel="manifest" href="../manifest.json">
     </head>
@@ -17,15 +17,27 @@
         </header>
 
         <main class="main">
+            <section id="ranking-panel" class="ranking-section">
+                <h2 class="ranking-title">
+                    TOP 10
+                    <span class="trophy-icon">🏆</span>
+                </h2>
+
+                <div class="ranking-grid">
+                    <div class="ranking-header">Posição</div>
+                    <div class="ranking-header">Nome</div>
+                    <div class="ranking-header">Score</div>
+                </div>
+
+                <div id="cards"></div>
+            </section>
+
             <a href="../index.html">
-                <button class="link-button">
-                    Voltar ao menu
-                </button>
+                <button class="link-button">Menu</button>
             </a>
         </main>
 
-        <footer class="footer">
-        </footer>
+        <script type="module" src="../javascript/game/controller/RankingController.js"></script>
     </body>
 
 </html>

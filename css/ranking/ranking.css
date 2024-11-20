@@ -1,0 +1,72 @@
+@import "../styles.css";
+@import "../menu/menu.css";
+
+.main {
+    display: contents;
+}
+
+.ranking-section {
+    background-color: #da8743;
+    border: 5px solid #a36532;
+    border-radius: 1rem;
+    padding: 20px;
+    margin: 20px;
+    width: 85%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.ranking-title {
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: white;
+}
+
+.ranking-header {
+    font-family: "Akaya Kanadaka", system-ui;
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.trophy-icon {
+    font-size: 2.5rem;
+}
+
+.ranking-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-auto-rows: auto;
+    padding: 5px;
+    margin: 5px;
+    align-items: center;
+}
+
+.card {
+    background-color: #fff;
+    border: 3px solid #a36532;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 5px;
+    display: grid;
+    font-size: 1.75rem;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    text-align: center;
+}
+
+.user-card {
+    background-color: #ffe6cc;
+    font-weight: bold;
+}
+
+/* Divisor */
+.divider {
+    margin: 15px 0;
+    border: 0;
+    height: 2px;
+    background: #a36532;
+    width: 100%;
+}
