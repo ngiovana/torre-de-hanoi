@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-import {HanoiTowerService} from '../service/HanoiTowerService.js';
 import {MoveCommandDTO} from '../dto/MoveCommandDTO.js';
 import {SoundController} from "./SoundController.js";
 import {AnimationController} from "./AnimationController.js";
@@ -293,11 +292,51 @@ class HanoiTowerController {
 
             setTimeout(() => {
                 Swal.fire({
-                    title: "Parabéns!",
-                    text: "Você completou o jogo com o mínimo de movimentos possíveis! Impressionante!",
                     icon: "success",
-                    confirmButtonColor: "#3085d6"
+                    title: "Parabens, você finalizou o desafio!",
+                    text: "Informe seu nome para salvar sua pontuação!",
+                    input: "text",
+                    inputAttributes: {
+                        autocapitalize: "off"
+                    },
+                    showCancelButton: true,
+                    cancelButtonText: "Cancelar",
+                    confirmButtonText: "Salvar",
+                    confirmButtonColor: "#3085d6",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async (username) => {
+                        try {
+                            if (!username) {
+                                Swal.showValidationMessage("É preciso informar um nome!");
+                                return;
+                            }
+
+                            const scored = await this.#storeScore(username, 1000);
+                            return {success: scored?.id !== null && scored?.id !== undefined }
+                        } catch (error) {
+                            Swal.showValidationMessage("Ocorreu um erro inesperado :(");
+                        }
+                    },
+                    allowOutsideClick: () => false
+                }).then((result) => {
+                    if (!result.value) return;
+
+                    if (result.value.success) {
+                        Swal.fire({
+                            title: "Pontuação salva com sucesso!",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                        });
+                        return;
+                    }
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Algo deu errado :(",
+                    });
                 });
+
             }, 100);
             return;
         }
@@ -356,13 +395,13 @@ class HanoiTowerController {
 
     #storeScore = async (username, score) => {
         try {
-            debugger;
             const docRef = await addDoc(collection(this.#database, COLLECTION_NAME), {
                 username: username,
                 score: score
             });
 
             console.log("Document written with ID: ", docRef.id);
+            return docRef
         } catch (e) {
             console.error("Error adding document: ", e);
         }
