@@ -311,6 +311,11 @@ class HanoiTowerController {
                                 return;
                             }
 
+                            if (username.length >= 10) {
+                                Swal.showValidationMessage("O nome deve ter no máximo 10 caracteres");
+                                return;
+                            }
+
                             const score = this.#gameService.getGameScore(this.#gameId);
                             const scored = await this.#storeScore(username, score);
                             return {success: scored?.id !== null && scored?.id !== undefined }
