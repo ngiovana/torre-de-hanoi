@@ -5,6 +5,7 @@ import {MoveCommandDTO} from '../dto/MoveCommandDTO.js';
 import {SoundController} from "./SoundController.js";
 import {AnimationController} from "./AnimationController.js";
 import {DiskController} from "./DiskController.js";
+import {LocalStorageController} from "./LocalStorageController.js";
 
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDaR2WQvf7kfUPj_il9Ip6BWDJXvTAFVF8",
@@ -287,63 +288,69 @@ class HanoiTowerController {
 
         this.#soundController.playWinSound(gameState.isBestSolution);
 
+        setTimeout(() => {
+            Swal.fire({
+                icon: "success",
+                title: "Parabens, você finalizou o desafio!",
+                text: "Informe seu nome para salvar sua pontuação!",
+                input: "text",
+                inputAttributes: {
+                    autocapitalize: "off"
+                },
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonText: "Salvar",
+                confirmButtonColor: "#3085d6",
+                showLoaderOnConfirm: true,
+                preConfirm: async (username) => {
+                    try {
+                        if (!username) {
+                            Swal.showValidationMessage("É preciso informar um nome!");
+                            return;
+                        }
+
+                        if (username.length >= 10) {
+                            Swal.showValidationMessage("O nome deve ter no máximo 10 caracteres");
+                            return;
+                        }
+
+                        const score = this.#gameService.getGameScore(this.#gameId);
+                        const scored = await this.#storeScore(username, score);
+
+                        debugger
+                        if (!scored.id) return { success: false }
+                        LocalStorageController.saveLastGameData(scored.id, username, score);
+
+                        return { success: true }
+                    } catch (error) {
+                        Swal.showValidationMessage("Ocorreu um erro inesperado :(");
+                    }
+                },
+                allowOutsideClick: () => false
+            }).then((result) => {
+                if (!result.value) return;
+
+                if (result.value.success) {
+                    Swal.fire({
+                        title: "Pontuação salva com sucesso!",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Algo deu errado :(",
+                });
+            });
+
+        }, 100);
+
         if (gameState.isBestSolution) {
             this.#feedbackMessageReferenceList.forEach(element => element.textContent = '😲');
 
-            setTimeout(() => {
-                Swal.fire({
-                    icon: "success",
-                    title: "Parabens, você finalizou o desafio!",
-                    text: "Informe seu nome para salvar sua pontuação!",
-                    input: "text",
-                    inputAttributes: {
-                        autocapitalize: "off"
-                    },
-                    showCancelButton: true,
-                    cancelButtonText: "Cancelar",
-                    confirmButtonText: "Salvar",
-                    confirmButtonColor: "#3085d6",
-                    showLoaderOnConfirm: true,
-                    preConfirm: async (username) => {
-                        try {
-                            if (!username) {
-                                Swal.showValidationMessage("É preciso informar um nome!");
-                                return;
-                            }
-
-                            if (username.length >= 10) {
-                                Swal.showValidationMessage("O nome deve ter no máximo 10 caracteres");
-                                return;
-                            }
-
-                            const score = this.#gameService.getGameScore(this.#gameId);
-                            const scored = await this.#storeScore(username, score);
-                            return {success: scored?.id !== null && scored?.id !== undefined }
-                        } catch (error) {
-                            Swal.showValidationMessage("Ocorreu um erro inesperado :(");
-                        }
-                    },
-                    allowOutsideClick: () => false
-                }).then((result) => {
-                    if (!result.value) return;
-
-                    if (result.value.success) {
-                        Swal.fire({
-                            title: "Pontuação salva com sucesso!",
-                            icon: "success",
-                            confirmButtonColor: "#3085d6"
-                        });
-                        return;
-                    }
-
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Algo deu errado :(",
-                    });
-                });
-
-            }, 100);
             return;
         }
 
