@@ -37,6 +37,13 @@ class HanoiTowerService {
         }
     };
 
+    getGameScore = (gameId) => {
+        const gameData = this.#currentGames[gameId];
+        if (!gameData) return 0;
+
+        return gameData.calculateScore()
+    }
+
     static #validateMoveCommand = (gameData, moveCommand) => {
         if (gameData.state.isFinished) return false;
 
@@ -62,6 +69,13 @@ class HanoiTowerService {
         const disk = fromTower.getTopDisk()
         const toTower = gameData.state.getTowerByName(moveCommand.toTowerName);
 
+        const hintMoveCommand = gameData.solver.getNextMoveCommand(gameData.state);
+        if (hintMoveCommand) {
+            if (JSON.stringify(Object.assign({}, moveCommand,  {isHint: true}) ) === JSON.stringify(hintMoveCommand)) {
+                gameData.state.bestMovesCount++;
+            }
+        }
+
         fromTower.removeTopDisk();
         toTower.addDisk(disk);
 
@@ -70,6 +84,7 @@ class HanoiTowerService {
         if (HanoiTowerService.#validateWin(gameData)) {
             gameData.state.isFinished = true;
             gameData.state.isBestSolution = gameData.state.movesCount === gameData.minMoves;
+            gameData.timer.stop()
         }
     };
 

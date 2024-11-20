@@ -311,7 +311,8 @@ class HanoiTowerController {
                                 return;
                             }
 
-                            const scored = await this.#storeScore(username, 1000);
+                            const score = this.#gameService.getGameScore(this.#gameId);
+                            const scored = await this.#storeScore(username, score);
                             return {success: scored?.id !== null && scored?.id !== undefined }
                         } catch (error) {
                             Swal.showValidationMessage("Ocorreu um erro inesperado :(");

@@ -24,6 +24,37 @@ class GameData {
         this.timer = new Timer();
     }
 
+    calculateScore = () => {
+        const maxMoves = this.minMoves * 3;
+
+        const movesCount = this.state.movesCount;
+        const bestMovesScore = Math.min(this.state.bestMovesCount, this.minMoves) * 100;
+        const movesScore = Math.min(movesCount - this.state.bestMovesCount, maxMoves) * 10;
+
+        const scoreList = [bestMovesScore, movesScore];
+
+        if (this.state.isFinished) {
+            const seconds = this.timer.getSeconds()
+            if (seconds <= this.minMoves) {
+                scoreList.push(1000)
+            } else if (seconds <= this.minMoves * 3) {
+                scoreList.push(700)
+            } else if (seconds <= this.minMoves * 5) {
+                scoreList.push(400)
+            }
+
+            if (movesCount === this.minMoves) {
+                scoreList.push(1500)
+            } else if (movesCount <= this.minMoves * 1.5) {
+                scoreList.push(800)
+            } else if (movesCount <= this.minMoves * 2) {
+                scoreList.push(400)
+            }
+        }
+
+        return scoreList.reduce((totalScore, score) => totalScore + score, 0);
+    }
+
 }
 
 export {GameData}

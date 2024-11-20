@@ -4,6 +4,7 @@ class GameStateDTO {
 
     id;
     movesCount;
+    bestMovesCount;
     isFinished;
     isBestSolution;
 
@@ -19,6 +20,7 @@ class GameStateDTO {
         this.id = id;
 
         this.movesCount = 0;
+        this.bestMovesCount = 0;
         this.isFinished = false;
         this.isBestSolution = false;
 
