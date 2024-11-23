@@ -43,7 +43,7 @@ class RankingController {
                 const name = data.username || "Anonymous";
                 const score = data.score || 0;
 
-                const qry = query(collection(this.#db, COLLECTION_NAME), where("score", ">", score));
+                const qry = query(collection(this.#db, COLLECTION_NAME), where("score", ">=", score));
                 const position = await getDocs(qry) || 0;
 
                 const divider = document.createElement("hr");
@@ -56,7 +56,7 @@ class RankingController {
                 userCardElement.classList.add("user-card");
 
                 const positionElement = document.createElement("p");
-                positionElement.textContent = position.size + 1;
+                positionElement.textContent = position.size;
 
                 const nameElement = document.createElement("p");
                 nameElement.textContent = name;
