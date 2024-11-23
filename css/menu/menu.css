@@ -16,7 +16,7 @@
 .main {
     position: relative;
     width: 100%;
-    flex-grow: 1;
+    height: 80svh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,6 +94,7 @@
         align-items: center;
     }
 }
+
 
 @media (max-height: 560px) and (orientation: landscape) {
     .body {
