@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs, doc, getDoc, where } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 import { LocalStorageController } from "./LocalStorageController.js";
+import { Utils } from "../utils/Utils.js";
 
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDaR2WQvf7kfUPj_il9Ip6BWDJXvTAFVF8",
@@ -24,11 +25,10 @@ class RankingController {
         const app = initializeApp(FIREBASE_CONFIG);
         this.#db = getFirestore(app);
 
-        this.#fetchScores();
-        this.#getRanking();
+        this.fetchScores();
     }
 
-    #getRanking = async () => {
+    getRanking = async () => {
         const id = LocalStorageController.getLastGameData()?.id;
 
         if (!id) return;
@@ -43,6 +43,9 @@ class RankingController {
                 const name = data.username || "Anonymous";
                 const score = data.score || 0;
 
+                const qry = query(collection(this.#db, COLLECTION_NAME), where("score", ">", score));
+                const position = await getDocs(qry) || 0;
+
                 const divider = document.createElement("hr");
                 divider.classList.add("divider");
 
@@ -53,7 +56,7 @@ class RankingController {
                 userCardElement.classList.add("user-card");
 
                 const positionElement = document.createElement("p");
-                positionElement.textContent = "";
+                positionElement.textContent = position.size + 1;
 
                 const nameElement = document.createElement("p");
                 nameElement.textContent = name;
@@ -72,11 +75,12 @@ class RankingController {
         }
     }
 
-    #fetchScores = async () => {
+    fetchScores = async () => {
         const qry = query(collection(this.#db, COLLECTION_NAME), orderBy("score", "desc"), limit(10));
         const result = await getDocs(qry);
 
         let position = 1;
+        let userIsTop10 = false;
         result.forEach(doc => {
             const data = doc.data();
             const name = data.username || "Anonymous";
@@ -100,8 +104,25 @@ class RankingController {
 
             this.#cardsSectionElement.appendChild(cardElement);
 
+            if (LocalStorageController.getLastGameData().id === doc.id) {
+                userIsTop10 = true;
+
+                const divider = document.createElement("hr");
+                divider.classList.add("divider");
+
+                this.#rankingSectionElement.appendChild(divider);
+
+                const userCardElement = cardElement.cloneNode(true);
+                userCardElement.classList.add("user-card");
+                this.#rankingSectionElement.appendChild(userCardElement);
+            }
+
             position++;
         });
+
+        if (!userIsTop10) {
+            this.getRanking();
+        }
     }
 }
 

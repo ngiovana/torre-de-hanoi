@@ -70,3 +70,40 @@
     background: #a36532;
     width: 100%;
 }
+
+@media screen and (max-height: 850px) {
+    .ranking-section {
+        padding: 5px;
+    }
+
+    .ranking-header {
+        font-size: 3vh;
+    }
+
+    .card {
+        font-size: 3vh;
+    }
+
+    .title {
+        font-size: 6vh !important;
+    }
+
+    .ranking-title {
+        font-size: 3vh;
+    }
+
+    .trophy-icon {
+        font-size: 3vh;
+    }
+
+    #cards {
+        overflow-y: scroll;
+        max-height: 30vh;
+    }
+
+    .link-button {
+        max-width: 50vh !important;
+        max-height: 11vh !important;
+        font-size: 4vh !important;
+    }
+}

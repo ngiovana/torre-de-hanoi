@@ -317,7 +317,6 @@ class HanoiTowerController {
                         const score = this.#gameService.getGameScore(this.#gameId);
                         const scored = await this.#storeScore(username, score);
 
-                        debugger
                         if (!scored.id) return { success: false }
                         LocalStorageController.saveLastGameData(scored.id, username, score);
 
