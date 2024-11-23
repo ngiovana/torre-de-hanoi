@@ -1,8 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs, doc, getDoc, where } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { getFirestore, collection, query, orderBy, limit, getDocs, doc, getDoc, where } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 import { LocalStorageController } from "./LocalStorageController.js";
-import { Utils } from "../utils/Utils.js";
 
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDaR2WQvf7kfUPj_il9Ip6BWDJXvTAFVF8",
@@ -44,7 +43,7 @@ class RankingController {
                 const score = data.score || 0;
 
                 const qry = query(collection(this.#db, COLLECTION_NAME), where("score", ">=", score));
-                const position = await getDocs(qry) || 0;
+                const position = await getDocs(qry) || [];
 
                 const divider = document.createElement("hr");
                 divider.classList.add("divider");
