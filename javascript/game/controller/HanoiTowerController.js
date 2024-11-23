@@ -288,11 +288,13 @@ class HanoiTowerController {
 
         this.#soundController.playWinSound(gameState.isBestSolution);
 
+        const score = this.#gameService.getGameScore(this.#gameId);
+
         setTimeout(() => {
             Swal.fire({
                 icon: "success",
                 title: "Parabens, você finalizou o desafio!",
-                text: "Informe seu nome para salvar sua pontuação!",
+                html: `<p>Você conseguiu ${ score } pontos!</p><p>Informe seu nome para salvar sua pontuação!</p>`,
                 input: "text",
                 inputAttributes: {
                     autocapitalize: "off"
@@ -314,7 +316,6 @@ class HanoiTowerController {
                             return;
                         }
 
-                        const score = this.#gameService.getGameScore(this.#gameId);
                         const scored = await this.#storeScore(username, score);
 
                         if (!scored.id) return { success: false }
