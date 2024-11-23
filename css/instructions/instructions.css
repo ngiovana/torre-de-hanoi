@@ -1,0 +1,146 @@
+@import "../styles.css";
+
+.header {
+    position: relative;
+    width: 100%;
+    height: 10vh;
+    text-align: center;
+}
+
+.body {
+    overflow: auto;
+    text-align: initial;
+}
+
+.header .title {
+    font-family: "Akaya Kanadaka", system-ui;
+    font-size: 8rem;
+    font-weight: bold;
+}
+
+.main {
+    width: 100%;
+    max-width: 120rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+    overflow-y: auto;
+    font-size: 2.5rem;
+    text-align: justify;
+
+    padding: 0 2rem;
+}
+
+.section {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 5rem;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    margin-bottom: 1rem;
+}
+
+h4 {
+    margin-bottom: .5rem;
+}
+
+p {
+    text-indent: 3rem;
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+ul, ol {
+    margin-left: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: justify;
+}
+
+.footer {
+    position: relative;
+
+    width: 100%;
+    height: 10vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 545px) and (orientation: portrait) {
+    .header .title {
+        font-size: 5rem;
+    }
+
+    .main {
+        font-size: 1.5rem;
+    }
+
+    .footer {
+        height: 6rem;
+        padding: 1rem;
+    }
+}
+
+
+@media (max-height: 560px) and (orientation: landscape) {
+    .body {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .header {
+        display: none;
+    }
+
+    .main {
+        padding: 0;
+        font-size: 1.5rem;
+        width: 100%;
+    }
+
+    .section {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .text-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 2rem;
+        gap: 2rem;
+    }
+
+    .footer {
+        width: 6rem;
+        padding: .5rem;
+        height: 100%;
+    }
+
+    .footer a {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .footer .link-button {
+        max-height: 32rem;
+        width: 5rem;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+    }
+}

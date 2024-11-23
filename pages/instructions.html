@@ -6,25 +6,170 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Torre de Hanói</title>
 
-        <link rel="stylesheet" href="../css/menu/menu.css">
+        <link rel="stylesheet" href="../css/instructions/instructions.css">
         <link rel="icon" href="../assets/img/ico.ico" type="image/png">
         <link rel="manifest" href="../manifest.json">
     </head>
 
     <body class="body">
         <header class="header">
-            <h1 class="title">Instruções do jogo</h1>
+            <h1 class="title">Torre de Hanoi</h1>
         </header>
 
         <main class="main">
+            <section class="section about-game">
+                <article class="article">
+                    <h2>Sobre o jogo</h2>
+                    <div class="text-wrapper">
+                        <div>
+                            <h3>O que é o jogo Torre de Hanói?</h3>
+                            <p>
+                                O jogo Torre de Hanói é um quebra-cabeça matemático e lógico inventado em 1883 pelo matemático francês Édouard Lucas. Ele é amplamente utilizado para ilustrar conceitos como recursão na ciência da computação e resolução de problemas em geral.
+                            </p>
+                            <p>
+                                O objetivo do jogo é transferir uma pilha de discos de uma haste para outra, seguindo um conjunto específico de regras. É um jogo que testa habilidades de planejamento e paciência.
+                            </p>
+                        </div>
+                        <div>
+                            <h3>Objetivo do jogo</h3>
+                            <p>
+                                Mover todos os discos da haste A (origem) para a haste C (destino), utilizando a haste B (intermediária) como auxílio, obedecendo às regras.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+                <article class="article">
+                    <h2>Como o jogo funciona?</h2>
+
+                    <div class="text-wrapper">
+                        <div>
+                            <h3>Componentes do jogo:</h3>
+                            <p>
+                            <ol>
+                                <li>
+                                    Três hastes ou pinos: denominadas como A (origem), B (intermediária) e C (destino).
+                                </li>
+                                <li>
+                                    Discos de tamanhos diferentes: que podem ser empilhados nas hastes. Inicialmente, todos os discos estão empilhados na haste A, do maior na base ao menor no topo.
+                                </li>
+                            </ol>
+                            </p>
+                        </div>
+                        <div>
+                            <h3>Regras</h3>
+                            <p>
+                            <ol>
+                                <li>
+                                    Apenas um disco pode ser movido por vez.
+                                </li>
+                                <li>
+                                    Um disco maior nunca pode ser colocado sobre um disco menor.
+                                </li>
+                                <li>
+                                    O disco que será movido deve estar sempre no topo de uma pilha.
+                                </li>
+                            </ol>
+                            </p>
+                        </div>
+                        <div>
+                            <h3>Como solucionar</h3>
+                            <p>
+                                A solução para o jogo segue um processo lógico e recursivo. Para resolver o jogo com n discos, o problema é dividido em subproblemas menores, utilizando a ideia de transferir o problema gradualmente até que ele se torne trivial.
+                            </p>
+
+                            <p>
+                            <ol>
+                                <li>
+                                    Caso base (n = 1):
+                                    <ul>
+                                        <li>
+                                            Se há apenas um disco, basta movê-lo diretamente da haste A para a haste C.
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Caso geral (n > 1):
+                                    <ul>
+                                        <li>
+                                            Mova os n-1 discos de A para B (usando C como intermediária).
+                                        </li>
+                                        <li>
+                                            Mova o último disco (maior disco) diretamente de A para C.
+                                        </li>
+                                        <li>
+                                            Mova os n-1 discos de B para C (usando A como intermediária).
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            </p>
+                        </div>
+                        <div>
+                            <h4>Sequência de movimentos:</h4>
+                            <p>
+                                A sequência ideal de movimentos para resolver o problema pode ser descrita por uma fórmula:
+                            </p>
+
+                            <p>
+                            <ul>
+                                <li>
+                                    Para resolver a Torre de Hanói com 𝑛 discos, o número mínimo de movimentos é 2^𝑛 − 1
+                                </li>
+                            </ul>
+                            Por exemplo, com 3 discos: Número mínimo de movimentos: 2^3 - 1 = 7
+                            </p>
+                        </div>
+                    </div>
+                </article>
+                <article class="article">
+                    <h2>Aplicação do jogo</h2>
+
+                    <div class="text-wrapper">
+                        <div>
+                            <p>
+                            <ol>
+                                <li>
+                                    <strong>Ciência da Computação:</strong>
+                                    <p>
+                                        Torre de Hanói é amplamente utilizada para ensinar recursão e algoritmos.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong>Matemática:</strong>
+                                    <p>
+                                        Demonstra princípios de indução matemática.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong>Desenvolvimento Cognitivo:</strong>
+                                    <p>
+                                        Estimula habilidades como planejamento, lógica e paciência.
+                                    </p>
+                                </li>
+                            </ol>
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                A Torre de Hanói é, portanto, mais do que um jogo: é uma ferramenta pedagógica e um exemplo clássico de problemas que requerem estratégia e pensamento estruturado.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </section>
+            <section class="section about-hint-system">
+                <article>
+
+                </article>
+            </section>
+        </main>
+
+        <footer class="footer">
             <a href="../index.html">
                 <button class="link-button">
                     Menu
                 </button>
             </a>
-        </main>
-
-        <footer class="footer">
         </footer>
     </body>
 
