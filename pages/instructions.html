@@ -33,7 +33,7 @@
                         <div>
                             <h3>Objetivo do jogo</h3>
                             <p>
-                                Mover todos os discos da haste A (origem) para a haste C (destino), utilizando a haste B (intermediária) como auxílio, obedecendo às regras.
+                                Mover todos os discos da haste A (origem) para a haste B ou C (destino), utilizando a haste B ou C (intermediária) como auxílio, obedecendo às regras.
                             </p>
                         </div>
                     </div>
@@ -111,12 +111,12 @@
                             </p>
 
                             <p>
-                            <ul>
-                                <li>
-                                    Para resolver a Torre de Hanói com 𝑛 discos, o número mínimo de movimentos é 2^𝑛 − 1
-                                </li>
-                            </ul>
-                            Por exemplo, com 3 discos: Número mínimo de movimentos: 2^3 - 1 = 7
+                                <ul>
+                                    <li>
+                                        Para resolver a Torre de Hanói com 𝑛 discos, o número mínimo de movimentos é 2^𝑛 − 1
+                                    </li>
+                                </ul>
+                                Por exemplo, com 3 discos: Número mínimo de movimentos: 2^3 - 1 = 7
                             </p>
                         </div>
                     </div>
@@ -159,7 +159,109 @@
             </section>
             <section class="section about-hint-system">
                 <article>
+                    <h2>Como funciona o sistema de dicas?</h2>
 
+                    <div class="text-wrapper">
+                        <div>
+                            <h3>A estrutura de dados</h3>
+
+                            <p>
+                                Para encontrar o melhor movimento em qualquer posição possível do jogo, é necessário primeiro mapear todas essas posições, para então podermos avaliar os casos e entender qual movimento levara a vitória mais rapidamente.
+                            </p>
+
+                            <p>
+                                Para fazer isso, usamos uma estrutura de dados que representa um Triangulo de Sierpinski. Antes de prosseguir com a explicação, precisamos entender o que é um Triangulo de Sierpinski.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+                <article>
+                    <h2>Triangulo de Sierpinski</h2>
+
+                    <div class="text-wrapper">
+                        <div>
+                            <h3>O que é?</h3>
+                            <p>
+                                O Triângulo de Sierpinski é uma figura geométrica auto-similar, ou seja, sua estrutura se repete em diferentes escalas. Ele é um exemplo clássico de um fractal e pode ser construído de várias maneiras, geralmente a partir de um triângulo equilátero.
+                            </p>
+
+                            <div class="image-wrapper">
+                                <img src="../assets/img/triangulo-de-sierpinski.png" alt="Imagem do triangulo de Sierpinski">
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3>Propriedades</h3>
+                            <p>
+                            <ul>
+                                <li>
+                                    <strong>Auto-similaridade:</strong>
+                                    <p>
+                                        O triângulo contém cópias menores de si mesmo em diferentes escalas. Cada parte da figura é semelhante ao todo.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong>Fractal:</strong>
+                                    <p>
+                                        O Triângulo de Sierpinski é um exemplo de fractal, o que significa que ele possui uma estrutura infinita e complexa, mas gerada por um processo simples e iterativo.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong>Dimensão Fractal:</strong>
+                                    <p>
+                                        A dimensão fractal do Triângulo de Sierpinski é 1.585, o que significa que ele ocupa mais espaço do que uma linha (dimensão 1) mas menos do que uma área (dimensão 2).
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong>Conjunto de Cantor:</strong>
+                                    <p>
+                                        O Triângulo de Sierpinski é uma versão bidimensional do conjunto de Cantor, que é uma construção fractal em 1D.
+                                    </p>
+                                </li>
+                            </ul>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+                <article>
+                    <h2>Solucionando o jogo</h2>
+
+                    <div class="text-wrapper">
+                        <div>
+                            <h3>A relação da Torre de Hanoi com o Triangulo de Sierpinski</h3>
+
+                            <p>
+                                A relação entre o Triângulo de Sierpinski e a solução do problema da Torre de Hanoi surge de uma interessante conexão entre recursão e padrões fractais. Ambos envolvem processos iterativos que podem ser representados de maneira elegante por métodos recursivos. Vamos explorar como essa conexão pode ser usada para encontrar o melhor movimento nas Torres de Hanoi, utilizando o conceito do Triângulo de Sierpinski.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="image-wrapper">
+                                <img src="../assets/img/triangulo-3-discos.png" alt="Imagem do triangulo de Sierpinski para um jogo de 3 disco">
+                            </div>
+                        </div>
+                        <div>
+                            <p>
+                                O Triângulo de Sierpinski pode ser usado para visualizar a sequência de movimentos nas Torres de Hanoi de maneira recursiva. A ideia é que o número de movimentos necessários para resolver o problema das Torres de Hanoi segue uma estrutura semelhante ao padrão do Triângulo de Sierpinski. A chave é perceber que, para resolver o problema para 𝑛 discos, você pode decompor o problema de maneira recursiva, de forma semelhante ao processo de construção do triângulo.
+                            </p>
+                        </div>
+                        <div>
+                            <h3>Encontrar o melhor movimento</h3>
+
+                            <p>
+                                Para ilustrar como o Triângulo de Sierpinski pode ajudar a identificar os movimentos, imagine a sequência de movimentos como sendo um padrão binário ou uma "lógica fractal". Cada movimento pode ser associado a uma posição no Triângulo de Sierpinski, onde:
+                            </p>
+                            <p>
+                                <ul>
+                                    <li>
+                                        O movimento de mover o disco maior pode ser visto como o "centro" do processo recursivo, representando o nível mais alto de decisão.
+                                    </li>
+                                    <li>
+                                        Os movimentos à esquerda e à direita correspondem a soluções recursivas para os subproblemas, cada um contendo uma nova série de movimentos.
+                                    </li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
                 </article>
             </section>
         </main>

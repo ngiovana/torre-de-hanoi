@@ -1,15 +1,15 @@
 @import "../styles.css";
 
+.body {
+    overflow: auto;
+    text-align: initial;
+}
+
 .header {
     position: relative;
     width: 100%;
     height: 10vh;
     text-align: center;
-}
-
-.body {
-    overflow: auto;
-    text-align: initial;
 }
 
 .header .title {
@@ -20,8 +20,8 @@
 
 .main {
     width: 100%;
-    max-width: 120rem;
     height: 100%;
+    max-width: 120rem;
     display: flex;
     flex-direction: column;
     gap: 3rem;
@@ -29,14 +29,32 @@
     overflow-y: auto;
     font-size: 2.5rem;
     text-align: justify;
+    position: relative;
 
     padding: 0 2rem;
 }
 
 .section {
+    position: relative;
+    width: 100%;
+    height: max-content;
+    margin-bottom: 5rem;
+}
+
+.image-wrapper {
+    width: 100%;
+    height: min-content;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper img {
+    max-width: 30rem;
+    max-height: 30rem;
     width: 100%;
     height: 100%;
-    margin-bottom: 5rem;
 }
 
 h2 {
@@ -113,10 +131,14 @@ ul, ol {
         padding: 1rem;
     }
 
+    h2 {
+        margin-bottom: 1rem;
+    }
+
     .text-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        padding: 2rem;
+        padding: 1rem;
         gap: 2rem;
     }
 
