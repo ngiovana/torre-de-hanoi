@@ -1,7 +1,6 @@
 @import "../styles.css";
 
 .body {
-    overflow: auto;
     text-align: initial;
 }
 
@@ -20,7 +19,7 @@
 
 .main {
     width: 100%;
-    height: 80svh;
+    flex-grow: 1;
     max-width: 120rem;
     display: flex;
     flex-direction: column;
