@@ -78,6 +78,7 @@ class RankingController {
         const qry = query(collection(this.#db, COLLECTION_NAME), orderBy("score", "desc"), limit(10));
         const result = await getDocs(qry);
 
+        const gameData = LocalStorageController.getLastGameData();
         let position = 1;
         let userIsTop10 = false;
         result.forEach(doc => {
@@ -103,7 +104,7 @@ class RankingController {
 
             this.#cardsSectionElement.appendChild(cardElement);
 
-            if (LocalStorageController.getLastGameData().id === doc.id) {
+            if (gameData && gameData.id === doc.id) {
                 userIsTop10 = true;
 
                 const divider = document.createElement("hr");
