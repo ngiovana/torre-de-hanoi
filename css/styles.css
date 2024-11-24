@@ -47,7 +47,7 @@ html {
 
 body {
     margin: 0;
-    height: 100vh !important;
+    height: 100dvh !important;
 
     background-color: #ffefad;
 
@@ -61,12 +61,6 @@ body {
     font-size: 3rem;
     overflow: hidden;
     text-align: center;
-
-    padding-bottom: env(safe-area-inset-bottom);
-}
-
-button, .footer {
-    margin-bottom: env(safe-area-inset-bottom);
 }
 
 a {
