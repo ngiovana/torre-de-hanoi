@@ -61,10 +61,6 @@ body {
     font-size: 3rem;
     overflow: hidden;
     text-align: center;
-
-    @media (orientation: landscape) {
-        height: 100vh !important;
-    }
 }
 
 a {

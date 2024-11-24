@@ -98,12 +98,49 @@
 
     #cards {
         overflow-y: scroll;
-        max-height: 30vh;
+        max-height: 40vh;
     }
 
     .link-button {
         max-width: 50vw !important;
         max-height: 11vh !important;
         font-size: 4vh !important;
+    }
+
+    @media (max-height: 500px) {
+        .ranking-section {
+            padding: 5px;
+        }
+
+        .ranking-header {
+            font-size: 3vh;
+        }
+
+        .card {
+            font-size: 3vh;
+        }
+
+        .title {
+            font-size: 6vh !important;
+        }
+
+        .ranking-title {
+            font-size: 3vh;
+        }
+
+        .trophy-icon {
+            font-size: 3vh;
+        }
+
+        #cards {
+            overflow-y: scroll;
+            max-height: 20vh;
+        }
+
+        .link-button {
+            max-width: 50vw !important;
+            max-height: 11vh !important;
+            font-size: 4vh !important;
+        }
     }
 }
