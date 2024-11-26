@@ -33,8 +33,8 @@ class GameData {
 
         const scoreList = [bestMovesScore, movesScore];
 
+        const seconds = this.timer.getSeconds()
         if (this.state.isFinished) {
-            const seconds = this.timer.getSeconds()
             if (seconds <= this.minMoves) {
                 scoreList.push(1000)
             } else if (seconds <= this.minMoves * 3) {
@@ -52,7 +52,13 @@ class GameData {
             }
         }
 
-        return scoreList.reduce((totalScore, score) => totalScore + score, 0);
+        scoreList.push(-this.state.hintsCount * 90)
+        scoreList.push(-seconds)
+
+        return Math.max(
+            scoreList.reduce((totalScore, score) => totalScore + score, 0),
+            0
+        );
     }
 
 }

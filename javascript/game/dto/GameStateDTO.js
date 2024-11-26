@@ -5,6 +5,7 @@ class GameStateDTO {
     id;
     movesCount;
     bestMovesCount;
+    hintsCount;
     isFinished;
     isBestSolution;
 
@@ -21,6 +22,8 @@ class GameStateDTO {
 
         this.movesCount = 0;
         this.bestMovesCount = 0;
+        this.hintsCount = 0;
+
         this.isFinished = false;
         this.isBestSolution = false;
 

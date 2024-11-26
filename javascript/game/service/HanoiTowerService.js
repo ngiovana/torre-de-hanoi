@@ -29,6 +29,8 @@ class HanoiTowerService {
         if (!gameData) return;
         if (gameData.state.isFinished) return;
 
+        gameData.state.hintsCount++;
+
         const moveCommand = gameData.solver.getNextMoveCommand(gameData.state);
         if (!moveCommand) return;
 

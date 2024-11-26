@@ -413,19 +413,10 @@ class HanoiTowerController {
                 score: score
             });
 
-            console.log("Document written with ID: ", docRef.id);
             return docRef
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-    }
-
-    #fetchScores = async () => {
-        const qry = query(collection(this.#database, COLLECTION_NAME), orderBy("score", "desc"), limit(10));
-        const result = await getDocs(qry);
-        result.forEach(doc => {
-            console.log(doc.id, " => ", doc.data());
-        });
     }
 }
 
