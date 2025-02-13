@@ -42,6 +42,3 @@ Durante o desenvolvimento das dicas para o jogo, surgiu a necessidade de entende
 
 O Triângulo de Sierpinski é uma figura auto-similar, com estrutura repetitiva em diferentes escalas, característica dos fractais. Isso permite gerar uma análise baseada em um processo simples e iterativo. A relação entre a Torre de Hanoi e o Triângulo de Sierpinski possibilita o desenvolvimento de um algoritmo complexo de análise, baseado em sistemas ternários, para determinar o melhor movimento, além do pior e neutro.
 
-## Artigo
-[Projeto Final de Informatica na Educação: Torre de Hanói Educativa]()
-
